@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
+  </component>
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="sys" targetName="SYSGUI_autogen" />
+      <config projectName="sys" targetName="SWC2VOLLIB" />
+      <config projectName="sys" targetName="SYSGUI" />
+      <config projectName="sys" targetName="uninstall" />
+      <config projectName="sys" targetName="SWC2OBJ" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+      <configuration PROFILE_NAME="Release" CONFIG_NAME="Release" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CMakeLists.txt" />
+        <option value="GLSL Shader" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$/src/swc2obj/external/glm" source="bran" />
+                <branch-info repo="$PROJECT_DIR$/src/swc2obj/external/cxxopts" source="bran" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_COMMON_BRANCH" value="bran" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="ProjectId" id="278KPtIAWXq5s6m3GItbmzzmaq8" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.first.check.clang-format" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/GUI/src" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\swc2obj\util" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\swc2obj" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys" />
+    </key>
+  </component>
+  <component name="RunManager" selected="CMake Application.SYSGUI">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/ -b 256" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SWC2Obj" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/ /output/vol -b 256" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2Obj" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2Obj">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SWC2VOL" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/../2vol/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/vol -b 256" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2VOL" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2VOL">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SWC2VOLLIB" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2VOLLIB" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SYSGUI" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SYSGUI" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SYSGUI">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SYSGUI_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SYSGUI_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="mergeOBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i $PROJECT_DIR$/output/obj/objRes.obj -o $PROJECT_DIR$/output/obj/mergeObjRes.obj" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="mergeOBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="mergeOBJ">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="sys" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="F:\paraview\ParaView 5.10.1-Windows-Python3.9-msvc2017-AMD64\bin\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/swc2obj" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/swc2obj/smoothOBJ.py" />
+      <option name="PARAMETERS" value="-i $PROJECT_DIR$/output/obj/mergeObjRes.obj -o $PROJECT_DIR$/output/obj/smoothObjRes.obj" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="smoothOBJ" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="sys" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="F:\paraview\ParaView 5.10.1-Windows-Python3.9-msvc2017-AMD64\bin\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/swc2obj" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/swc2obj/smoothOBJ.py" />
+      <option name="PARAMETERS" value="-i $PROJECT_DIR$/output/obj/mergeObjRes.obj -o $PROJECT_DIR$/output/obj/smoothObjRes.obj" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="voldir2obj" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="sys" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="F:\paraview\ParaView 5.10.1-Windows-Python3.9-msvc2017-AMD64\bin\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/swc2obj" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/swc2obj/voldir2obj.py" />
+      <option name="PARAMETERS" value="-i $PROJECT_DIR$/output/volnewResult -o $PROJECT_DIR$/output/obj/objRes.obj" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="CMake Application.SWC2VOL" />
+      <item itemvalue="CMake Application.SWC2Obj" />
+      <item itemvalue="CMake Application.mergeOBJ" />
+      <item itemvalue="CMake Application.SYSGUI" />
+      <item itemvalue="CMake Application.SYSGUI_autogen" />
+      <item itemvalue="CMake Application.SWC2OBJ" />
+      <item itemvalue="CMake Application.SWC2VOLLIB" />
+      <item itemvalue="CMake Application.uninstall" />
+      <item itemvalue="Python.smoothOBJ" />
+      <item itemvalue="Python.voldir2obj" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="" />
+      <created>1648696251552</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1648696251552</updated>
+      <workItem from="1648696254826" duration="1463000" />
+      <workItem from="1648782213605" duration="463000" />
+      <workItem from="1648783417866" duration="10687000" />
+      <workItem from="1649213954636" duration="154000" />
+      <workItem from="1649214399854" duration="1671000" />
+      <workItem from="1649225878798" duration="7731000" />
+      <workItem from="1649302681149" duration="595000" />
+      <workItem from="1649305008990" duration="5459000" />
+      <workItem from="1649389853127" duration="16268000" />
+      <workItem from="1649654159575" duration="13288000" />
+      <workItem from="1649679523849" duration="2600000" />
+      <workItem from="1649734349811" duration="4275000" />
+      <workItem from="1649751504174" duration="2466000" />
+      <workItem from="1649763535738" duration="33000" />
+      <workItem from="1649763801269" duration="4531000" />
+      <workItem from="1649820864422" duration="26142000" />
+      <workItem from="1649922139575" duration="13234000" />
+      <workItem from="1649993642106" duration="20559000" />
+      <workItem from="1650261397552" duration="2736000" />
+      <workItem from="1650264146584" duration="3401000" />
+      <workItem from="1650267569539" duration="14277000" />
+      <workItem from="1650344880295" duration="23087000" />
+      <workItem from="1650430881943" duration="22910000" />
+      <workItem from="1650518986662" duration="19475000" />
+      <workItem from="1650606232366" duration="936000" />
+      <workItem from="1650607423112" duration="19994000" />
+      <workItem from="1650781693698" duration="9333000" />
+      <workItem from="1650865970076" duration="18872000" />
+      <workItem from="1650951649921" duration="18061000" />
+      <workItem from="1651039916412" duration="16466000" />
+      <workItem from="1651126216750" duration="5470000" />
+      <workItem from="1651132531345" duration="129000" />
+      <workItem from="1651132671254" duration="586000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="user">
+                    <value>
+                      <list>
+                        <option value="*" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="bran" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="master" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/cmake-build-debug/_deps/glfw-src" />
+      <path value="$PROJECT_DIR$/cmake-build-debug/_deps/glm-src" />
+      <path value="$PROJECT_DIR$/cmake-build-debug/_deps/spdlog-src" />
+      <path value="$PROJECT_DIR$/cmake-build-debug/_deps/stdgpu-src" />
+      <path value="$PROJECT_DIR$/cmake-build-debug/_deps/volumecompression-src" />
+    </ignored-roots>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1650960578946">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650960578946" />
+    <state x="674" y="382" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1649679621788">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="674" y="382" key="#com.intellij.fileTypes.FileTypeChooser/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1649679621788" />
+    <state x="1023" y="566" key="#xdebugger.evaluate" timestamp="1650264282898">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="1023" y="566" key="#xdebugger.evaluate/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650264282898" />
+    <state x="739" y="335" key="FileChooserDialogImpl" timestamp="1649391235491">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1649391235491" />
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1651133257402">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1651133257402">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1651133257402">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1651133257402">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1651064916367">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1651064916367">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1651064916367">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1651064916367">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
+    <state x="609" y="381" key="SettingsEditor" timestamp="1651132607053">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="609" y="381" key="SettingsEditor/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651132607053" />
+    <state x="846" y="494" key="VCS.EditChangelistDialog" timestamp="1651130647187">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="846" y="494" key="VCS.EditChangelistDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651130647187" />
+    <state x="552" y="313" key="Vcs.Push.Dialog.v2" timestamp="1651131305410">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="552" y="313" key="Vcs.Push.Dialog.v2/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131305410" />
+    <state x="777" y="494" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1650872946660">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="777" y="494" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650872946660" />
+    <state x="965" y="377" width="585" height="534" key="find.popup" timestamp="1650960771350">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="965" y="377" width="585" height="534" key="find.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650960771350" />
+    <state x="740" y="385" key="git4idea.history.wholeTree.VcsStructureChooser" timestamp="1651132358016">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="740" y="385" key="git4idea.history.wholeTree.VcsStructureChooser/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651132358016" />
+    <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1651131322828">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1651129422615">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651129422615" />
+    <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1649928424605">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="623" y="255" width="672" height="678" key="search.everywhere.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1649928424605" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/swc2obj/voldir2obj.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/GUI/RenderWidget.cpp</url>
+          <line>134</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
