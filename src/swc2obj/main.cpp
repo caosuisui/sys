@@ -122,32 +122,43 @@ int main(int argc , char ** argv) {
 
     std::string inputswc = swcdir;
     std::string j = inputswc.substr(inputswc.size() - 8,4) ;
+    outputdir = outputdir + j + '/';
+
+    if(dirExists(outputdir)){
+        RemoveDirectory(outputdir.c_str()) ;
+    }
+
+    if(!dirExists(outputdir)){
+        CreateDirectory(outputdir.c_str(),NULL) ;
+        std::cout << "create dir for vol" << std::endl;
+    }
+
     std::string volumedir = outputdir + std::string("vol/");
     std::string objdir = outputdir + std::string("obj/");
 
     bool genVol = true;
     if(genVol){
         std::cout<<"create volume "<<volumedir<<std::endl ;
-//        if(dirExists(volumedir)){
-//            RemoveDirectory(volumedir.c_str()) ;
-//        }
-//
-//        if(!dirExists(volumedir)){
-//            CreateDirectory(volumedir.c_str(),NULL) ;
-//            std::cout << "create dir for vol" << std::endl;
-//        }
+        if(dirExists(volumedir)){
+            RemoveDirectory(volumedir.c_str()) ;
+        }
+
+        if(!dirExists(volumedir)){
+            CreateDirectory(volumedir.c_str(),NULL) ;
+            std::cout << "create dir for vol" << std::endl;
+        }
         SWC2VOL* mSWC2VOL = new SWC2VOL();
         mSWC2VOL->swc2vol(inputswc, blocksize, volumedir) ;
     }
 
     bool genObj = true;
     if(genObj){
-//        if(dirExists(objdir))
-//            RemoveDirectory(objdir.c_str()) ;
-//        if(!dirExists(objdir)){
-//            std::cout << "create dir for obj" << std::endl;
-//            CreateDirectory(objdir.c_str(),NULL) ;
-//        }
+        if(dirExists(objdir))
+            RemoveDirectory(objdir.c_str()) ;
+        if(!dirExists(objdir)){
+            std::cout << "create dir for obj" << std::endl;
+            CreateDirectory(objdir.c_str(),NULL) ;
+        }
 
         VOL2OBJ* mVOL2OBJ = new VOL2OBJ();
         mVOL2OBJ->vol2obj(volumedir,objdir);
