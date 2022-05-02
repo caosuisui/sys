@@ -12,19 +12,21 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_3_3_Core>
+//#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLFunctions_4_5_Core>
 #include <QMouseEvent>
-
+#include <QOpenGLTexture>
+#include <QOpenGLFramebufferObject>
 #include "objmode.h"
 #include "camera.hpp"
 #include "NeuronInfo.h"
 #include "SubwayMapWidget.h"
 #include "InputWidget.h"
-
+#include "VolumeProvider.hpp"
 #define RENDER_WIDTH 1200
 #define RENDER_HEIGHT 600
 
-class RenderWidget: public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core{
+class RenderWidget: public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core{
     Q_OBJECT
 public :
     explicit RenderWidget(QWidget* parent = nullptr);
@@ -71,6 +73,7 @@ private:
 
     void GenPointObject(QOpenGLBuffer& vbo, QOpenGLVertexArrayObject& vao,float* data,int count);
 
+    //
     /// 获取当前选中点所在体素块的起点和dimension
     /// \return 大小为6的数组，顺序为startx,starty,startz,xdimension,ydimension,zdimension.如果没有当前点则返回空vector
     std::vector<float> GetVolumeAreaData();
@@ -142,6 +145,29 @@ private:
         QOpenGLVertexArrayObject deletedLinesVAO;
         std::vector<float> lines;
         std::vector<float> deletedLines;
+
+        QOpenGLTexture* volume_tex;
+        QOpenGLShaderProgram* ray_pos_shader;
+        QOpenGLShaderProgram* raycast_shader;
+        static constexpr int VolumeTexSizeX = 512;
+        static constexpr int VolumeTexSizeY = 512;
+        static constexpr int VolumeTexSizeZ = 512;
+        QOpenGLBuffer proxy_cube_vbo;
+        QOpenGLVertexArrayObject proxy_cube_vao;
+        QOpenGLBuffer proxy_cube_ebo;
+        std::array<glm::vec3,8> proxy_cube_vertices;
+        std::array<uint32_t,36> proxy_cube_indices;
+        QOpenGLBuffer screen_quad_vbo;
+        QOpenGLVertexArrayObject screen_quad_vao;
+        std::array<float,12> screen_quad_vertices;
+        std::unique_ptr<VolumeProvider> volume;
+
+        QOpenGLFramebufferObject* fbo;
+        QOpenGLTexture* ray_entry;
+        QOpenGLTexture* ray_exit;
+
+        QOpenGLBuffer ssbo;
+        float* mapping_ptr = nullptr;
 };
 
 #endif //SYS_RENDERWIDGET_H
