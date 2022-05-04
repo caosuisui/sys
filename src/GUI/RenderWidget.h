@@ -14,17 +14,18 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLFunctions_3_3_Core>
 #include <QMouseEvent>
-
+#include <QOpenGLTexture>
+#include <QOpenGLFramebufferObject>
 #include "objmode.h"
 #include "camera.hpp"
 #include "NeuronInfo.h"
 #include "SubwayMapWidget.h"
 #include "InputWidget.h"
-
+#include "VolumeProvider.hpp"
 #define RENDER_WIDTH 1200
 #define RENDER_HEIGHT 600
 
-class RenderWidget: public QOpenGLWidget, protected QOpenGLFunctions_3_3_Core{
+class RenderWidget: public QOpenGLWidget, protected QOpenGLFunctions_4_5_Core{
     Q_OBJECT
 public :
     explicit RenderWidget(QWidget* parent = nullptr);
@@ -73,6 +74,7 @@ private:
 
     void AddPoint(QPoint screenPos);
 
+    //
     /// 获取当前选中点所在体素块的起点和dimension
     /// \return 大小为6的数组，顺序为startx,starty,startz,xdimension,ydimension,zdimension.如果没有当前点则返回空vector
     std::vector<float> GetVolumeAreaData();
@@ -144,16 +146,6 @@ private:
         QOpenGLVertexArrayObject deletedLinesVAO;
         std::vector<float> lines;
         std::vector<float> deletedLines;
-
-        QOpenGLBuffer newLinesVBO;
-        QOpenGLVertexArrayObject newLinesVAO;
-        std::vector<float> newLines;
-
-        QOpenGLBuffer newPointsVBO;
-        QOpenGLVertexArrayObject newPointsVAO;
-        std::vector<float> newPoints;
-
-        int connectStart;
 };
 
 #endif //SYS_RENDERWIDGET_H
