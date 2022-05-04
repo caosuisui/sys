@@ -20,6 +20,14 @@ add_executable(SYSGUI
         ${SYSGUI_SRC}
         )
 
+set(FFmpeg_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/deps/ffmpeg/include)
+set(
+        FFmpeg_LIBS
+        ${PROJECT_SOURCE_DIR}/deps/ffmpeg/lib/avcodec.lib
+        ${PROJECT_SOURCE_DIR}/deps/ffmpeg/lib/avutil.lib
+
+)
+include(${PROJECT_SOURCE_DIR}/deps/VolumeCompression.cmake)
 
 target_link_libraries(
         SYSGUI
@@ -31,10 +39,14 @@ target_link_libraries(
         Qt6::OpenGL
         Qt6::OpenGLWidgets
         #VS_CORE
+        ${FFmpeg_LIBS}
+        voxel_uncompress
 )
 
 target_include_directories(SYSGUI
         PRIVATE
         ../swc2obj
         ./src
+        ${FFmpeg_INCLUDE_DIR}
+        ${PROJECT_SOURCE_DIR}/deps
         )
