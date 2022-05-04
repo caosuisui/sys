@@ -16,14 +16,6 @@ class NeuronInfo{
 
 public:
     void GetVertexPathInfo(int currentid,int& pathid, int& vertexid);
-    void Show();
-
-    /// 修改路径
-    /// \param previousVertex
-    /// \param modifiedVertex
-    /// \param startPoint 影响的空间起点，在方法内分配内存并赋值
-    /// \param dimension 影响的空间范围，在方法内分配内存并赋值
-    void ModifyPaths(Vertex* previousVertex, Vertex* modifiedVertex,int* startPoint,int* dimension);
 
     /// 传入影响的空间范围，重构相交的体素块
     void PartialReconstruction();
@@ -33,6 +25,12 @@ public:
     void EditRadius(int id, double newRadius);
 
     void DeleteVertex(int id);
+
+    std::vector<Vertex> GetNewSWC();
+
+    double CheckR(int id);
+
+    double GetR(int id);
 
 public:
     int x_dimension;
@@ -61,6 +59,10 @@ public:
     std::vector<Vertex> radiusChangeList;
     std::vector<Vertex> addList;
     std::vector<int> deleteList;
+
+    std::vector<Vertex> connectionList;
+
+    std::string swcname;
 
 };
 

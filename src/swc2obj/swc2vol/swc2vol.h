@@ -32,7 +32,6 @@ public:
             vertex_hash[point_vector[i].current_id] = i;
         }
 
-
         for (auto &i : point_vector) {
             if (i.previous_id != -1) {
                 point_vector[vertex_hash[i.previous_id]].degree++;//子节点数量即degree
@@ -573,15 +572,11 @@ public:
 //    std::string path = std::string(CONDIF_DIR)+"Result/" ;
         writeAll(bvh->getRoot(), volume_dir);
 
-        //vol2obj(volume_dir,obj_dir);
-
         delete bvh;
         return 0;
     }
 
     void GetNeuronInfo(std::string swc_file, int blocksize, NeuronInfo *neuronInfo) {
-        std::cout << "we has " << processor_N << " processor" << std::endl;
-
         double x_space = 1;
         double y_space = 1;
         double z_space = 1;
@@ -605,78 +600,8 @@ public:
         auto paths = searchPath(point_vector, vertex_hash);
         std::cout << paths.size() << std::endl;
 
-        //调整每条路径上半径过小的点的半径
-//        for (auto& path : paths)
-//        {
-//            for (int i = 0; i < path.path.size(); i++)
-//            {
-//                if(path.path[i].radius<0.01)//对每条路径上半径小于0.01的点，根据路径前后半径>0.01的第一个点的半径调整自身的半径
-//                {
-//                    float sum = 0 ;
-//                    int begin = i ;
-//                    int count = 0 ;
-//
-//                    while(count<1)//考虑往前第一个半径>0.01的点（包括自身），sum += 半径，如果没有则sum += 0.1
-//                    {
-//                        if(path.path[begin].radius>0.01 ){
-//                            sum += path.path[begin].radius ;
-//                            count++ ;
-//                        }
-//                        begin-- ;
-//                        if(begin<0)
-//                        {
-//                            if(count<1)
-//                            {
-//                                sum += 0.1 ;
-//                                count++ ;
-//                            }
-//                            break ;
-//                        }
-//                    }
-//                    begin = i ;
-//                    while(count<2)//此时count==1，考虑往后往前第一个半径>0.01的点（包括自身），sum += 半径，如果没有则sum += 0.1
-//                    {
-//                        if(path.path[begin].radius>0.01 ){
-//                            sum += path.path[begin].radius ;
-//                            count++ ;
-//                        }
-//
-//                        begin-- ;
-//                        if(begin>=path.path.size())
-//                        {
-//                            if(count<2)
-//                            {
-//                                sum += 0.1 ;
-//                                count++ ;
-//                            }
-//                            break ;
-//                        }
-//                    }
-//
-//                    //新半径为两者平均
-//                    path.path[i].radius = sum / count ;
-//                    std::cout<<point_vector[vertex_hash[path.path[i].current_id]].radius<<" change to " <<path.path[i].radius<<std::endl ;
-//                    point_vector[vertex_hash[path.path[i].current_id]].radius = path.path[i].radius ;
-//
-//                }
-//            }
-//        }
-//
-//        for(int i = 0 ; i < point_vector.size(); i++)
-//        {
-//            if(point_vector[i].radius<=0.0)
-//            {
-//                std::cout<<"shit happened"<<std::endl ;
-//            }
-//        }
-
-//        int maxid = getDetph(paths,point_vector,vertex_hash) ;
-
-//	start_point *= space;
-
         std::cout << "Start Points : " << start_point << std::endl;
         std::cout << "Dimension: " << dimension << std::endl;
-
 
         neuronInfo->mainPaths = mainPathsIndex;
         neuronInfo->paths = paths;
@@ -693,6 +618,69 @@ public:
         neuronInfo->x_start = start_point.x;
         neuronInfo->y_start = start_point.y;
         neuronInfo->z_start = start_point.z;
+        neuronInfo->swcname = swc_file;
+    }
+
+    void GetVolume(Vec3D<double> start_point,Vec3D<double> end_point,std::vector<Path>& paths,int blocksize,std::string voldir){
+        //构建局部体素块
+        BVH *bvh = new BVH(start_point.to_i32vec3(),
+                              end_point.to_i32vec3(),
+                              glm::dvec3(blocksize, blocksize, blocksize));
+
+        double step = 0.0001;
+        int window_offset = 0;
+
+#pragma omp parallel for num_threads(24)
+        for (int j = 0; j < paths.size(); j++) {
+            const auto path = paths[j];
+            for (int i = 1; i < path.path.size(); i++) {
+                Vec3D<double> start_point = {path.path[i - 1].x, path.path[i - 1].y, path.path[i - 1].z};
+                Vec3D<double> end_point = {path.path[i].x, path.path[i].y, path.path[i].z};
+                auto direction = (end_point - start_point).normalized();
+                auto vec_length = (end_point - start_point).length();
+                std::vector<Vec3D<double>> points;
+                std::vector<double> radius;
+                std::vector<Sphere *> spheres;
+                double r = path.path[i].radius - path.path[i - 1].radius;
+
+                //在每两个点中间插值加入一系列点，位置和半径都是线性插值
+                Vec3D<double> startP = (start_point);
+                spheres.push_back(getSphere(startP, path.path[i - 1].radius));
+                for (int t = 1; t < vec_length / step; t++) {
+                    auto cur_point = direction * (t * step) + start_point;
+                    Vec3D<double> startP = (cur_point);
+                    spheres.push_back(getSphere(startP, r * (t * step) / vec_length + path.path[i - 1].radius));
+                }
+                startP = end_point;
+                spheres.push_back(getSphere(startP, path.path[i].radius));
+
+                std::vector<BVHNode *> nodes;
+                for (auto p = 0; p < spheres.size(); p++) {
+                    nodes.clear();
+                    bvh->getInteract(nodes, *spheres[p]);
+
+                    for (auto begin = nodes.begin(); begin != nodes.end(); begin++) {
+                        BVHNode *node = *begin;
+#pragma omp critical
+                        {
+                            node->usingNode();
+                            node->setData(spheres[p]);//将所有在球内的点标为1
+                        };
+
+                    }
+
+                }
+
+                std::cout << "Process : " << j << " in " << paths.size() << ", " << i << " in " << paths[j].path.size()
+                          << std::endl;
+            }
+        }
+        averageAll(bvh->getRoot());
+        averageAll(bvh->getRoot());//平滑（获取体数据）
+        changeAll(bvh->getRoot());//除去padding
+        bvh->check();//保证所有相邻体素块相邻面重叠体素值相同，取两者较大值
+
+
     }
 
     int filecount = 0;

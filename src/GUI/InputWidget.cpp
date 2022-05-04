@@ -202,11 +202,20 @@ void InputWidget::ReconstructionSlot(bool) {
 void InputWidget::EditRadius() {
     if(!currentPoint) return;
     neuronInfo->EditRadius(currentPoint->current_id,currentPointRadiusLine->text().toDouble());
+    subwayMapWidget->Update();
 }
 
 void InputWidget::InterpolateRadius() {
-    if(lastPointid != -1 && nextPointid != -1)
-    neuronInfo->Interpolate(lastPointid, nextPointid);
+    if(lastPointid != -1 && nextPointid != -1){
+        int id1,id2,id3,id4;
+        neuronInfo->GetVertexPathInfo(lastPointid,id1,id2);
+        neuronInfo->GetVertexPathInfo(nextPointid,id3,id4);
+        if(!(id1 == id3 && id2 > id4)) return;
+        std:: cout << "interpolate" << std::endl;
+        neuronInfo->Interpolate(lastPointid, nextPointid);
+        subwayMapWidget->Update();
+    }
+
 }
 
 void InputWidget::SetOtherWidget(SubwayMapWidget *in_subwayMapWidget) {
@@ -273,7 +282,7 @@ void InputWidget::ChangeCurrentPoint(int pathid, int vertexid) {
                              ", " + QString::number(currentPoint->z) + ")";
         currentPointPosLine->setText(currentPos);
 
-        currentPointRadiusLine->setText(QString::number(currentPoint->radius));
+        currentPointRadiusLine->setText(QString::number(neuronInfo->GetR(currentPoint->current_id)));
     }
     else{
         currentPointLabel->setText("Current Point");
@@ -292,7 +301,7 @@ void InputWidget::ChangeLastPoint(int pathid, int vertexid) {
                           ", " + QString::number(lastPoint.z) + ")";
         lastPointPosLine->setText(lastPos);
 
-        QString lastR = "    radius : " + QString::number(lastPoint.radius);
+        QString lastR = "    radius : " + QString::number(neuronInfo->GetR(lastPoint.current_id));
         lastPointRadiusLine->setText(lastR);
     }
     else{
@@ -313,7 +322,7 @@ void InputWidget::ChangeNextPoint(int pathid, int vertexid) {
                           ", " + QString::number(nextPoint.z) + ")";
         nextPointPosLine->setText(nextPos);
 
-        QString nextR = "    radius : " + QString::number(nextPoint.radius);
+        QString nextR = "    radius : " + QString::number(neuronInfo->GetR(nextPoint.current_id));
         nextPointRadiusLine->setText(nextR);
     }
     else{

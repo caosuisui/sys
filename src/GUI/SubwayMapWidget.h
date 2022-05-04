@@ -39,6 +39,8 @@ public:
 
     void SetPath(std::vector<Path> paths,int size, std::vector<int> mainPaths, NeuronInfo* info) ;
 
+    void Update();
+
 public slots:
     void SelectVertexSlot(int pathid, int vertexid);
     void SelectLastVertexSlot(int pathid, int vertexid);

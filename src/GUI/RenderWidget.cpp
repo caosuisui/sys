@@ -19,6 +19,7 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     currentPathId = currentInPathId = -1;
     lastPathId = lastInPathId = -1;
     nextPathId = nextInPathId = -1;
+    connectStart = -1;
 
     this->setFixedSize(RENDER_WIDTH,RENDER_HEIGHT);
     camera = std::make_unique<control::TrackBallCamera>(
@@ -26,6 +27,16 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
             this->width(),this->height(),
             glm::vec3{100,100,100}
     );
+    volume = std::make_unique<VolumeProvider>("D:/ffmpegyuv420_9p2_max_lod0_28452_21866_4834.h264");
+
+    proxy_cube_indices = {
+            0, 1, 2, 0, 2, 3, 0, 4, 1, 4, 5, 1, 1, 5, 6, 6, 2, 1,
+            6, 7, 2, 7, 3, 2, 7, 4, 3, 3, 4, 0, 4, 7, 6, 4, 6, 5
+    };
+    screen_quad_vertices = {
+        1.f,-1.f, 1.f,1.f, -1.f,-1.f,
+        -1.f,-1.f, 1.f,1.f, -1.f,1.f
+    };
 }
 
 void RenderWidget::SetVolumeRenderStartPoint(double x,double y,double z){
@@ -43,8 +54,8 @@ void RenderWidget::initializeGL() {
     glClearColor(0,0,0,0);
 
     program = new QOpenGLShaderProgram;
-    program->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/obj_shader_v.glsl");
-    program->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/obj_shader_f.glsl");
+    program->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/obj_shader_v.glsl");
+    program->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/obj_shader_f.glsl");
     if(!program->link()){
         std:: cout << "program link error" << std::endl;
     }
@@ -52,18 +63,93 @@ void RenderWidget::initializeGL() {
     program->release();
 
     pathProgram = new QOpenGLShaderProgram;
-    pathProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/line_shader_v.glsl");
-    pathProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/line_shader_f.glsl");
+    pathProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/line_shader_v.glsl");
+    pathProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/line_shader_f.glsl");
     if(!pathProgram->link()){
         std:: cout << "program link error" << std::endl;
     }
 
     vertexProgram = new QOpenGLShaderProgram;
-    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/swcpoint_shader_v.glsl");
-    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/src/GUI/src/swcpoint_shader_f.glsl");
+    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/swcpoint_shader_v.glsl");
+    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/swcpoint_shader_f.glsl");
     if(!vertexProgram->link()){
         std:: cout << "program link error" << std::endl;
     }
+//----------------------------------------------------------------------------
+    volume_tex = new QOpenGLTexture(QOpenGLTexture::Target3D);
+    volume_tex->create();
+    assert(volume_tex->isCreated());
+    volume_tex->bind();
+    glTexImage3D(GL_TEXTURE_3D,0,GL_RED,VolumeTexSizeX,VolumeTexSizeY,VolumeTexSizeZ,0,GL_RED,GL_UNSIGNED_BYTE,nullptr);
+    volume_tex->setMinMagFilters(QOpenGLTexture::Linear,QOpenGLTexture::Linear);
+    volume_tex->setBorderColor(0,0,0,0);
+    volume_tex->setWrapMode(QOpenGLTexture::ClampToBorder);
+
+    proxy_cube_vbo = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    proxy_cube_ebo = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    proxy_cube_vao.create();
+    proxy_cube_vbo.create();
+    proxy_cube_ebo.create();
+    proxy_cube_vao.bind();
+    proxy_cube_vbo.bind();
+    proxy_cube_vbo.allocate(proxy_cube_vertices.data(),sizeof(proxy_cube_vertices));
+    proxy_cube_ebo.bind();
+    proxy_cube_ebo.allocate(proxy_cube_indices.data(),sizeof(proxy_cube_indices));
+    QOpenGLFunctions *f = QOpenGLContext::currentContext()->functions();
+    f->glEnableVertexAttribArray(0);
+    f->glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(GLfloat),nullptr);
+    proxy_cube_vao.release();
+
+    screen_quad_vao.create();
+    screen_quad_vbo.create();
+    screen_quad_vao.bind();
+    screen_quad_vbo.bind();
+    screen_quad_vbo.allocate(screen_quad_vertices.data(),sizeof(screen_quad_vertices));
+    f->glEnableVertexAttribArray(0);
+    f->glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(GLfloat),nullptr);
+    screen_quad_vao.release();
+
+    ray_pos_shader = new QOpenGLShaderProgram;
+    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/volume_raycast_pos.vert");
+    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/volume_raycast_pos.frag");
+    if(!ray_pos_shader->link()){
+        std::cerr<<"ray pos shader link error"<<std::endl;
+    }
+
+    raycast_shader = new QOpenGLShaderProgram;
+    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/volume_raycast_render.vert");
+    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/volume_raycast_render.frag");
+    if(!raycast_shader->link()){
+        std::cerr<<"raycast shader link error"<<std::endl;
+    }
+    int w = frameSize().width(), h = frameSize().height();
+    fbo = new QOpenGLFramebufferObject(w,h,QOpenGLFramebufferObject::Attachment::Depth);
+    fbo->bind();
+    ray_entry = new QOpenGLTexture(QOpenGLTexture::TargetRectangle);
+    ray_entry->create();
+    std::cerr<<"ray_entry: "<<ray_entry->textureId()<<std::endl;
+    glBindTexture(GL_TEXTURE_RECTANGLE,ray_entry->textureId());
+    glTexImage2D(GL_TEXTURE_RECTANGLE,0,GL_RGBA32F,w,h,0,GL_RGBA,GL_FLOAT,nullptr);
+    glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_RECTANGLE,ray_entry->textureId(),0);
+
+    ray_exit = new QOpenGLTexture(QOpenGLTexture::TargetRectangle);;
+    ray_exit->create();
+    std::cerr<<"ray_exit: "<<ray_exit->textureId()<<std::endl;
+    glBindTexture(GL_TEXTURE_RECTANGLE,ray_exit->textureId());
+    glTexImage2D(GL_TEXTURE_RECTANGLE,0,GL_RGBA32F,w,h,0,GL_RGBA,GL_FLOAT,nullptr);
+    glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT1,GL_TEXTURE_RECTANGLE,ray_exit->textureId(),0);
+
+    if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE){
+        std::cerr<<"framebuffer error"<<std::endl;
+    }
+    fbo->release();
+
+    ssbo.create();
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER,ssbo.bufferId());
+    glBufferStorage(GL_SHADER_STORAGE_BUFFER,sizeof(float)*8,nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
+    mapping_ptr = static_cast<float*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER,GL_WRITE_ONLY));
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER,0,ssbo.bufferId());
+    std::cerr<<glGetError()<<" "<<"mapping_ptr: "<<mapping_ptr<<std::endl;
 
     doneCurrent();
 
@@ -106,13 +192,143 @@ void RenderWidget::paintGL() {
             camera->getCameraPos().z,
     };
     view.lookAt(pos,look_at,up);
-    proj.perspective(camera->getZoom(),float(this->width())/float(this->height()),0.01f,5000.f);
+    proj.perspective(camera->getZoom(),float(this->width())/float(this->height()),1.f,25000.f);
     mvp = proj * view * model;
 
-    glClearColor(1.0,1.0,1.0,1.0);
+    glClearColor(0.0,0.0,0.0,1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
+
+    //混合渲染
+    auto volumearea = GetVolumeAreaData();
+    //compute intersect blocks
+    static std::vector<uint8_t> volume_data(volume_block_size);
+    static glm::ivec3 last_start_block_index = {-1,-1,-1};
+    if(volumearea.size() == 6){
+        float voxel_start_pos_x = volumearea[0] / volume_space_x;
+        float voxel_x_len = virtual_block_length * volume_space_x;
+
+        float voxel_start_pos_y = volumearea[1] / volume_space_y;
+        float voxel_y_len = virtual_block_length * volume_space_y;
+
+        float voxel_start_pos_z = volumearea[2] / volume_space_z;
+        float voxel_z_len = virtual_block_length * volume_space_z;
+
+        glm::ivec3 start_block_index = glm::ivec3(voxel_start_pos_x / virtual_block_length,
+                                                  voxel_start_pos_y / virtual_block_length,
+                                                  voxel_start_pos_z / virtual_block_length);
+        voxel_start_pos_x = start_block_index.x * virtual_block_length * volume_space_x;
+        voxel_start_pos_y = start_block_index.y * virtual_block_length * volume_space_y;
+        voxel_start_pos_z = start_block_index.z * virtual_block_length * volume_space_z;
+
+        if(start_block_index != last_start_block_index){
+            volume->readBlock({start_block_index.x,start_block_index.y,start_block_index.z},volume_data.data(),volume_data.size());
+            volume_tex->setData(0,0,0,VolumeTexSizeX,VolumeTexSizeY,VolumeTexSizeZ,QOpenGLTexture::PixelFormat::Red,QOpenGLTexture::PixelType::UInt8,volume_data.data());
+            last_start_block_index = start_block_index;
+        }
+        proxy_cube_vertices[0] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z};
+        proxy_cube_vertices[1] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z};
+        proxy_cube_vertices[2] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
+        proxy_cube_vertices[3] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
+        proxy_cube_vertices[4] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
+        proxy_cube_vertices[5] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
+        proxy_cube_vertices[6] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
+        proxy_cube_vertices[7] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
+        proxy_cube_vbo.bind();
+        glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(proxy_cube_vertices),proxy_cube_vertices.data());
+        proxy_cube_vbo.release();
+
+        ray_pos_shader->bind();
+        ray_pos_shader->setUniformValue("MVPMatrix",mvp);
+
+        QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
+        bool b= fbo->bind();
+        assert(b);
+
+        glDrawBuffer(GL_COLOR_ATTACHMENT0);
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
+        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
+
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CCW);
+        glDrawBuffer(GL_COLOR_ATTACHMENT1);
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
+        glDisable(GL_CULL_FACE);
+
+        fbo->release();
+
+        std::cerr<<glGetError()<<std::endl;
+
+        ray_pos_shader->release();
+
+        raycast_shader->bind();
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_RECTANGLE,ray_entry->textureId());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_RECTANGLE,ray_exit->textureId());
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_3D,volume_tex->textureId());
+
+        raycast_shader->setUniformValue("RayStartPos",0);
+        raycast_shader->setUniformValue("RayEndPos",1);
+        raycast_shader->setUniformValue("VolumeData",2);
+        raycast_shader->setUniformValue("voxel",1.f);
+        raycast_shader->setUniformValue("step",0.6f);
+        raycast_shader->setUniformValue("volume_start_pos",voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z);
+        raycast_shader->setUniformValue("volume_extend",block_length*volume_space_x,block_length*volume_space_y,block_length*volume_space_z);
+        raycast_shader->setUniformValue("padding",padding*volume_space_x,padding*volume_space_y,padding*volume_space_z);
+        raycast_shader->setUniformValue("bg_color",QVector4D(0.0,0.0,0.0,1.0));
+        raycast_shader->setUniformValue("MVPMatrix",mvp);
+        bool inside = false;
+        if(pos.x() >= voxel_start_pos_x && pos.x() < voxel_start_pos_x + voxel_x_len
+           && pos.y() >= voxel_start_pos_y && pos.y() < voxel_start_pos_y + voxel_y_len
+           && pos.z() >= voxel_start_pos_z && pos.z() < voxel_start_pos_z + voxel_z_len){
+            inside = true;
+        }
+        if(inside){
+            std::cerr<<"inside"<<std::endl;
+        }
+        raycast_shader->setUniformValue("camera_pos",QVector4D(pos,inside?1.0:0.0));
+        std::cerr<<"mouse press pos: "<<mousePressPos.x()<<" "<<mousePressPos.y()<<std::endl;
+        raycast_shader->setUniformValue("click_coord",mousePressPos.x(),height() - mousePressPos.y());
+
+        //memset mapping_ptr before draw
+        memset(mapping_ptr,0,sizeof(float)*8);
+
+        QOpenGLVertexArrayObject::Binder binder3(&screen_quad_vao);
+        glDrawArrays(GL_TRIANGLES,0,6);
+        glFinish();
+
+        raycast_shader->release();
+
+        std::cerr<<"click point info: ";
+        for(int i = 0;i<8;i++){
+            std::cerr<<mapping_ptr[i]<<" ";
+        }
+        std::cerr<<std::endl;
+    }
+
+    //debug for volume proxy cube wireframe
+    if(false){
+        pathProgram->bind();
+        pathProgram->setUniformValue("model",model);
+        pathProgram->setUniformValue("view",view);
+        pathProgram->setUniformValue("proj",proj);
+
+        pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+        QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
+        ::glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
+        ::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+    }
+    std::cerr<<glGetError()<<std::endl;
+
+    //do not clear depth for mix render
+    //glClear(GL_DEPTH_BUFFER_BIT);
 
     //obj
     if(objVAO.isCreated()){
@@ -130,16 +346,6 @@ void RenderWidget::paintGL() {
         program->release();
     }
 
-    //混合渲染
-    auto volumearea = GetVolumeAreaData();
-
-
-
-
-
-
-    glClear(GL_DEPTH_BUFFER_BIT);
-
     //线
     if(neuronInfo){
        pathProgram->bind();
@@ -151,9 +357,13 @@ void RenderWidget::paintGL() {
        QOpenGLVertexArrayObject::Binder binder2(&pathVAO);
        glDrawArrays(GL_LINES,0,lines.size()/3);
 
-       pathProgram->setUniformValue("color",QVector4D(0,255 / 255.f,0,1));
+       pathProgram->setUniformValue("color",QVector4D(0,1,0,1));
        QOpenGLVertexArrayObject::Binder binder8(&deletedLinesVAO);
        glDrawArrays(GL_LINES,0,deletedLines.size()/3);
+
+        pathProgram->setUniformValue("color",QVector4D(0,0,1,1));
+        QOpenGLVertexArrayObject::Binder binder7(&newLinesVAO);
+        glDrawArrays(GL_LINES,0,newLines.size()/3);
 
        if(!isWholeView){
            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
@@ -164,8 +374,8 @@ void RenderWidget::paintGL() {
 
        if(currentPointId != -1){
            //std::cout << "Current vertex : " << currentPointId << std::endl;
-           pathProgram->setUniformValue("color",QVector4D(0.5,1,1,1));
-           glPointSize(8);
+           pathProgram->setUniformValue("color",QVector4D(0.5,0.5,1,1));
+           glPointSize(10);
            QOpenGLVertexArrayObject::Binder binder4(&currentVertexVAO);
            glDrawArrays(GL_POINTS,0,currentPoint.size()/3);
        }
@@ -187,11 +397,18 @@ void RenderWidget::paintGL() {
        }
 
        if(!deletePoints.empty()){
-           pathProgram->setUniformValue("color",QVector4D(0,255 / 255.f,0,1));
+           pathProgram->setUniformValue("color",QVector4D(0,1,0,1));
            glPointSize(8);
-           QOpenGLVertexArrayObject::Binder binder7(&deleteVertexVAO);
+           QOpenGLVertexArrayObject::Binder binder9(&deleteVertexVAO);
            glDrawArrays(GL_POINTS,0,deletePoints.size()/3);
        }
+
+        if(!newPoints.empty()){
+            pathProgram->setUniformValue("color",QVector4D(0,0,1,1));
+            glPointSize(8);
+            QOpenGLVertexArrayObject::Binder binder10(&newPointsVAO);
+            glDrawArrays(GL_POINTS,0,newPoints.size()/3);
+        }
 
        pathProgram->release();
    }
@@ -218,15 +435,19 @@ std::vector<float> RenderWidget::GetVolumeAreaData()
     a = (z - (neuronInfo->z_start - padding / 2)) / (neuronInfo->blocksize - 2);
     startz = a * (neuronInfo->blocksize - 2) + (neuronInfo->z_start - padding / 2);
 
-    dimension = neuronInfo->blocksize + 2;
-    data.push_back(startx);
-    data.push_back(starty);
-    data.push_back(startz);
+    dimension = neuronInfo->blocksize + 4;
+//    data.push_back(startx);
+//    data.push_back(starty);
+//    data.push_back(startz);
+    data.push_back(x);
+    data.push_back(y);
+    data.push_back(z);
     data.push_back(dimension);
     data.push_back(dimension);
     data.push_back(dimension);
     return data;
 }
+
 void RenderWidget::SetObjFilePath(std::string path) {
     objFilePath = std::move(path);
     if(neuronInfo!= nullptr)
@@ -265,35 +486,46 @@ void RenderWidget::loadLines(){
         }
     }
 
+    newLines.clear();
+    for(auto& item:neuronInfo->connectionList){
+        newLines.push_back(item.x);
+        newLines.push_back(item.y);
+        newLines.push_back(item.z);
+    }
+
     makeCurrent();
 
-    if(pathVAO.isCreated() | pathVBO.isCreated()){
-        pathVAO.destroy();
-        pathVBO.destroy();
-    }
+    GenObject(pathVBO,pathVAO,lines.data(),lines.size() * sizeof(float));
+    GenObject(deletedLinesVBO,deletedLinesVAO,deletedLines.data(),deletedLines.size() * sizeof(float));
+    GenObject(newLinesVBO,newLinesVAO,newLines.data(),newLines.size() * sizeof(float));
 
-    pathVAO.create();
-    pathVBO.create();
-    pathVAO.bind();
-    pathVBO.bind();
-    pathVBO.allocate(lines.data(),lines.size() * sizeof(float));
-    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
-    pathProgram->enableAttributeArray(0);
-    pathVAO.release();
+//    if(pathVAO.isCreated() | pathVBO.isCreated()){
+//        pathVAO.destroy();
+//        pathVBO.destroy();
+//    }
+//
+//    pathVAO.create();
+//    pathVBO.create();
+//    pathVAO.bind();
+//    pathVBO.bind();
+//    pathVBO.allocate(lines.data(),lines.size() * sizeof(float));
+//    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
+//    pathProgram->enableAttributeArray(0);
+//    pathVAO.release();
 
-    if(deletedLinesVAO.isCreated() | deletedLinesVBO.isCreated()){
-        deletedLinesVAO.destroy();
-        deletedLinesVBO.destroy();
-    }
-
-    deletedLinesVAO.create();
-    deletedLinesVBO.create();
-    deletedLinesVAO.bind();
-    deletedLinesVBO.bind();
-    deletedLinesVBO.allocate(deletedLines.data(),deletedLines.size() * sizeof(float));
-    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
-    pathProgram->enableAttributeArray(0);
-    deletedLinesVAO.release();
+//    if(deletedLinesVAO.isCreated() | deletedLinesVBO.isCreated()){
+//        deletedLinesVAO.destroy();
+//        deletedLinesVBO.destroy();
+//    }
+//
+//    deletedLinesVAO.create();
+//    deletedLinesVBO.create();
+//    deletedLinesVAO.bind();
+//    deletedLinesVBO.bind();
+//    deletedLinesVBO.allocate(deletedLines.data(),deletedLines.size() * sizeof(float));
+//    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
+//    pathProgram->enableAttributeArray(0);
+//    deletedLinesVAO.release();
 
     doneCurrent();
 
@@ -340,6 +572,13 @@ void RenderWidget::loadSWCPoint() {
         deletePoints.push_back(point.z);
     }
 
+    newPoints.clear();
+    for(auto point:neuronInfo->addList){
+        newPoints.push_back(point.x);
+        newPoints.push_back(point.y);
+        newPoints.push_back(point.z);
+    }
+
     swcPoints.clear();
     swcPoints.reserve(neuronInfo->point_vector.size());
     for(auto vertex : neuronInfo->point_vector){
@@ -356,18 +595,19 @@ void RenderWidget::loadSWCPoint() {
         swcPoints.push_back(vertex.z);
     }
 
-    GenPointObject(vertexVBO,vertexVAO,swcPoints.data(),swcPoints.size() * sizeof(float));
-    GenPointObject(currentVertexVBO,currentVertexVAO,currentPoint.data(),currentPoint.size() * sizeof(float));
-    GenPointObject(lastVertexVBO,lastVertexVAO,lastPoint.data(),lastPoint.size() * sizeof(float));
-    GenPointObject(nextVertexVBO,nextVertexVAO,nextPoint.data(),nextPoint.size() * sizeof(float));
-    GenPointObject(deleteVertexVBO,deleteVertexVAO,deletePoints.data(),deletePoints.size() * sizeof(float));
+    GenObject(vertexVBO,vertexVAO,swcPoints.data(),swcPoints.size() * sizeof(float));
+    GenObject(currentVertexVBO,currentVertexVAO,currentPoint.data(),currentPoint.size() * sizeof(float));
+    GenObject(lastVertexVBO,lastVertexVAO,lastPoint.data(),lastPoint.size() * sizeof(float));
+    GenObject(nextVertexVBO,nextVertexVAO,nextPoint.data(),nextPoint.size() * sizeof(float));
+    GenObject(deleteVertexVBO,deleteVertexVAO,deletePoints.data(),deletePoints.size() * sizeof(float));
+    GenObject(newPointsVBO,newPointsVAO,newPoints.data(),newPoints.size()*sizeof(float));
 
     doneCurrent();
 
     repaint();
 }
 
-void RenderWidget::GenPointObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &vao,float* data,int count) {
+void RenderWidget::GenObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &vao,float* data,int count) {
     makeCurrent();
     if(vao.isCreated() | vbo.isCreated()){
         vao.destroy();
@@ -379,8 +619,8 @@ void RenderWidget::GenPointObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &
     vao.bind();
     vbo.bind();
     vbo.allocate(data,count);
-    vertexProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
-    vertexProgram->enableAttributeArray(0);
+    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
+    pathProgram->enableAttributeArray(0);
     vao.release();
     doneCurrent();
 }
@@ -481,7 +721,10 @@ void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if((mousePressPos - event->pos()).manhattanLength() < 20){
-        pickPoint(event->position());
+        if(selectionState != SubwayMapWidget::SelectionState::Add)
+            pickPoint(event->position());
+        else
+            AddPoint(event->pos());
     }
     else{
         camera->processMouseButton(control::CameraDefinedMouseButton::Left,
@@ -496,43 +739,54 @@ void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
     repaint();
 }
 
+void RenderWidget::AddPoint(QPoint screenPos) {
+    if(!neuronInfo) return;
+    double x,y,z;
+
+    //根据屏幕坐标获取三维坐标
+
+    Vertex newVertex;
+    newVertex.current_id = neuronInfo->point_vector.size() + neuronInfo->addList.size();
+    newVertex.radius = 0;
+    //neuronInfo->addList.push_back(newVertex);
+}
+
 void RenderWidget::pickPoint(QPointF mousePos){
     mousePos.setY(RENDER_HEIGHT - mousePos.y());
     float limit = 25;
     float mindis = limit + 1;
     int id = -1;
     if(!neuronInfo) return;
-    for(auto point : neuronInfo->point_vector){
-        QVector4D screen = mvp.map(QVector4D(point.x,point.y,point.z,1.0));
 
-        if(screen.w() !=0.0f){
-            screen.setX(screen.x() / screen.w());
-            screen.setY(screen.y() / screen.w());
-            screen.setZ(screen.z() / screen.w());
-            screen.setW(1);
-        }
-        if(screen.x() > -1 && screen.x() < 1 && screen.y() > -1 &&screen.y() < 1){
-            screen = viewportMatrix.map(screen);
+    auto pick = [&](std::vector<Vertex>& points){
+        for(auto point:points){
+            QVector4D screen = mvp.map(QVector4D(point.x,point.y,point.z,1.0));
 
-            float dis = (QPointF(screen.x(),screen.y()) - mousePos ).manhattanLength();
-            if( dis > limit | dis > mindis) continue;
-            mindis = dis;
-            id = point.current_id;
+            if(screen.w() !=0.0f){
+                screen.setX(screen.x() / screen.w());
+                screen.setY(screen.y() / screen.w());
+                screen.setZ(screen.z() / screen.w());
+                screen.setW(1);
+            }
+            if(screen.x() > -1 && screen.x() < 1 && screen.y() > -1 &&screen.y() < 1){
+                screen = viewportMatrix.map(screen);
+
+                float dis = (QPointF(screen.x(),screen.y()) - mousePos ).manhattanLength();
+                if( dis > limit | dis > mindis) continue;
+                mindis = dis;
+                id = point.current_id;
+            }
         }
-    }
+    };
+
+    pick(neuronInfo->point_vector);
+    pick(neuronInfo->addList);
 
     if(id == -1) return;
 
     int id1,id2;
     neuronInfo->GetVertexPathInfo(id,id1,id2);
     if(selectionState == SubwayMapWidget::SelectionState::Normal) {
-//        if(currentPathId != id1){
-//            lastPointId = -1;
-//            nextPointId = -1;
-//
-//            lastPathId = lastInPathId = -1;
-//            nextPathId = nextInPathId = -1;
-//        }
         currentPointId = id;
         currentPathId = id1;
         currentInPathId = id2;
@@ -592,6 +846,35 @@ void RenderWidget::pickPoint(QPointF mousePos){
         loadLines();
         loadSWCPoint();
     }
+    else if(selectionState == SubwayMapWidget::SelectionState::Connect){
+        if(connectStart == -1)
+            connectStart =  id;
+        else{
+            if(connectStart < neuronInfo->vertex_hash.size())
+                neuronInfo->connectionList.push_back(neuronInfo->point_vector[neuronInfo->vertex_hash[connectStart]]);
+            else{
+                for(auto item:neuronInfo->addList){
+                    if(item.current_id == connectStart) {
+                        neuronInfo->connectionList.push_back(item);
+                        break;
+                    }
+                }
+            }
+
+            if(id < neuronInfo->vertex_hash.size())
+                neuronInfo->connectionList.push_back(neuronInfo->point_vector[neuronInfo->vertex_hash[id]]);
+            else{
+                for(auto item:neuronInfo->addList){
+                    if(item.current_id == id) {
+                        neuronInfo->connectionList.push_back(item);
+                        break;
+                    }
+                }
+            }
+            loadLines();
+        }
+    }
+
 }
 
 void RenderWidget::wheelEvent(QWheelEvent *event)
