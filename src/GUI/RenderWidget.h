@@ -69,7 +69,9 @@ private:
 
     void init();
 
-    void GenPointObject(QOpenGLBuffer& vbo, QOpenGLVertexArrayObject& vao,float* data,int count);
+    void GenObject(QOpenGLBuffer& vbo, QOpenGLVertexArrayObject& vao,float* data,int count);
+
+    void AddPoint(QPoint screenPos);
 
     /// 获取当前选中点所在体素块的起点和dimension
     /// \return 大小为6的数组，顺序为startx,starty,startz,xdimension,ydimension,zdimension.如果没有当前点则返回空vector
@@ -142,6 +144,16 @@ private:
         QOpenGLVertexArrayObject deletedLinesVAO;
         std::vector<float> lines;
         std::vector<float> deletedLines;
+
+        QOpenGLBuffer newLinesVBO;
+        QOpenGLVertexArrayObject newLinesVAO;
+        std::vector<float> newLines;
+
+        QOpenGLBuffer newPointsVBO;
+        QOpenGLVertexArrayObject newPointsVAO;
+        std::vector<float> newPoints;
+
+        int connectStart;
 };
 
 #endif //SYS_RENDERWIDGET_H

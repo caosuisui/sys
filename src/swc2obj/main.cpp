@@ -91,7 +91,7 @@ int main(int argc , char ** argv) {
 
     std::string swcdir ;
     if (res.count("swcdir")) {
-       swcdir =  res["s"].as<std::string>() ;
+        swcdir =  res["s"].as<std::string>() ;
     }
 
 
@@ -102,7 +102,7 @@ int main(int argc , char ** argv) {
 
     int blocksize ;
     if (res.count("blocksize")) {
-       blocksize =res["b"].as<int>() ;
+        blocksize =res["b"].as<int>() ;
     }
 
 //    std::vector<std::string> swcfiles  ;

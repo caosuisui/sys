@@ -144,7 +144,7 @@ void NeuronInfo::PartialReconstruction() {
     start_point.z = std::floor((zmin - z_start) / step) * step + z_start;
     end_point.x = std::floor((xmax - x_start) / step) * step + blocksize + x_start;
     end_point.y = std::floor((ymax - y_start) / step) * step + blocksize + y_start;
-    end_point.z = std::floor((zmax - z_start)) / step) * step + blocksize + z_start;
+    end_point.z = std::floor((zmax - z_start) / step) * step + blocksize + z_start;
 
     std::cout << "start_point: " << start_point.x << " " << start_point.y << " " << start_point.z << std::endl;
     std::cout << "dimension: " << end_point.x - start_point.x << " " << end_point.y - start_point.y << " " << end_point.z - start_point.z << std::endl;

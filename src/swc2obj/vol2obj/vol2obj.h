@@ -212,9 +212,6 @@ public:
     std::vector<vtkPolyData*> allPoly;
     vtkSmartPointer<vtkAppendPolyData> appender;
     bool usingmhd = true;
-
-
-
 };
 
 
