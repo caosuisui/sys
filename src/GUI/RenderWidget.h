@@ -146,12 +146,25 @@ private:
         std::vector<float> lines;
         std::vector<float> deletedLines;
 
+        //-------------------------------------------
+        static constexpr float volume_space_x = 0.32f;
+        static constexpr float volume_space_y = 0.32f;
+        static constexpr float volume_space_z = 2.f;
+        static constexpr float base_space = (std::min)({volume_space_x,volume_space_y,volume_space_z});
+        static constexpr float space_ratio_x = volume_space_x / base_space;
+        static constexpr float space_ratio_y = volume_space_y / base_space;
+        static constexpr float space_ratio_z = volume_space_z / base_space;
+        static constexpr int virtual_block_length = 508;
+        static constexpr int block_length = 512;
+        static constexpr int padding = 2;
+        static constexpr int volume_block_size = 512 * 512 * 512;
+
         QOpenGLTexture* volume_tex;
         QOpenGLShaderProgram* ray_pos_shader;
         QOpenGLShaderProgram* raycast_shader;
-        static constexpr int VolumeTexSizeX = 512;
-        static constexpr int VolumeTexSizeY = 512;
-        static constexpr int VolumeTexSizeZ = 512;
+        static constexpr int VolumeTexSizeX = block_length;
+        static constexpr int VolumeTexSizeY = block_length;
+        static constexpr int VolumeTexSizeZ = block_length;
         QOpenGLBuffer proxy_cube_vbo;
         QOpenGLVertexArrayObject proxy_cube_vao;
         QOpenGLBuffer proxy_cube_ebo;
