@@ -54,6 +54,10 @@ public:
         vertexid = index;
     }
 
+    Vertex* GetVertex(){
+        return vertex;
+    }
+
     QRectF boundingRect(void) const Q_DECL_OVERRIDE;
 
 private:

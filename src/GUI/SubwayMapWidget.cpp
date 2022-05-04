@@ -12,7 +12,7 @@ SubwayMapWidget::SubwayMapWidget(QWidget *parent) :QWidget(parent){
     preLastPoint = nullptr;
     preNextPoint = nullptr;
     oriPathDis = 200;
-    pathRatio = 8;
+    pathRatio = 6;
     radiusRatio = 5;
     zoomDirection = ZoomDirection::Both;
     selectionState = SelectionState::Normal;
@@ -28,6 +28,7 @@ SubwayMapWidget::SubwayMapWidget(QWidget *parent) :QWidget(parent){
     view->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
 
     view->resize(SUBWAYMAP_WIDTH ,SUBWAYMAP_HEIGHT);
+    view->setAlignment(Qt::AlignLeft);
     view->show();
 }
 
@@ -139,6 +140,8 @@ void SubwayMapWidget::mousePressEvent(QMouseEvent *e) {
             else
                 valid = true;
 
+            valid = true;
+
             if(valid){
                 if(preLastPoint != nullptr){
                     preLastPoint->SetSelected(false,PointItem::PointType::Unselected);
@@ -174,6 +177,8 @@ void SubwayMapWidget::mousePressEvent(QMouseEvent *e) {
                 }
             }
 
+            valid = true;
+
             if(valid){
                 if(preNextPoint != nullptr){
                     preNextPoint->SetSelected(false,PointItem::PointType::Unselected);
@@ -192,19 +197,33 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
     std::vector<PointItem*> thisPath;
     thisPath.reserve(path->path.size());
 
+    auto getR = [&](Vertex vertex){
+        double r;
+        double changedR = neuronInfo->CheckR(vertex.current_id);
+        if(changedR < 0){
+            if(vertex.radius == 0)
+                r = 1;
+            else
+                r = vertex.radius * radiusRatio;
+        }
+        else
+            r = changedR * radiusRatio;
+
+        return r;
+    };
+
     if(isFirstLevel){//主路径，生成第一个点，不是主路径则第一个点已经绘制
         auto& vertex = path->path.back();
 
-        double r;
-        if(vertex.radius == 0)
-            r = 0.05 * radiusRatio;
-        else
-            r = vertex.radius * radiusRatio;
+        double r = getR(vertex);
+//        if(vertex.radius == 0 && neuronInfo->CheckR(vertex.current_id) < 0)
+//            r = 1;
+//        else
+//            r = (neuronInfo->CheckR(vertex.current_id) < 0?vertex.radius:neuronInfo->CheckR(vertex.current_id)) * radiusRatio;
 
         auto point = new PointItem(&vertex,path,path->path.size()-1);
         point->SetR(r);
         point->moveBy(x,y);
-
 
         scene->addItem(point);
         thisPath.push_back(point);
@@ -221,11 +240,11 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
     auto firstx = lastver.sx;
     auto firsty = lastver.sy;
     auto lastp = QPointF(firstx,firsty);
-    double lastverr;
-    if(lastver.radius == 0)
-        lastverr = 0.1 * radiusRatio;
-    else
-        lastverr = lastver.radius * radiusRatio;
+    double lastverr = getR(lastver);
+//    if(lastver.radius == 0)
+//        lastverr = 1;
+//    else
+//        lastverr = lastver.radius * radiusRatio;
 
     //绘制当前路径
     for(int i = path->path.size()-2 ; i >= 0 ; i--) {
@@ -233,7 +252,11 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
         if(i != path->path.size()-2)
             x += vertex.distance * pathRatio;
 
-        double r = vertex.radius * radiusRatio;
+        double r = getR(vertex);
+//        if(vertex.radius == 0)
+//            r = 1;
+//        else
+//            r = vertex.radius * radiusRatio;
 
         auto point = new PointItem(&vertex,path,i);
         point->SetR(r);
@@ -264,23 +287,33 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
     int a = subPathNum / 2;
     double nextHalfRange = halfRange / (a * 2);
 
-    for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根
-        double nextx,nexty;
+    if(nextHalfRange >= 10)
+        for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根
+            double nextx,nexty;
 
-        int branchIndex = paths[path->sub_paths_index[i]].branch_point_index;
-        nextx = path->path[branchIndex].sx;
+            int branchIndex = paths[path->sub_paths_index[i]].branch_point_index;
+            nextx = path->path[branchIndex].sx;
 
-        if(i % 2 == 0){
-            nexty = y + nextHalfRange * ((i / 2 ) * 2 + 1);
+            if(i % 2 == 0){
+                nexty = y + nextHalfRange * ((i / 2 ) * 2 + 1);
+            }
+            else{
+                nexty = y - nextHalfRange * ((i / 2 ) * 2 + 1);
+            }
+
+            GenMap(&paths[path->sub_paths_index[i]],nextx,nexty, nextHalfRange, QPointF(path->path[branchIndex].sx,path->path[branchIndex].sy));
         }
-        else{
-            nexty = y - nextHalfRange * ((i / 2 ) * 2 + 1);
-        }
+}
 
-        GenMap(&paths[path->sub_paths_index[i]],nextx,nexty, nextHalfRange, QPointF(path->path[branchIndex].sx,path->path[branchIndex].sy));
-    }
-
-    view->show();
+void SubwayMapWidget::Update(){
+//    int id1,id2,id3,id4,id5,id6;
+//    lastPoint->GetInfo(id1,id2);
+//    preLastPoint->GetInfo(id3,id4);
+//    preNextPoint->GetInfo(id5,id6);
+    SelectPath(currentPath);
+//    SelectVertexSlot(id1,id2);
+//    SelectLastVertexSlot(id3,id4);
+//    SelectNextVertexSlot(id5,id6);
 }
 
 QGraphicsPolygonItem* SubwayMapWidget::GetPolyGon(QPointF pos1 ,double r1, QPointF pos2, double r2, bool isHorizontal)
@@ -330,13 +363,15 @@ void SubwayMapWidget::SelectPath(int index){
     std::cout << "select path : " << currentPath << std::endl;
     clearScene();
 
-    double ydimension = oriPathDis * paths[currentPath].sub_paths_index.size() * 4;
-    double starty = ydimension / 4;
-    //view->translate(0,starty);
+    int halfYDimension = oriPathDis * ((paths[currentPath].sub_paths_index.size() / 2) + 1) * 2;
 
+//    scene = new QGraphicsScene(0,-halfYDimension,10000,halfYDimension * 2);
+//    view->setScene(scene);
 
-    GenMap(&paths[currentPath],0,starty,oriPathDis, QPointF(0,0),true);
+    GenMap(&paths[currentPath],0,0,oriPathDis, QPointF(0,0),true);
 
+    //view->translate(0,halfYDimension);
+    view->show();
 }
 
 void SubwayMapWidget::SetPath(std::vector<Path> paths,int size, std::vector<int> mainPaths, NeuronInfo* info) {
