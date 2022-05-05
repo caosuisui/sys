@@ -39,7 +39,7 @@ target_link_libraries(
         Qt6::OpenGL
         Qt6::OpenGLWidgets
         #VS_CORE
-        ${FFmpeg_LIBS}
+#        ${FFmpeg_LIBS}
         voxel_uncompress
 )
 

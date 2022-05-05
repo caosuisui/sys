@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #include "VoxelCompression/voxel_compress/VoxelCmpDS.h"
+
+#include <VoxelCompression/voxel_uncompress/VoxelUncompress.h>
 using namespace sv;
 class VolumeProvider{
 public:
@@ -28,6 +30,7 @@ public:
     VolumeInfo getVolumeInfo();
 
     std::unique_ptr<Reader> reader;
+    std::unique_ptr<VoxelUncompress> uncmp;
 
 };
 
