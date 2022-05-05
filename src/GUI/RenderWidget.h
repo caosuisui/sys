@@ -12,7 +12,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QOpenGLShaderProgram>
-#include <QOpenGLFunctions_3_3_Core>
+#include <QOpenGLFunctions_4_5_Core>
 #include <QMouseEvent>
 #include <QOpenGLTexture>
 #include <QOpenGLFramebufferObject>
@@ -146,6 +146,53 @@ private:
         QOpenGLVertexArrayObject deletedLinesVAO;
         std::vector<float> lines;
         std::vector<float> deletedLines;
+
+        QOpenGLBuffer newLinesVBO;
+        QOpenGLVertexArrayObject newLinesVAO;
+        std::vector<float> newLines;
+
+        QOpenGLBuffer newPointsVBO;
+        QOpenGLVertexArrayObject newPointsVAO;
+        std::vector<float> newPoints;
+
+    int connectStart;
+
+
+    //-------------------------------------------
+    static constexpr float volume_space_x = 0.32f;
+    static constexpr float volume_space_y = 0.32f;
+    static constexpr float volume_space_z = 2.f;
+    static constexpr float base_space = (std::min)({volume_space_x,volume_space_y,volume_space_z});
+    static constexpr float space_ratio_x = volume_space_x / base_space;
+    static constexpr float space_ratio_y = volume_space_y / base_space;
+    static constexpr float space_ratio_z = volume_space_z / base_space;
+    static constexpr int virtual_block_length = 508;
+    static constexpr int block_length = 512;
+    static constexpr int padding = 2;
+    static constexpr int volume_block_size = 512 * 512 * 512;
+
+    QOpenGLTexture* volume_tex;
+    QOpenGLShaderProgram* ray_pos_shader;
+    QOpenGLShaderProgram* raycast_shader;
+    static constexpr int VolumeTexSizeX = block_length;
+    static constexpr int VolumeTexSizeY = block_length;
+    static constexpr int VolumeTexSizeZ = block_length;
+    QOpenGLBuffer proxy_cube_vbo;
+    QOpenGLVertexArrayObject proxy_cube_vao;
+    QOpenGLBuffer proxy_cube_ebo;
+    std::array<glm::vec3,8> proxy_cube_vertices;
+    std::array<uint32_t,36> proxy_cube_indices;
+    QOpenGLBuffer screen_quad_vbo;
+    QOpenGLVertexArrayObject screen_quad_vao;
+    std::array<float,12> screen_quad_vertices;
+    std::unique_ptr<VolumeProvider> volume;
+
+    QOpenGLFramebufferObject* fbo;
+    QOpenGLTexture* ray_entry;
+    QOpenGLTexture* ray_exit;
+
+    QOpenGLBuffer ssbo;
+    float* mapping_ptr = nullptr;
 };
 
 #endif //SYS_RENDERWIDGET_H
