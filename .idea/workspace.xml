@@ -4,21 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="BranchesTreeState">
-    <expand />
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
     <select>
       <path>
         <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
         <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </select>
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
       <config projectName="sys" targetName="SYSGUI_autogen" />
+      <config projectName="sys" targetName="voxel_uncompress_autogen" />
       <config projectName="sys" targetName="SWC2VOLLIB" />
       <config projectName="sys" targetName="SYSGUI" />
+      <config projectName="sys" targetName="voxel_compress" />
       <config projectName="sys" targetName="uninstall" />
+      <config projectName="sys" targetName="voxel_uncompress" />
       <config projectName="sys" targetName="SWC2OBJ" />
+      <config projectName="sys" targetName="voxel_compress_autogen" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -28,7 +38,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="" />
+    <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/VolumeProvider.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/VolumeProvider.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI/VolumeProvider.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/VolumeProvider.hpp" afterDir="false" />
+    </list>
+    <list id="0e44ab82-8813-4ab5-8b2a-585c31c797eb" name="Revert &quot;--&quot;" comment="Revert &quot;--&quot;&#10;&#10;This reverts commit 5755bcef" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,6 +77,11 @@
         </map>
       </branch-storage>
     </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_COMMON_BRANCH" value="bran" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
@@ -74,22 +95,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="cf.first.check.clang-format" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/GUI/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cmake-build-debug/src/GUI" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\src\GUI" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\swc2obj\util" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\swc2obj" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
     </key>
   </component>
@@ -129,11 +151,6 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="mergeOBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i $PROJECT_DIR$/output/obj/objRes.obj -o $PROJECT_DIR$/output/obj/mergeObjRes.obj" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="mergeOBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="mergeOBJ">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -142,6 +159,31 @@
     <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_compress" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_compress" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_compress_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_compress_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_uncompress" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_uncompress" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_uncompress_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_uncompress_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -211,6 +253,10 @@
       <item itemvalue="CMake Application.SWC2VOL" />
       <item itemvalue="CMake Application.SWC2Obj" />
       <item itemvalue="CMake Application.mergeOBJ" />
+      <item itemvalue="CMake Application.voxel_compress" />
+      <item itemvalue="CMake Application.voxel_compress_autogen" />
+      <item itemvalue="CMake Application.voxel_uncompress" />
+      <item itemvalue="CMake Application.voxel_uncompress_autogen" />
       <item itemvalue="CMake Application.SYSGUI" />
       <item itemvalue="CMake Application.SYSGUI_autogen" />
       <item itemvalue="CMake Application.SWC2OBJ" />
@@ -280,6 +326,13 @@
               </option>
               <option name="FILTERS">
                 <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
                   <entry key="user">
                     <value>
                       <list>
@@ -337,10 +390,10 @@
     </ignored-roots>
   </component>
   <component name="WindowStateProjectService">
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1650960578946">
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1651733501813">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650960578946" />
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651733501813" />
     <state x="674" y="382" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1649679621788">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -349,46 +402,50 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="1023" y="566" key="#xdebugger.evaluate/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650264282898" />
-    <state x="739" y="335" key="FileChooserDialogImpl" timestamp="1649391235491">
+    <state x="184" y="98" key="DiffContextDialog" timestamp="1651734587332">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1649391235491" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1651133257402">
+    <state x="184" y="98" key="DiffContextDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734587332" />
+    <state x="739" y="335" key="FileChooserDialogImpl" timestamp="1651733494976">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1651133257402">
+    <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651733494976" />
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1651133257402">
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.0.center" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1651133257402">
+    <state width="1877" height="322" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.0.left" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651133257402" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1651064916367">
+    <state width="1877" height="322" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.0.right" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1651064916367">
+    <state width="1877" height="322" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1651064916367">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1651064916367">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651064916367" />
-    <state x="609" y="381" key="SettingsEditor" timestamp="1651132607053">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1651734629075">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="609" y="381" key="SettingsEditor/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651132607053" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734629075" />
+    <state x="609" y="381" key="SettingsEditor" timestamp="1651732747400">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="609" y="381" key="SettingsEditor/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651732747400" />
     <state x="846" y="494" key="VCS.EditChangelistDialog" timestamp="1651130647187">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -405,6 +462,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="965" y="377" width="585" height="534" key="find.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1650960771350" />
+    <state x="740" y="293" key="git4idea.branch.GitSmartOperationDialog" timestamp="1651734588397">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="740" y="293" key="git4idea.branch.GitSmartOperationDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734588397" />
     <state x="740" y="385" key="git4idea.history.wholeTree.VcsStructureChooser" timestamp="1651132358016">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -413,10 +474,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1651129422615">
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1651734124726">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651129422615" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651734124726" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1649928424605">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -431,9 +492,9 @@
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/src/GUI/RenderWidget.cpp</url>
-          <line>134</line>
-          <option name="timeStamp" value="3" />
+          <url>file://$PROJECT_DIR$/src/GUI/VolumeProvider.cpp</url>
+          <line>75</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
