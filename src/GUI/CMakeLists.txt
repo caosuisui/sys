@@ -27,8 +27,8 @@ set(
         ${PROJECT_SOURCE_DIR}/deps/ffmpeg/lib/avutil.lib
 
 )
-include(../../deps/VolumeCompression.cmake)
-include(../../deps/spdlog.cmake)
+include(${PROJECT_SOURCE_DIR}/deps/VolumeCompression.cmake)
+include(${PROJECT_SOURCE_DIR}/deps/spdlog.cmake)
 
 target_link_libraries(
         SYSGUI

@@ -19,7 +19,19 @@
     </select>
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
-    <generated />
+    <generated>
+      <config projectName="sys" targetName="voxel_uncompress_autogen" />
+      <config projectName="sys" targetName="SYSGUI_autogen" />
+      <config projectName="sys" targetName="SYSGUI" />
+      <config projectName="sys" targetName="spdlog_autogen" />
+      <config projectName="sys" targetName="voxel_compress" />
+      <config projectName="sys" targetName="voxel_uncompress" />
+      <config projectName="sys" targetName="SWC2OBJ" />
+      <config projectName="sys" targetName="voxel_compress_autogen" />
+      <config projectName="sys" targetName="SWC2VOLLIB" />
+      <config projectName="sys" targetName="uninstall" />
+      <config projectName="sys" targetName="spdlog" />
+    </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
     <configurations>
@@ -29,166 +41,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/deps/spdlog.cmake" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/iblock_volume_plugin_interface.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/ih264_volume_plugin_interface.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/imesh_loader_plugin_interface.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/iraw_volume_plugin_interface.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/plugin.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Ext/plugin_define.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/LRU.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/block_array.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/block_cache.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/box.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/gl_helper.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/hash.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/library.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/library_reposity.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/linear_array.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/logger.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/math.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/memory_pool.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/plugin_loader.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/ray.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/Utils/timer.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/alloc.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/camera.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/cdf.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/color.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/cuda_context.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/cuda_mem_pool.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/cuda_memory.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/define.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/export.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/frame.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/helper.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/mesh.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/reader.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/render.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/singleton.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/slice.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/status.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/transfer_function.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/utils.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/vec.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/volume.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/volume_cache.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/volume_sampler.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/include/VolumeSlicer/writer.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Algorithm/helper_math.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/boundingbox.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/camera_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/cuda_box.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/cuda_context.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/cuda_ray.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/cuda_utils.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/hash_function.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/image.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/library.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/library_reposity.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/plugin_loader.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/stb_image.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Common/stb_image_write.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/IO/reader_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/IO/reader_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Mesh/mesh_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Mesh/mesh_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/comp_render_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/comp_render_pos_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/comp_render_pos_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/comp_render_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/multi_volume_render_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/multi_volume_render_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/simple_mesh_render_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/simple_mesh_render_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/slice_render_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/slice_render_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/volume_board_render_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/volume_board_render_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/volume_render_pos_f.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/ShaderAssets/volume_render_pos_v.glsl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/Texture/sampler.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/Texture/texture.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/Texture/texture_file.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cpu_comp_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cpu_comp_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cpu_raw_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cpu_raw_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_comp_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_comp_render_impl.cu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_comp_render_impl.cuh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_comp_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_offscreen_comp_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_offscreen_comp_render_impl.cu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_offscreen_comp_render_impl.cuh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_offscreen_comp_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_raw_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_raw_render_impl.cu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_raw_render_impl.cuh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/cuda_raw_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/opengl_comp_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/opengl_comp_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/opengl_raw_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/opengl_raw_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/shader_program.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/shaders.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/shaders.hpp.in" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/simple_mesh_render_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/simple_mesh_render_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Render/transfer_function_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/comp_volume_sample.cu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/comp_volume_sample.cuh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/raw_volume_sample.cu" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/raw_volume_sample.cuh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/slice_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/slice_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/volume_sampler_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Slice/volume_sampler_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/block_loader.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/block_loader.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/cpu_volume_cache_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/cuda_volume_cache_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/cuda_volume_cache_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/opengl_volume_cache_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/opengl_volume_cache_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/volume_impl.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src-VC/Volume/volume_impl.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/DoubleSlider.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/DoubleSlider.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/TFCanvas.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/TFCanvas.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/TransferFunctionWidget.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/TransferFunctionWidget.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/TrivalVolume.hpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1deditor.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1deditor.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1dmappingcanvas.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1dmappingcanvas.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1dmappingkey.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1dtexturecanvas.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI/src/tf1dtexturecanvas.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/deps/VolumeCompression.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/deps/VolumeCompression.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/InputWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/InputWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/InputWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/PointItem.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/PointItem.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/PointItem.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/PointItem.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/RenderWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/SubwayMapWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SubwayMapWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/SubwayMapWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SubwayMapWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/SysWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/SysWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/src/obj_shader_f.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/src/obj_shader_f.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swc2obj/swc2vol/swc2vol.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/swc2vol/swc2vol.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swc2obj/util/BVH.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/util/BVH.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swc2obj/util/NeuronInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/util/NeuronInfo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swc2obj/util/NeuronInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/util/NeuronInfo.h" afterDir="false" />
     </list>
     <list id="0e44ab82-8813-4ab5-8b2a-585c31c797eb" name="Revert &quot;--&quot;" comment="Revert &quot;--&quot;&#10;&#10;This reverts commit 5755bcef" />
     <option name="SHOW_DIALOG" value="false" />
@@ -199,6 +58,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -242,16 +102,16 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="cf.first.check.clang-format" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/deps" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\src\GUI" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\src\GUI" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -267,7 +127,7 @@
       <command value="ifRenderVolume-&gt;setChecked(true);" />
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.SWC2VOL">
+  <component name="RunManager" selected="CMake Application.SYSGUI">
     <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/ -b 256" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -283,12 +143,62 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SWC2VOLLIB" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2VOLLIB" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SYSGUI" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SYSGUI" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SYSGUI">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SYSGUI_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SYSGUI_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="mergeOBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i $PROJECT_DIR$/output/obj/objRes.obj -o $PROJECT_DIR$/output/obj/mergeObjRes.obj" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="mergeOBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="mergeOBJ">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="spdlog" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="spdlog" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="spdlog_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="spdlog_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="uninstall" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="uninstall" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_compress" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_compress" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_compress_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_compress_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_uncompress" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_uncompress" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="voxel_uncompress_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="voxel_uncompress_autogen" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -365,7 +275,17 @@
       <item itemvalue="CMake Application.SWC2VOL" />
       <item itemvalue="CMake Application.SWC2Obj" />
       <item itemvalue="CMake Application.mergeOBJ" />
+      <item itemvalue="CMake Application.spdlog" />
+      <item itemvalue="CMake Application.spdlog_autogen" />
+      <item itemvalue="CMake Application.voxel_compress" />
+      <item itemvalue="CMake Application.voxel_compress_autogen" />
+      <item itemvalue="CMake Application.voxel_uncompress" />
+      <item itemvalue="CMake Application.voxel_uncompress_autogen" />
+      <item itemvalue="CMake Application.SYSGUI" />
+      <item itemvalue="CMake Application.SYSGUI_autogen" />
       <item itemvalue="CMake Application.SWC2OBJ" />
+      <item itemvalue="CMake Application.SWC2VOLLIB" />
+      <item itemvalue="CMake Application.uninstall" />
       <item itemvalue="Python.smoothOBJ" />
       <item itemvalue="Python.voldir2obj" />
     </list>
@@ -411,8 +331,16 @@
       <workItem from="1651126216750" duration="5470000" />
       <workItem from="1651132531345" duration="129000" />
       <workItem from="1651132671254" duration="586000" />
-      <workItem from="1652081714221" duration="7284000" />
+      <workItem from="1652081714221" duration="13292000" />
     </task>
+    <task id="LOCAL-00001" summary="-">
+      <created>1652089185158</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1652089185158</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -493,6 +421,8 @@
       <path value="$PROJECT_DIR$/cmake-build-debug/_deps/stdgpu-src" />
       <path value="$PROJECT_DIR$/cmake-build-debug/_deps/volumecompression-src" />
     </ignored-roots>
+    <MESSAGE value="-" />
+    <option name="LAST_COMMIT_MESSAGE" value="-" />
   </component>
   <component name="WindowStateProjectService">
     <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652086284019">
@@ -583,10 +513,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652088168967">
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652098404736">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652088168967" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652098404736" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1651749658388">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

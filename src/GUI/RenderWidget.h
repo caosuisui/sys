@@ -39,7 +39,7 @@ public :
 
     void SetOtherWidget(SubwayMapWidget* swidget, InputWidget* iwidget);
 
-    void resetTransferFunc1D(float *data, int dim);
+    void resetTransferFunc1D();
 
 signals:
     void SelectPointSignal(int id);
@@ -207,6 +207,8 @@ private:
     QOpenGLFramebufferObject* fbo;
     QOpenGLTexture* ray_entry;
     QOpenGLTexture* ray_exit;
+    QOpenGLTexture* tf;
+    std::vector<float> tfdata;
 
     QOpenGLBuffer ssbo;
     float* mapping_ptr = nullptr;
