@@ -42,12 +42,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/deps/VolumeCompression.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/deps/VolumeCompression.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/RenderWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/swc2obj/CMakeLists.txt" afterDir="false" />
     </list>
     <list id="0e44ab82-8813-4ab5-8b2a-585c31c797eb" name="Revert &quot;--&quot;" comment="Revert &quot;--&quot;&#10;&#10;This reverts commit 5755bcef" />
     <option name="SHOW_DIALOG" value="false" />
@@ -102,14 +97,14 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="cf.first.check.clang-format" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/deps" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\src\GUI" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\src\GUI" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
@@ -331,7 +326,7 @@
       <workItem from="1651126216750" duration="5470000" />
       <workItem from="1651132531345" duration="129000" />
       <workItem from="1651132671254" duration="586000" />
-      <workItem from="1652081714221" duration="13292000" />
+      <workItem from="1652081714221" duration="14143000" />
     </task>
     <task id="LOCAL-00001" summary="-">
       <created>1652089185158</created>
@@ -340,7 +335,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652089185158</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="-">
+      <created>1652099983290</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1652099983290</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -449,22 +451,22 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651733494976" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652084436404">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652100510576">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652084436404" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652084436404">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652100510576">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652084436404" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652084436404">
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652100510576">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652084436404" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652084436404">
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652100510576">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652084436404" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
     <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1651928055001">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
