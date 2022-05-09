@@ -6,7 +6,7 @@ void main()
 {
     // Ambient
     vec4 M_AmbientLightColor = vec4(0.4, 0.4, 0.4, 1.0);
-    vec4 M_AmbientMaterial = vec4(0.2, 0.2, 0.2, 1.0);
+    vec4 M_AmbientMaterial = vec4(0.5, 0.5, 1.0, 1.0);
     vec4 ambientColor = M_AmbientLightColor * M_AmbientMaterial;
 
     // Diffuse
@@ -16,12 +16,12 @@ void main()
 
     // 点乘获取光照强度
     vec4 M_DiffuseLightColor = vec4(1.0, 1.0, 1.0, 1.0);
-    vec4 M_DiffuseMaterial = vec4(0.9, 0.9, 0.9, 1.0);
+    vec4 M_DiffuseMaterial = vec4(0.5, 0.5, 0.9, 1.0);
     vec4 diffuseColor = M_DiffuseLightColor * M_DiffuseMaterial * max(0.0, dot(Normal, Light));
 
     // 镜面反射
     vec4 specularLightColor = vec4(1.0, 1.0, 1.0, 1.0);
-    vec4 specularMaterial = vec4(0.4, 0.4, 0.4, 1.0);
+    vec4 specularMaterial = vec4(0.4, 0.4, 1.0, 1.0);
     vec3 reflerDir = normalize(reflect(-Light, Normal));
     vec3 eyeDir = normalize(vec3(0.0) - M_pos);
     vec4 specularColor = specularLightColor * specularMaterial * pow(max(0.0, dot(reflerDir, eyeDir)), 180);

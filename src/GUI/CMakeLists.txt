@@ -27,7 +27,8 @@ set(
         ${PROJECT_SOURCE_DIR}/deps/ffmpeg/lib/avutil.lib
 
 )
-include(${PROJECT_SOURCE_DIR}/deps/VolumeCompression.cmake)
+include(../../deps/VolumeCompression.cmake)
+include(../../deps/spdlog.cmake)
 
 target_link_libraries(
         SYSGUI
@@ -41,12 +42,13 @@ target_link_libraries(
         #VS_CORE
 #        ${FFmpeg_LIBS}
         voxel_uncompress
+        spdlog
 )
 
 target_include_directories(SYSGUI
         PRIVATE
         ../swc2obj
         ./src
-        ${FFmpeg_INCLUDE_DIR}
+        ../../include
         ${PROJECT_SOURCE_DIR}/deps
         )

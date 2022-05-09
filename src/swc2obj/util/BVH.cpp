@@ -134,7 +134,7 @@ int getNumber(BVHNode* root)
 
 BVH::BVH(glm::i32vec3 pmin, glm::i32vec3 pmax ,glm::dvec3 voxelBox)
 {
-    int padding = 4 ;//每个box有一个padding/2
+    int padding = 4 ;
     voxelBox += glm::dvec3(4,4,4) ;
     glm::i32vec3 size = pmax - pmin ;//原始体素大小
     int next = padding+2 ;

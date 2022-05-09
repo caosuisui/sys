@@ -5,6 +5,7 @@
 #ifndef SYS_RENDERWIDGET_H
 #define SYS_RENDERWIDGET_H
 #include <iostream>
+
 #include <QWidget>
 #include <utility>
 #include <QOpenGLWidget>
@@ -16,12 +17,14 @@
 #include <QMouseEvent>
 #include <QOpenGLTexture>
 #include <QOpenGLFramebufferObject>
+
 #include "objmode.h"
 #include "camera.hpp"
 #include "NeuronInfo.h"
 #include "SubwayMapWidget.h"
 #include "InputWidget.h"
 #include "VolumeProvider.hpp"
+
 #define RENDER_WIDTH 1200
 #define RENDER_HEIGHT 600
 
@@ -34,21 +37,29 @@ public :
 
     void SWCLoaded(NeuronInfo* neuronInfo);
 
-    void SetOtherWidget(SubwayMapWidget* swidget ,InputWidget* iwidget);
+    void SetOtherWidget(SubwayMapWidget* swidget, InputWidget* iwidget);
+
+    void resetTransferFunc1D(float *data, int dim);
 
 signals:
-    void SelectPointSignal(int pathid, int vertexid);
-    void SelectLastPointSignal(int pathid, int vertexid);
-    void SelectNextPointSignal(int pathid, int vertexid);
+    void SelectPointSignal(int id);
+    void SelectLastPointSignal(int id);
+    void SelectNextPointSignal(int id);
 
 public slots:
-    void SelectPointSlot(int pathid, int vertexid);
-    void SelectLastPointSlot(int pathid, int vertexid);
-    void SelectNextPointSlot(int pathid, int vertexid);
+    void SelectPointSlot(int id);
+    void SelectLastPointSlot(int id);
+    void SelectNextPointSlot(int id);
     void ChangeSelectionState(SubwayMapWidget::SelectionState in_state){
         selectionState = in_state;
+        connectStart = -1;
     }
-
+    void ChangeRenderOption(bool vol, bool obj, bool line){
+        ifRenderVolume = vol;
+        ifRenderObj = obj;
+        ifRenderLine = line;
+        repaint();
+    }
 
 protected:
     void initializeGL() override;
@@ -72,15 +83,14 @@ private:
 
     void GenObject(QOpenGLBuffer& vbo, QOpenGLVertexArrayObject& vao,float* data,int count);
 
-    void AddPoint(QPoint screenPos);
-
-    //
     /// 获取当前选中点所在体素块的起点和dimension
     /// \return 大小为6的数组，顺序为startx,starty,startz,xdimension,ydimension,zdimension.如果没有当前点则返回空vector
     std::vector<float> GetVolumeAreaData();
 private:
     SubwayMapWidget* subwayMapWidget;
     InputWidget* inputWidget;
+
+    bool ifRenderVolume,ifRenderObj,ifRenderLine;
 
     QOpenGLShaderProgram* program;
 
@@ -120,6 +130,10 @@ private:
         QOpenGLVertexArrayObject vertexVAO;
         std::vector<float> swcPoints;
 
+        QOpenGLBuffer upmostVertexVBO;
+        QOpenGLVertexArrayObject upmostVertexVAO;
+        std::vector<float> upmostVertex;
+
         QOpenGLBuffer currentVertexVBO;
         QOpenGLVertexArrayObject currentVertexVAO;
         int currentPointId;
@@ -151,13 +165,16 @@ private:
         QOpenGLVertexArrayObject newLinesVAO;
         std::vector<float> newLines;
 
+        QOpenGLBuffer selectedLineVBO;
+        QOpenGLVertexArrayObject selectedLineVAO;
+        std::vector<float> selectedLine;
+
         QOpenGLBuffer newPointsVBO;
         QOpenGLVertexArrayObject newPointsVAO;
         std::vector<float> newPoints;
 
     int connectStart;
-
-
+    int lastSelectedPath;
     //-------------------------------------------
     static constexpr float volume_space_x = 0.32f;
     static constexpr float volume_space_y = 0.32f;

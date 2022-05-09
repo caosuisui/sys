@@ -15,11 +15,14 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     currentPointId = -1;
     lastPointId = -1;
     nextPointId = -1;
+    lastSelectedPath = -1;
 
     currentPathId = currentInPathId = -1;
     lastPathId = lastInPathId = -1;
     nextPathId = nextInPathId = -1;
     connectStart = -1;
+
+    ifRenderVolume = ifRenderObj = ifRenderLine = true;
 
     this->setFixedSize(RENDER_WIDTH,RENDER_HEIGHT);
     camera = std::make_unique<control::TrackBallCamera>(
@@ -200,137 +203,153 @@ void RenderWidget::paintGL() {
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    //混合渲染
-//    auto volumearea = GetVolumeAreaData();
-//    //compute intersect blocks
-//    static std::vector<uint8_t> volume_data(volume_block_size);
-//    static glm::ivec3 last_start_block_index = {-1,-1,-1};
-//    if(volumearea.size() == 6){
-//        float voxel_start_pos_x = volumearea[0] / volume_space_x;
-//        float voxel_x_len = virtual_block_length * volume_space_x;
-//
-//        float voxel_start_pos_y = volumearea[1] / volume_space_y;
-//        float voxel_y_len = virtual_block_length * volume_space_y;
-//
-//        float voxel_start_pos_z = volumearea[2] / volume_space_z;
-//        float voxel_z_len = virtual_block_length * volume_space_z;
-//
-//        glm::ivec3 start_block_index = glm::ivec3(voxel_start_pos_x / virtual_block_length,
-//                                                  voxel_start_pos_y / virtual_block_length,
-//                                                  voxel_start_pos_z / virtual_block_length);
-//        voxel_start_pos_x = start_block_index.x * virtual_block_length * volume_space_x;
-//        voxel_start_pos_y = start_block_index.y * virtual_block_length * volume_space_y;
-//        voxel_start_pos_z = start_block_index.z * virtual_block_length * volume_space_z;
-//
-//        if(start_block_index != last_start_block_index){
-//            volume->readBlock({start_block_index.x,start_block_index.y,start_block_index.z},volume_data.data(),volume_data.size());
-//            volume_tex->setData(0,0,0,VolumeTexSizeX,VolumeTexSizeY,VolumeTexSizeZ,QOpenGLTexture::PixelFormat::Red,QOpenGLTexture::PixelType::UInt8,volume_data.data());
-//            last_start_block_index = start_block_index;
-//        }
-//        proxy_cube_vertices[0] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z};
-//        proxy_cube_vertices[1] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z};
-//        proxy_cube_vertices[2] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
-//        proxy_cube_vertices[3] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
-//        proxy_cube_vertices[4] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
-//        proxy_cube_vertices[5] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
-//        proxy_cube_vertices[6] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
-//        proxy_cube_vertices[7] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
-//        proxy_cube_vbo.bind();
-//        glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(proxy_cube_vertices),proxy_cube_vertices.data());
-//        proxy_cube_vbo.release();
-//
-//        ray_pos_shader->bind();
-//        ray_pos_shader->setUniformValue("MVPMatrix",mvp);
-//
-//        QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
-//        bool b= fbo->bind();
-//        assert(b);
-//
-//        glDrawBuffer(GL_COLOR_ATTACHMENT0);
-//        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//
-//        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
-//
-//        glEnable(GL_CULL_FACE);
-//        glFrontFace(GL_CCW);
-//        glDrawBuffer(GL_COLOR_ATTACHMENT1);
-//        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
-//        glDisable(GL_CULL_FACE);
-//
-//        fbo->release();
-//
+    if(ifRenderVolume) {
+        //混合渲染
+        auto volumearea = GetVolumeAreaData();
+        //compute intersect blocks
+        static std::vector<uint8_t> volume_data(volume_block_size);
+        static glm::ivec3 last_start_block_index = {-1, -1, -1};
+        if (volumearea.size() == 6) {
+            float voxel_start_pos_x = volumearea[0] / volume_space_x;
+            float voxel_x_len = virtual_block_length * volume_space_x;
+
+            float voxel_start_pos_y = volumearea[1] / volume_space_y;
+            float voxel_y_len = virtual_block_length * volume_space_y;
+
+            float voxel_start_pos_z = volumearea[2] / volume_space_z;
+            float voxel_z_len = virtual_block_length * volume_space_z;
+
+            glm::ivec3 start_block_index = glm::ivec3(voxel_start_pos_x / virtual_block_length,
+                                                      voxel_start_pos_y / virtual_block_length,
+                                                      voxel_start_pos_z / virtual_block_length);
+            voxel_start_pos_x = start_block_index.x * virtual_block_length * volume_space_x;
+            voxel_start_pos_y = start_block_index.y * virtual_block_length * volume_space_y;
+            voxel_start_pos_z = start_block_index.z * virtual_block_length * volume_space_z;
+
+            if (start_block_index != last_start_block_index) {
+                volume->readBlock({start_block_index.x, start_block_index.y, start_block_index.z}, volume_data.data(),
+                                  volume_data.size());
+                volume_tex->setData(0, 0, 0, VolumeTexSizeX, VolumeTexSizeY, VolumeTexSizeZ,
+                                    QOpenGLTexture::PixelFormat::Red, QOpenGLTexture::PixelType::UInt8,
+                                    volume_data.data());
+                last_start_block_index = start_block_index;
+            }
+            proxy_cube_vertices[0] = {voxel_start_pos_x, voxel_start_pos_y, voxel_start_pos_z};
+            proxy_cube_vertices[1] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y, voxel_start_pos_z};
+            proxy_cube_vertices[2] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y + voxel_y_len,
+                                      voxel_start_pos_z};
+            proxy_cube_vertices[3] = {voxel_start_pos_x, voxel_start_pos_y + voxel_y_len, voxel_start_pos_z};
+            proxy_cube_vertices[4] = {voxel_start_pos_x, voxel_start_pos_y, voxel_start_pos_z + voxel_z_len};
+            proxy_cube_vertices[5] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y,
+                                      voxel_start_pos_z + voxel_z_len};
+            proxy_cube_vertices[6] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y + voxel_y_len,
+                                      voxel_start_pos_z + voxel_z_len};
+            proxy_cube_vertices[7] = {voxel_start_pos_x, voxel_start_pos_y + voxel_y_len,
+                                      voxel_start_pos_z + voxel_z_len};
+            proxy_cube_vbo.bind();
+            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(proxy_cube_vertices), proxy_cube_vertices.data());
+            proxy_cube_vbo.release();
+
+            ray_pos_shader->bind();
+            ray_pos_shader->setUniformValue("MVPMatrix", mvp);
+
+            QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
+            bool b = fbo->bind();
+            assert(b);
+
+            glDrawBuffer(GL_COLOR_ATTACHMENT0);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+            glEnable(GL_CULL_FACE);
+            glFrontFace(GL_CCW);
+            glDrawBuffer(GL_COLOR_ATTACHMENT1);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+            glDisable(GL_CULL_FACE);
+
+            fbo->release();
+            glGetError();
 //        std::cerr<<glGetError()<<std::endl;
-//
-//        ray_pos_shader->release();
-//
-//        raycast_shader->bind();
-//
-//        glActiveTexture(GL_TEXTURE0);
-//        glBindTexture(GL_TEXTURE_RECTANGLE,ray_entry->textureId());
-//        glActiveTexture(GL_TEXTURE1);
-//        glBindTexture(GL_TEXTURE_RECTANGLE,ray_exit->textureId());
-//        glActiveTexture(GL_TEXTURE2);
-//        glBindTexture(GL_TEXTURE_3D,volume_tex->textureId());
-//
-//        raycast_shader->setUniformValue("RayStartPos",0);
-//        raycast_shader->setUniformValue("RayEndPos",1);
-//        raycast_shader->setUniformValue("VolumeData",2);
-//        raycast_shader->setUniformValue("voxel",1.f);
-//        raycast_shader->setUniformValue("step",0.6f);
-//        raycast_shader->setUniformValue("volume_start_pos",voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z);
-//        raycast_shader->setUniformValue("volume_extend",block_length*volume_space_x,block_length*volume_space_y,block_length*volume_space_z);
-//        raycast_shader->setUniformValue("padding",padding*volume_space_x,padding*volume_space_y,padding*volume_space_z);
-//        raycast_shader->setUniformValue("bg_color",QVector4D(0.0,0.0,0.0,1.0));
-//        raycast_shader->setUniformValue("MVPMatrix",mvp);
-//        bool inside = false;
-//        if(pos.x() >= voxel_start_pos_x && pos.x() < voxel_start_pos_x + voxel_x_len
-//           && pos.y() >= voxel_start_pos_y && pos.y() < voxel_start_pos_y + voxel_y_len
-//           && pos.z() >= voxel_start_pos_z && pos.z() < voxel_start_pos_z + voxel_z_len){
-//            inside = true;
-//        }
+
+            ray_pos_shader->release();
+
+            raycast_shader->bind();
+
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_RECTANGLE, ray_entry->textureId());
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_RECTANGLE, ray_exit->textureId());
+            glActiveTexture(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_3D, volume_tex->textureId());
+
+            raycast_shader->setUniformValue("RayStartPos", 0);
+            raycast_shader->setUniformValue("RayEndPos", 1);
+            raycast_shader->setUniformValue("VolumeData", 2);
+            raycast_shader->setUniformValue("voxel", 1.f);
+            raycast_shader->setUniformValue("step", 0.6f);
+            raycast_shader->setUniformValue("volume_start_pos", voxel_start_pos_x, voxel_start_pos_y,
+                                            voxel_start_pos_z);
+            raycast_shader->setUniformValue("volume_extend", block_length * volume_space_x,
+                                            block_length * volume_space_y, block_length * volume_space_z);
+            raycast_shader->setUniformValue("padding", padding * volume_space_x, padding * volume_space_y,
+                                            padding * volume_space_z);
+            raycast_shader->setUniformValue("bg_color", QVector4D(0.0, 0.0, 0.0, 1.0));
+            raycast_shader->setUniformValue("MVPMatrix", mvp);
+            bool inside = false;
+            if (pos.x() >= voxel_start_pos_x && pos.x() < voxel_start_pos_x + voxel_x_len
+                && pos.y() >= voxel_start_pos_y && pos.y() < voxel_start_pos_y + voxel_y_len
+                && pos.z() >= voxel_start_pos_z && pos.z() < voxel_start_pos_z + voxel_z_len) {
+                inside = true;
+            }
 //        if(inside){
 //            std::cerr<<"inside"<<std::endl;
 //        }
-//        raycast_shader->setUniformValue("camera_pos",QVector4D(pos,inside?1.0:0.0));
+            raycast_shader->setUniformValue("camera_pos", QVector4D(pos, inside ? 1.0 : 0.0));
 //        std::cerr<<"mouse press pos: "<<mousePressPos.x()<<" "<<mousePressPos.y()<<std::endl;
-//        raycast_shader->setUniformValue("click_coord",mousePressPos.x(),height() - mousePressPos.y());
-//
-//        //memset mapping_ptr before draw
-//        memset(mapping_ptr,0,sizeof(float)*8);
-//
-//        QOpenGLVertexArrayObject::Binder binder3(&screen_quad_vao);
-//        glDrawArrays(GL_TRIANGLES,0,6);
-//        glFinish();
-//
-//        raycast_shader->release();
-//
+            raycast_shader->setUniformValue("click_coord", mousePressPos.x(), height() - mousePressPos.y());
+
+            //memset mapping_ptr before draw
+            memset(mapping_ptr, 0, sizeof(float) * 8);
+
+            QOpenGLVertexArrayObject::Binder binder3(&screen_quad_vao);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glFinish();
+
+            raycast_shader->release();
+
 //        std::cerr<<"click point info: ";
 //        for(int i = 0;i<8;i++){
 //            std::cerr<<mapping_ptr[i]<<" ";
 //        }
 //        std::cerr<<std::endl;
-//    }
-//
-//    //debug for volume proxy cube wireframe
-//    if(false){
-//        pathProgram->bind();
-//        pathProgram->setUniformValue("model",model);
-//        pathProgram->setUniformValue("view",view);
-//        pathProgram->setUniformValue("proj",proj);
-//
-//        pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
-//        QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
-//        ::glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-//        glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
-//        ::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-//    }
+        }
+
+        //debug for volume proxy cube wireframe
+        if (true) {
+            pathProgram->bind();
+            pathProgram->setUniformValue("model", model);
+            pathProgram->setUniformValue("view", view);
+            pathProgram->setUniformValue("proj", proj);
+
+            pathProgram->setUniformValue("color", QVector4D(0.5, 0.5, 0.5, 1));
+            QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
+            ::glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+            ::glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+        glGetError();
+
+        //绘制线框
+
+    }
+
 //    std::cerr<<glGetError()<<std::endl;
 
-    //do not clear depth for mix render
 
     //obj
-    if(objVAO.isCreated()){
+    if(objVAO.isCreated() && ifRenderObj){
         program->bind();
         QMatrix4x4 objmodel;
         objmodel.setToIdentity();
@@ -346,31 +365,32 @@ void RenderWidget::paintGL() {
     }
 
     //线
-    if(neuronInfo){
+    if(neuronInfo && ifRenderLine){
+        pathProgram->bind();
+        pathProgram->setUniformValue("model",model);
+        pathProgram->setUniformValue("view",view);
+        pathProgram->setUniformValue("proj",proj);
+
+        pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+        QOpenGLVertexArrayObject::Binder binder2(&pathVAO);
+        glDrawArrays(GL_LINES,0,lines.size()/3);
+
+//        if(!isWholeView){
+            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+            glPointSize(8);
+            QOpenGLVertexArrayObject::Binder binder3(&vertexVAO);
+            glDrawArrays(GL_POINTS,0,swcPoints.size()/3);
+//        }
+
         glClear(GL_DEPTH_BUFFER_BIT);
-       pathProgram->bind();
-       pathProgram->setUniformValue("model",model);
-       pathProgram->setUniformValue("view",view);
-       pathProgram->setUniformValue("proj",proj);
 
-       pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
-       QOpenGLVertexArrayObject::Binder binder2(&pathVAO);
-       glDrawArrays(GL_LINES,0,lines.size()/3);
-
-       pathProgram->setUniformValue("color",QVector4D(0,1,0,1));
-       QOpenGLVertexArrayObject::Binder binder8(&deletedLinesVAO);
-       glDrawArrays(GL_LINES,0,deletedLines.size()/3);
+        pathProgram->setUniformValue("color",QVector4D(0,1,0,1));
+        QOpenGLVertexArrayObject::Binder binder8(&deletedLinesVAO);
+        glDrawArrays(GL_LINES,0,deletedLines.size()/3);
 
         pathProgram->setUniformValue("color",QVector4D(0,0,1,1));
         QOpenGLVertexArrayObject::Binder binder7(&newLinesVAO);
         glDrawArrays(GL_LINES,0,newLines.size()/3);
-
-       if(!isWholeView){
-           pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
-           glPointSize(8);
-           QOpenGLVertexArrayObject::Binder binder3(&vertexVAO);
-           glDrawArrays(GL_POINTS,0,swcPoints.size()/3);
-       }
 
        if(currentPointId != -1){
            //std::cout << "Current vertex : " << currentPointId << std::endl;
@@ -410,10 +430,21 @@ void RenderWidget::paintGL() {
             glDrawArrays(GL_POINTS,0,newPoints.size()/3);
         }
 
+        if(!upmostVertex.empty()){
+            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+            glPointSize(8);
+            QOpenGLVertexArrayObject::Binder binder3(&upmostVertexVAO);
+            glDrawArrays(GL_POINTS,0,upmostVertex.size()/3);
+
+            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+            QOpenGLVertexArrayObject::Binder binder20(&selectedLineVAO);
+            glDrawArrays(GL_LINES,0,selectedLine.size()/3);
+        }
+
        pathProgram->release();
    }
 
-    std::cout <<"paint"<<std::endl;
+//    std::cout <<"paint"<<std::endl;
 
     doneCurrent();
 }
@@ -460,6 +491,7 @@ void RenderWidget::loadLines(){
     lines.reserve(neuronInfo->point_vector.size() * 2);
     deletedLines.clear();
     deletedLines.reserve(neuronInfo->deleteList.size() * 3);
+
     const auto& deletedPoints = neuronInfo->deleteList;
     for(auto vertex : neuronInfo->point_vector){
         if(vertex.previous_id == -1)
@@ -493,39 +525,40 @@ void RenderWidget::loadLines(){
         newLines.push_back(item.z);
     }
 
+    selectedLine.clear();
+    if(lastSelectedPath != -1){
+        auto path = neuronInfo->paths[lastSelectedPath].path;
+        int id = path[0].current_id;
+        while(true){
+            auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
+            if(vertex.previous_id == -1)
+                break;
+
+            std:: cout << id << std::endl;
+
+            auto preVertex = neuronInfo->point_vector[neuronInfo->vertex_hash[vertex.previous_id]];
+
+            if(std::find(deletedPoints.begin(),deletedPoints.end(),vertex.current_id) == deletedPoints.end() &&
+               std::find(deletedPoints.begin(),deletedPoints.end(),preVertex.current_id) == deletedPoints.end()){
+                std::cout << "1" << std::endl;
+                selectedLine.push_back(vertex.x);
+                selectedLine.push_back(vertex.y);
+                selectedLine.push_back(vertex.z);
+                selectedLine.push_back(preVertex.x);
+                selectedLine.push_back(preVertex.y);
+                selectedLine.push_back(preVertex.z);
+            }
+
+            id = vertex.previous_id;
+        }
+    }
+
     makeCurrent();
 
     GenObject(pathVBO,pathVAO,lines.data(),lines.size() * sizeof(float));
     GenObject(deletedLinesVBO,deletedLinesVAO,deletedLines.data(),deletedLines.size() * sizeof(float));
     GenObject(newLinesVBO,newLinesVAO,newLines.data(),newLines.size() * sizeof(float));
-
-//    if(pathVAO.isCreated() | pathVBO.isCreated()){
-//        pathVAO.destroy();
-//        pathVBO.destroy();
-//    }
-//
-//    pathVAO.create();
-//    pathVBO.create();
-//    pathVAO.bind();
-//    pathVBO.bind();
-//    pathVBO.allocate(lines.data(),lines.size() * sizeof(float));
-//    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
-//    pathProgram->enableAttributeArray(0);
-//    pathVAO.release();
-
-//    if(deletedLinesVAO.isCreated() | deletedLinesVBO.isCreated()){
-//        deletedLinesVAO.destroy();
-//        deletedLinesVBO.destroy();
-//    }
-//
-//    deletedLinesVAO.create();
-//    deletedLinesVBO.create();
-//    deletedLinesVAO.bind();
-//    deletedLinesVBO.bind();
-//    deletedLinesVBO.allocate(deletedLines.data(),deletedLines.size() * sizeof(float));
-//    pathProgram->setAttributeBuffer(0,GL_FLOAT,0,3,3 * sizeof(float));
-//    pathProgram->enableAttributeArray(0);
-//    deletedLinesVAO.release();
+    GenObject(selectedLineVBO,selectedLineVAO,selectedLine.data(),selectedLine.size() * sizeof(float));
 
     doneCurrent();
 
@@ -595,12 +628,40 @@ void RenderWidget::loadSWCPoint() {
         swcPoints.push_back(vertex.z);
     }
 
+    upmostVertex.clear();
+    if(lastSelectedPath != -1){
+        auto path = neuronInfo->paths[lastSelectedPath];
+        int id = path.path[0].current_id;
+        while(true){
+            auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
+            int cid = vertex.current_id;
+            bool flag = true;
+            if(cid == currentPointId || cid == lastPointId || cid == nextPointId){
+                flag = false;
+            }
+            if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),cid) != neuronInfo->deleteList.end()){
+                flag = false;
+            }
+            if(flag){
+                upmostVertex.push_back(vertex.x);
+                upmostVertex.push_back(vertex.y);
+                upmostVertex.push_back(vertex.z);
+            }
+
+
+            id = vertex.previous_id;
+            if(id == -1)
+                break;
+        }
+    }
+
     GenObject(vertexVBO,vertexVAO,swcPoints.data(),swcPoints.size() * sizeof(float));
     GenObject(currentVertexVBO,currentVertexVAO,currentPoint.data(),currentPoint.size() * sizeof(float));
     GenObject(lastVertexVBO,lastVertexVAO,lastPoint.data(),lastPoint.size() * sizeof(float));
     GenObject(nextVertexVBO,nextVertexVAO,nextPoint.data(),nextPoint.size() * sizeof(float));
     GenObject(deleteVertexVBO,deleteVertexVAO,deletePoints.data(),deletePoints.size() * sizeof(float));
     GenObject(newPointsVBO,newPointsVAO,newPoints.data(),newPoints.size()*sizeof(float));
+    GenObject(upmostVertexVBO,upmostVertexVAO,upmostVertex.data(),upmostVertex.size()*sizeof(float));
 
     doneCurrent();
 
@@ -721,10 +782,7 @@ void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if((mousePressPos - event->pos()).manhattanLength() < 20){
-        if(selectionState != SubwayMapWidget::SelectionState::Add)
-            pickPoint(event->position());
-        else
-            AddPoint(event->pos());
+        pickPoint(event->position());
     }
     else{
         camera->processMouseButton(control::CameraDefinedMouseButton::Left,
@@ -734,32 +792,23 @@ void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 
     event->accept();
-    std::cout << event->pos().x() << "   " << event->pos().y() << std::endl;
+//    std::cout << event->pos().x() << "   " << event->pos().y() << std::endl;
 
     repaint();
 }
 
-void RenderWidget::AddPoint(QPoint screenPos) {
-    if(!neuronInfo) return;
-    double x,y,z;
-
-    //根据屏幕坐标获取三维坐标
-
-    Vertex newVertex;
-    newVertex.current_id = neuronInfo->point_vector.size() + neuronInfo->addList.size();
-    newVertex.radius = 0;
-    //neuronInfo->addList.push_back(newVertex);
-}
-
 void RenderWidget::pickPoint(QPointF mousePos){
+    if(!ifRenderLine){
+        return;
+    }
     mousePos.setY(RENDER_HEIGHT - mousePos.y());
     float limit = 25;
     float mindis = limit + 1;
     int id = -1;
     if(!neuronInfo) return;
 
-    auto pick = [&](std::vector<Vertex>& points){
-        for(auto point:points){
+    auto pick = [&](std::vector<Vertex>& pointList){
+        for(auto point:pointList){
             QVector4D screen = mvp.map(QVector4D(point.x,point.y,point.z,1.0));
 
             if(screen.w() !=0.0f){
@@ -780,99 +829,135 @@ void RenderWidget::pickPoint(QPointF mousePos){
     };
 
     pick(neuronInfo->point_vector);
+
+    if(id != -1){
+        int id0,id1;
+        neuronInfo->GetVertexPathInfo(id,id0,id1);
+        lastSelectedPath = id0;
+    }
+
     pick(neuronInfo->addList);
+
+    if(selectionState == SubwayMapWidget::SelectionState::Add){
+        if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),id) != neuronInfo->deleteList.end()) return;
+        if(connectStart == -1){
+            if(id != -1){
+                connectStart = id;
+            }
+            else{
+                if(!neuronInfo) return;
+                if(mapping_ptr) {
+                    int newid = neuronInfo->Add(mapping_ptr);
+                    loadSWCPoint();
+
+                    connectStart = newid;
+                }
+            }
+        }
+        else{
+            if(id != -1){
+                neuronInfo->Connect(connectStart,id);
+                loadLines();
+                connectStart = -1;
+            }
+            else{
+                if(!neuronInfo) return;
+                int newid = neuronInfo->Add(mapping_ptr);
+                neuronInfo->Connect(connectStart,newid);
+                loadSWCPoint();
+                loadLines();
+                connectStart = newid;
+            }
+        }
+
+//        if(id == -1){
+//            if(!neuronInfo) return;
+//            if(mapping_ptr) {
+//                neuronInfo->Add(mapping_ptr);
+//                loadSWCPoint();
+//
+//                if(connectStart == -1)
+//                    connectStart = id;
+//                else{
+//
+//                }
+//            }
+//        }
+//        else{
+//
+//
+//        }
+//            for(auto item:neuronInfo->addList){
+//                if(id == item.current_id){
+//                    neuronInfo->DeleteVertex(id);
+//                    loadSWCPoint();
+//                    loadLines();
+//                }
+//            }
+
+    }
 
     if(id == -1) return;
 
-    int id1,id2;
-    neuronInfo->GetVertexPathInfo(id,id1,id2);
+//    int id1,id2;
+//    neuronInfo->GetVertexPathInfo(id,id1,id2);
     if(selectionState == SubwayMapWidget::SelectionState::Normal) {
         currentPointId = id;
-        currentPathId = id1;
-        currentInPathId = id2;
-
-        std::cout << lastPointId << std::endl;
+//        currentPathId = id1;
+//        currentInPathId = id2;
 
         loadSWCPoint();
 
-        emit SelectPointSignal(currentPathId, currentInPathId);
+        emit SelectPointSignal(id);
         return;
     }
     else if(selectionState == SubwayMapWidget::SelectionState::LastPoint){
-        bool valid = false;
-
-        if(currentPointId != -1){
-            if(id1 == currentPathId && id2 > currentInPathId)
-                valid =true;
-        }
-        else if(nextPointId != -1){
-            if(id1 == nextPathId && id2 > nextInPathId)
-                valid =true;
-        }
-        else
-            valid = true;
-
-        if(valid){
+//        bool valid = false;
+//
+//        if(currentPointId != -1){
+//            if(id1 == currentPathId && id2 > currentInPathId)
+//                valid =true;
+//        }
+//        else if(nextPointId != -1){
+//            if(id1 == nextPathId && id2 > nextInPathId)
+//                valid =true;
+//        }
+//        else
+//            valid = true;
+//
+//        if(valid){
             lastPointId = id;
-            lastPathId = id1;
-            lastInPathId = id2;
+//            lastPathId = id1;
+//            lastInPathId = id2;
             loadSWCPoint();
-            emit SelectLastPointSignal(id1, id2);
-        }
+            emit SelectLastPointSignal(id);
+//        }
     }
     else if(selectionState == SubwayMapWidget::SelectionState::NextPoint){
-        bool valid = false;
-        if(currentPointId != -1){
-            if(id1 == currentPathId && id2 < currentInPathId)
-                valid =true;
-        }
-        else if(lastPointId != -1){
-            if(id1 == nextPathId && id2 < lastInPathId)
-                valid =true;
-        }
-        else
-            valid = true;
-
-        if(valid){
-            lastPointId = id;
-            nextPathId = id1;
-            nextInPathId = id2;
+//        bool valid = false;
+//        if(currentPointId != -1){
+//            if(id1 == currentPathId && id2 < currentInPathId)
+//                valid =true;
+//        }
+//        else if(lastPointId != -1){
+//            if(id1 == nextPathId && id2 < lastInPathId)
+//                valid =true;
+//        }
+//        else
+//            valid = true;
+//
+//        if(valid){
+            nextPointId = id;
+//            nextPathId = id1;
+//            nextInPathId = id2;
             loadSWCPoint();
-            emit SelectNextPointSignal(id1, id2);
-        }
+            emit SelectNextPointSignal(id);
+//        }
     }
     else if(selectionState == SubwayMapWidget::SelectionState::Delete){
         neuronInfo->DeleteVertex(id);
-        loadLines();
         loadSWCPoint();
-    }
-    else if(selectionState == SubwayMapWidget::SelectionState::Connect){
-        if(connectStart == -1)
-            connectStart =  id;
-        else{
-            if(connectStart < neuronInfo->vertex_hash.size())
-                neuronInfo->connectionList.push_back(neuronInfo->point_vector[neuronInfo->vertex_hash[connectStart]]);
-            else{
-                for(auto item:neuronInfo->addList){
-                    if(item.current_id == connectStart) {
-                        neuronInfo->connectionList.push_back(item);
-                        break;
-                    }
-                }
-            }
-
-            if(id < neuronInfo->vertex_hash.size())
-                neuronInfo->connectionList.push_back(neuronInfo->point_vector[neuronInfo->vertex_hash[id]]);
-            else{
-                for(auto item:neuronInfo->addList){
-                    if(item.current_id == id) {
-                        neuronInfo->connectionList.push_back(item);
-                        break;
-                    }
-                }
-            }
-            loadLines();
-        }
+        loadLines();
     }
 
 }
@@ -893,18 +978,21 @@ void RenderWidget::init(){
     lastPathId = lastInPathId = -1;
     nextPathId = nextInPathId = -1;
     if(inputWidget){
-        inputWidget->ChangeNextPoint(-1,-1);
-        inputWidget->ChangeCurrentPoint(-1,-1);
-        inputWidget->ChangeLastPoint(-1,-1);
+        inputWidget->ChangeNextPoint(-1);
+        inputWidget->ChangeCurrentPoint(-1);
+        inputWidget->ChangeLastPoint(-1);
     }
 }
 
-void RenderWidget::SelectPointSlot(int pathid, int vertexid) {
+void RenderWidget::SelectPointSlot(int id) {
+    int pathid,vertexid;
+    neuronInfo->GetVertexPathInfo(id,pathid,vertexid);
     if(pathid != currentPathId)
         init();
 
+    lastSelectedPath = pathid;
     isWholeView = false;
-    currentPointId = neuronInfo->paths[pathid].path[vertexid].current_id;
+    currentPointId = id;
 
     const auto& vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]];
     camera = std::make_unique<control::TrackBallCamera>(
@@ -915,20 +1003,29 @@ void RenderWidget::SelectPointSlot(int pathid, int vertexid) {
                       vertex.z}
     );
     loadSWCPoint();
+    loadLines();
     repaint();
 }
 
-void RenderWidget::SelectLastPointSlot(int pathid, int vertexid) {
+void RenderWidget::SelectLastPointSlot(int id) {
     isWholeView = false;
-    lastPointId = neuronInfo->paths[pathid].path[vertexid].current_id;
+    lastPointId = id;
+    int id0,id1;
+    neuronInfo->GetVertexPathInfo(id,id0,id1);
+    lastSelectedPath = id0;
     loadSWCPoint();
+    loadLines();
     repaint();
 }
 
-void RenderWidget::SelectNextPointSlot(int pathid, int vertexid) {
+void RenderWidget::SelectNextPointSlot(int id) {
     isWholeView = false;
-    nextPointId = neuronInfo->paths[pathid].path[vertexid].current_id;
+    nextPointId = id;
+    int id0,id1;
+    neuronInfo->GetVertexPathInfo(id,id0,id1);
+    lastSelectedPath = id0;
     loadSWCPoint();
+    loadLines();
     repaint();
 }
 
@@ -944,5 +1041,17 @@ void RenderWidget::SetOtherWidget(SubwayMapWidget *swidget ,InputWidget* iwidget
 
     inputWidget = iwidget;
     connect(inputWidget,&InputWidget::ChangeSelectionStateSignal,this,&RenderWidget::ChangeSelectionState);
+    connect(inputWidget,&InputWidget::ChangeRenderOptionSignal,this,&RenderWidget::ChangeRenderOption);
+
+    connect(inputWidget->tf_editor_widget,&TF1DEditor::TF1DChanged,[this](){
+        float tf[256];
+        inputWidget->tf_editor_widget->getTransferFunction(tf,256,1.0);
+        resetTransferFunc1D(tf,256);
+        repaint();
+    });
+}
+
+void RenderWidget::resetTransferFunc1D(float *data, int dim) {
+
 }
 

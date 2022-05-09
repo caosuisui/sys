@@ -20,27 +20,13 @@ public:
         Unselected,
         Current,
         Last,
-        Next
+        Next,
+        Hovered
     };
 public:
     PointItem(Vertex* v, Path* p, int id);
 
-    void SetSelected(bool d,PointType mtype){
-        isSelected = d;
-        if(isSelected){
-            this->setZValue(1);
-            if(mtype == PointType::Current)
-                color = currentColor;
-            else if(mtype == PointType::Last)
-                color = lastColor;
-            else if(mtype == PointType::Next)
-                color = nextColor;
-        }else{
-            this->setZValue(0);
-            color = unselectedColor;
-        }
-        update();
-    };
+    void SetSelected(int d,PointType mtype); //0未选中 1选中 2 hovered
 
     void SetR(int in_r){
         r = in_r;
@@ -69,7 +55,7 @@ private:
     int index;
 
     QString text;
-    bool isSelected;
+    int isSelected;
     int r = 5;
 
     QColor color = unselectedColor;
@@ -77,7 +63,9 @@ private:
     static constexpr QColor currentColor = QColor(160,0,0);
     static constexpr QColor lastColor = QColor(80,50,0);
     static constexpr QColor nextColor = QColor(0,160,0);
+    static constexpr QColor deletedColor = QColor(0,160,230);
     static constexpr QColor unselectedColor = QColor(0,160,230);
+    static constexpr QColor hoveredColor = QColor(255,255,255);
 };
 
 #endif //SYS_POINTITEM_H

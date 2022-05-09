@@ -72,10 +72,10 @@ void SysWidget::CreateWidgets() {
     subwayMapDockWidget = new QDockWidget(QStringLiteral("SubwayMap"));
     subwayMapDockWidget->setWidget(subwayMapWidget);
     subwayMapDockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::BottomDockWidgetArea);
-    addDockWidget(Qt::BottomDockWidgetArea,subwayMapDockWidget);
+    addDockWidget(Qt::LeftDockWidgetArea,subwayMapDockWidget);
     viewMenu->addAction(subwayMapDockWidget->toggleViewAction());
 
-//    splitDockWidget(renderDockWidget,subwayMapDockWidget,Qt::Vertical);
+    splitDockWidget(renderDockWidget,subwayMapDockWidget,Qt::Vertical);
 
     inputWidget = new InputWidget(this);
     inputDockWidget = new QDockWidget(QStringLiteral("Info"));

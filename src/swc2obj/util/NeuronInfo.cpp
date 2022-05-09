@@ -35,14 +35,37 @@ void NeuronInfo::EditRadius(int id, double newRadius) {
 }
 
 void NeuronInfo::DeleteVertex(int id) {
+    std::cout << "delete vertex " << id << std::endl;
 
+    auto deleteConnection = [&](int id){
+        std::stack<int> toDelete;
+        for(int j = 0;j < connectionList.size();j+=2){
+            if(connectionList[j].current_id == id || connectionList[j+1].current_id == id){
+                toDelete.push(j);
+                toDelete.push(j+1);
+
+                std::cout << "delete connection between " << connectionList[j].current_id << " and " << connectionList[j+1].current_id << std::endl;
+            }
+        }
+
+        while(!toDelete.empty()){
+            int lastid = toDelete.top();
+            toDelete.pop();
+
+            connectionList.erase(connectionList.begin() + lastid);
+        }
+    };
+
+    //删除已添加的点
     for(int i = 0;i < addList.size();i++){
         if(id == addList[i].current_id){
+            deleteConnection(id);
             addList.erase(addList.begin() + i);
             return;
         }
     }
 
+    //恢复已删除的点
     int i = 0;
     for(i = 0;i< deleteList.size();i++){
         if(deleteList[i] == id){
@@ -50,7 +73,77 @@ void NeuronInfo::DeleteVertex(int id) {
             return;
         }
     }
+
+    //删除点
     deleteList.push_back(id);
+    deleteConnection(id);
+}
+
+void NeuronInfo::Connect(int start,int end){
+    if(start == end) return;
+    //如果之前有相同的连接，表示这是删除连接而不是创建连接
+    std::stack<int> toDelete;
+    for(int i = 0;i <connectionList.size();i+=2){
+        if((start == connectionList[i].current_id && end == connectionList[i+1].current_id) ||
+                (end == connectionList[i].current_id && start == connectionList[i+1].current_id)){
+            toDelete.push(i);
+            toDelete.push(i+1);
+        }
+    }
+
+    if(!toDelete.empty()){
+        while(!toDelete.empty()){
+            int offset = toDelete.top();
+            toDelete.pop();
+            connectionList.erase(connectionList.begin() + offset);
+        }
+        return;
+    }
+
+    if(point_vector[vertex_hash[start]].previous_id == end || point_vector[vertex_hash[end]].previous_id == start) return;
+
+    //创建连接
+    std::cout << "connect between " << start << " " << "and " << end << std::endl;
+    if(start < point_vector.size()){
+        connectionList.push_back(point_vector[vertex_hash[start]]);
+    }
+    else{
+        for(auto item:addList){
+            if(item.current_id == start) {
+
+                connectionList.push_back(item);
+                break;
+            }
+        }
+    }
+
+    if(end < point_vector.size()){
+        connectionList.push_back(point_vector[vertex_hash[end]]);
+    }
+
+    else{
+        for(auto item:addList){
+            if(item.current_id == end) {
+                connectionList.push_back(item);
+                break;
+            }
+        }
+    }
+}
+
+int NeuronInfo::Add(float* mapping_ptr){
+    Vertex newVertex;
+    newVertex.current_id = ++vertexCount;
+    newVertex.radius = mapping_ptr[7];
+    newVertex.x = (mapping_ptr[0] + mapping_ptr[4]) / 2;
+    newVertex.y = (mapping_ptr[1] + mapping_ptr[5]) / 2;
+    newVertex.z = (mapping_ptr[2] + mapping_ptr[6]) / 2;
+    addList.push_back(newVertex);
+
+    std::cout << "new point :" << vertexCount << " " << newVertex.x << " " << newVertex.y << " " << newVertex.z << " "
+              << newVertex.radius << std::endl;
+
+    return newVertex.current_id;
 }
 
 double NeuronInfo::CheckR(int id) {
@@ -77,11 +170,13 @@ void NeuronInfo::PartialReconstruction() {
 
     auto getBox = [&xmin,&ymin,&zmin,&xmax,&ymax,&zmax](Vertex item){
         xmin = std::min(xmin,item.x - item.radius);
-        ymin = std::min(xmin,item.y - item.radius);
-        zmin = std::min(xmin,item.z - item.radius);
+        ymin = std::min(ymin,item.y - item.radius);
+        zmin = std::min(zmin,item.z - item.radius);
         xmax = std::max(xmax,item.x + item.radius);
-        ymax = std::max(xmax,item.y + item.radius);
-        zmax = std::max(xmax,item.z + item.radius);
+        ymax = std::max(ymax,item.y + item.radius);
+        zmax = std::max(zmax,item.z + item.radius);
+
+        std::cout << "space " << xmin << " " << ymin << " " << zmin << " " << xmax << " " << ymax << " "<< zmax << std::endl;
     };
 
     for(auto itemid: deleteList){
@@ -118,7 +213,7 @@ void NeuronInfo::PartialReconstruction() {
     //不单独处理新建的节点，因为如果没有创建连接，则不应属于当前神经元
 
     //连接
-    if(connectionList.size() != 0){
+    if(!connectionList.empty()){
         for(int i = 0;i < connectionList.size() - 1;i += 2){
             auto start = connectionList[i];
             getBox(point_vector[vertex_hash[start.previous_id]]);
@@ -139,28 +234,30 @@ void NeuronInfo::PartialReconstruction() {
     int step = blocksize - 2;
     Vec3D<double> start_point{},end_point{};
 
-    start_point.x = std::floor((xmin - x_start) / step) * step + x_start;
-    start_point.y = std::floor((ymin - y_start) / step) * step + y_start;
-    start_point.z = std::floor((zmin - z_start) / step) * step + z_start;
-    end_point.x = std::floor((xmax - x_start) / step) * step + blocksize + x_start;
-    end_point.y = std::floor((ymax - y_start) / step) * step + blocksize + y_start;
-    end_point.z = std::floor((zmax - z_start) / step) * step + blocksize + z_start;
+    start_point.x = std::floor((xmin - x_start - 2) / step) * step + x_start + 2;
+    start_point.y = std::floor((ymin - y_start - 2) / step) * step + y_start + 2;
+    start_point.z = std::floor((zmin - z_start - 2) / step) * step + z_start + 2;
+    end_point.x = std::floor((xmax - x_start - 2) / step) * step + step + x_start + 2;
+    end_point.y = std::floor((ymax - y_start - 2) / step) * step + step + y_start + 2;
+    end_point.z = std::floor((zmax - z_start - 2) / step) * step + step + z_start + 2;
+
+
 
     std::cout << "start_point: " << start_point.x << " " << start_point.y << " " << start_point.z << std::endl;
     std::cout << "dimension: " << end_point.x - start_point.x << " " << end_point.y - start_point.y << " " << end_point.z - start_point.z << std::endl;
 
-//    std::string j = swcname.substr(swcname.size() - 8,4) ;
-//    auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
-//    auto objdir =outputdir + "obj";
-//    auto volumedir = outputdir + "vol";
-//
-//    //重构体素场并写入体数据文件
-//    auto newPointVector = GetNewSWC();
-//    std::map<int,int> newVertexHash;
-//
-//    auto newSWC2VOL = new SWC2VOL;
-//    auto newPaths = newSWC2VOL->searchPath(newPointVector,newVertexHash);
-//    newSWC2VOL->GetVolume(start_point,end_point,newPaths,blocksize,volumedir);
+    std::string j = swcname.substr(swcname.size() - 8,4) ;
+    auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
+    auto objdir = outputdir + "obj";
+    auto volumedir = outputdir + "vol";
+
+    //重构体素场并写入体数据文件
+    auto newPointVector = GetNewSWC();
+    std::map<int,int> newVertexHash;
+
+    auto newSWC2VOL = new SWC2VOL;
+    auto newPaths = newSWC2VOL->searchPath(newPointVector,newVertexHash);
+    newSWC2VOL->GetVolume(start_point,end_point,newPaths,blocksize,volumedir);
 //
 //    //重新生成网格
 //    if(dirExists(objdir))
@@ -214,6 +311,21 @@ void NeuronInfo::Interpolate(int end, int start) {
     }
 }
 
+Vertex* NeuronInfo::GetVertex(int id){
+    if(id < point_vector.size()){
+        return &point_vector[vertex_hash[id]];
+    }
+    else{
+        for(auto& item:addList){
+            if(item.current_id == id){
+                return &item;
+            }
+        }
+    }
+//    std::cerr << "GET VERTEX ERROR : no vertex " << id << std::endl;
+    return nullptr;
+}
+
 std::vector<Vertex> NeuronInfo::GetNewSWC() {
     std::vector<Vertex> pointVectorCopy = point_vector;
     std::vector<Vertex> addListCopy = addList;
@@ -230,17 +342,19 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
     }
 
     //连接
-    for(int i = 0;i < connectionList.size() -1 ;i += 2){
-         auto& item = connectionList[i];
-         auto& nextItem = connectionList[i+1];
-        if(item.current_id < point_vector.size() + 1){
-            pointVectorCopy[vertex_hash[item.current_id]].previous_id = nextItem.current_id;
-        }
-        else{
-            for(int j = 0;j < addList.size();j++){
-                const auto& newItem = addList[i];
-                if(item.current_id == newItem.current_id){
-                    addListCopy[j].previous_id = nextItem.current_id;
+    if(!connectionList.empty()){
+        for(int i = 0;i < connectionList.size() -1 ;i += 2){
+            auto& item = connectionList[i];
+            auto& nextItem = connectionList[i+1];
+            if(item.current_id < point_vector.size() + 1){
+                pointVectorCopy[vertex_hash[item.current_id]].previous_id = nextItem.current_id;
+            }
+            else{
+                for(int j = 0;j < addList.size();j++){
+//                    auto newItem = addList[i];
+                    if(item.current_id == addList[i].current_id){
+                        addListCopy[j].previous_id = addList[i].current_id;
+                    }
                 }
             }
         }
@@ -288,16 +402,22 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
         }
     }
 
-
     newPointVector.reserve(pointVectorCopy.size() - deleteList.size() + addListCopy.size());
 
     for(int i = 0;i < point_vector.size();i++){
-        if(std::find(deleteList.begin(),deleteList.end(),point_vector[i].current_id) == deleteList.end())
+        if(std::find(deleteList.begin(),deleteList.end(),point_vector[i].current_id) == deleteList.end()){
+            pointVectorCopy[i].is_visited = false;
             newPointVector.push_back(pointVectorCopy[i]);
+        }
+
     }
 
-    for(auto item:addListCopy)
+    for(auto item:addListCopy){
+        item.is_visited = false;
         newPointVector.push_back(item);
+    }
+
+
 
     return std::move(newPointVector);
 }

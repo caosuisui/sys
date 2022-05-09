@@ -26,11 +26,17 @@ public:
 
     void DeleteVertex(int id);
 
+    void Connect(int start,int end);
+
+    int Add(float* mapping_ptr);
+
     std::vector<Vertex> GetNewSWC();
 
     double CheckR(int id);
 
     double GetR(int id);
+
+    Vertex* GetVertex(int id);
 
 public:
     int x_dimension;
@@ -63,6 +69,8 @@ public:
     std::vector<Vertex> connectionList;
 
     std::string swcname;
+
+    int vertexCount;
 
 };
 

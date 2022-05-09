@@ -54,10 +54,13 @@ target_include_directories(SWC2VOLLIB
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
+
         "${CMAKE_CURRENT_BINARY_DIR}/config/"
         "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
+
+        PRIVATE
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
         )
 
 target_link_libraries(SWC2VOLLIB
@@ -72,10 +75,13 @@ target_include_directories(SWC2OBJ
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
+
         "${CMAKE_CURRENT_BINARY_DIR}/config/"
         "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
+
+        PRIVATE
+        "${PROJECT_SOURCE_DIR}/third_party/glm.cmake"
+        "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
         )
 
 

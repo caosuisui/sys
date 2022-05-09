@@ -246,7 +246,7 @@ public:
                 for (int z = 0; z < newdim[0]; z++) {
                     (*t)[i * int(newdim[1]) * int(newdim[0]) + j * int(newdim[0]) + z] =
                             (*data)[(i + 2) * int(dim[1]) * int(dim[0]) + (j + 2) * int(dim[0]) + (z + 2)];
-                }//平移，padding包括一个轴上两边相加
+                }//平移
             }
         }
         std::cout << "new dimension is" << glm::to_string(newdim) << std::endl;
@@ -619,12 +619,84 @@ public:
         neuronInfo->y_start = start_point.y;
         neuronInfo->z_start = start_point.z;
         neuronInfo->swcname = swc_file;
+        neuronInfo->vertexCount = point_vector.size();
     }
 
-    void GetVolume(Vec3D<double> start_point,Vec3D<double> end_point,std::vector<Path>& paths,int blocksize,std::string voldir){
+    static bool isInteracted(Sphere* ss,glm::dvec3 start_point,glm::dvec3 end_point){
+        auto squared = [](float v){
+            return v*v;
+        };
+
+        glm::dvec3 C1 = start_point;
+        glm::dvec3 C2 = end_point;
+        glm::dvec3 S = ss->position ;
+        float R = ss->radius ;
+        float dist_squared = R * R;
+
+        if (S.x < C1.x) dist_squared -= squared(S.x - C1.x);
+        else if (S.x > C2.x) dist_squared -= squared(S.x - C2.x);
+        if (S.y < C1.y) dist_squared -= squared(S.y - C1.y);
+        else if (S.y > C2.y) dist_squared -= squared(S.y - C2.y);
+        if (S.z < C1.z) dist_squared -= squared(S.z - C1.z);
+        else if (S.z > C2.z) dist_squared -= squared(S.z - C2.z);
+        return dist_squared > 0;
+    }
+
+    static float calOverOne(float amax, float amin, float bmax, float bmin){
+        float minMax = 0;
+        float maxMin = 0;
+        if (amax < bmax)//a物体在b物体左侧
+        {
+            minMax = amax;
+            maxMin = bmin;
+        }
+        else //a物体在b物体右侧
+        {
+            minMax = bmax;
+            maxMin = amin;
+        }
+
+        if (minMax > maxMin) {
+            return minMax - maxMin;
+        }
+        else {
+            return 0;
+        }
+    };
+
+    static std::vector<float> calOverTotal(Vec3D<double> start_point0, Vec3D<double> end_point0,Vec3D<double> start_point1, Vec3D<double> end_point1){
+        float xOver = calOverOne(end_point0.x, start_point0.x, end_point1.x, start_point1.x);
+        float yOver = calOverOne(end_point0.y, start_point0.y, end_point1.y, start_point1.y);
+        float zOver = calOverOne(end_point0.z, start_point0.z, end_point1.z, start_point1.z);
+        std::vector<float> array = {xOver, yOver, zOver};
+        return array;
+    };
+
+    static bool isInteracted(Vec3D<double> s1, double r1,Vec3D<double> s2, double r2,Vec3D<double> start_point,Vec3D<double> end_point){
+        Vec3D<double> start_point0{}, end_point0{};
+        start_point0.x = std::min(s1.x - r1 , s2.x - r2);
+        start_point0.y = std::min(s1.y - r1 , s2.y - r2);
+        start_point0.z = std::min(s1.z - r1 , s2.z - r2);
+
+        end_point0.x = std::max(s1.x + r1 , s2.x + r2);
+        end_point0.y = std::max(s1.y + r1 , s2.y + r2);
+        end_point0.z = std::max(s1.z + r1 , s2.z + r2);
+
+        auto array = calOverTotal(start_point0,end_point0,start_point,end_point);
+        if(array[0] > 0 && array[1] > 0 && array[2] > 0 )
+            return true;
+        else
+            return false;
+    }
+
+    void GetVolume(Vec3D<double> in_start_point,Vec3D<double> in_end_point,std::vector<Path> paths,int blocksize,std::string voldir){
+        glm::dvec3 dstart_point(in_start_point.x,in_start_point.y,in_start_point.z);
+        glm::dvec3 dend_point(in_end_point.x,in_end_point.y,in_end_point.z);
+
+        std::cout << "new paths size :" << paths.size() << std::endl;
         //构建局部体素块
-        BVH *bvh = new BVH(start_point.to_i32vec3(),
-                              end_point.to_i32vec3(),
+        BVH *bvh = new BVH(in_start_point.to_i32vec3(),
+                           in_end_point.to_i32vec3(),
                               glm::dvec3(blocksize, blocksize, blocksize));
 
         double step = 0.0001;
@@ -632,10 +704,16 @@ public:
 
 #pragma omp parallel for num_threads(24)
         for (int j = 0; j < paths.size(); j++) {
+
             const auto path = paths[j];
             for (int i = 1; i < path.path.size(); i++) {
                 Vec3D<double> start_point = {path.path[i - 1].x, path.path[i - 1].y, path.path[i - 1].z};
                 Vec3D<double> end_point = {path.path[i].x, path.path[i].y, path.path[i].z};
+                if(!isInteracted(start_point,path.path[i - 1].radius,end_point,path.path[i].radius,in_start_point,in_end_point)){
+                    std::cout << "skip" << std::endl;
+                    continue;
+                }
+
                 auto direction = (end_point - start_point).normalized();
                 auto vec_length = (end_point - start_point).length();
                 std::vector<Vec3D<double>> points;
@@ -645,14 +723,20 @@ public:
 
                 //在每两个点中间插值加入一系列点，位置和半径都是线性插值
                 Vec3D<double> startP = (start_point);
-                spheres.push_back(getSphere(startP, path.path[i - 1].radius));
+                auto s = getSphere(startP, path.path[i - 1].radius);
+//                if(isInteracted(s,dstart_point,dend_point))
+                    spheres.push_back(s);
                 for (int t = 1; t < vec_length / step; t++) {
                     auto cur_point = direction * (t * step) + start_point;
                     Vec3D<double> startP = (cur_point);
-                    spheres.push_back(getSphere(startP, r * (t * step) / vec_length + path.path[i - 1].radius));
+                    s = getSphere(startP, r * (t * step) / vec_length + path.path[i - 1].radius);
+//                    if(isInteracted(s,dstart_point,dend_point))
+                        spheres.push_back(s);
                 }
                 startP = end_point;
-                spheres.push_back(getSphere(startP, path.path[i].radius));
+                s = getSphere(startP, path.path[i].radius);
+//                if(isInteracted(s,dstart_point,dend_point))
+                    spheres.push_back(s);
 
                 std::vector<BVHNode *> nodes;
                 for (auto p = 0; p < spheres.size(); p++) {
@@ -680,7 +764,11 @@ public:
         changeAll(bvh->getRoot());//除去padding
         bvh->check();//保证所有相邻体素块相邻面重叠体素值相同，取两者较大值
 
-
+        auto nodes = bvh->getNodes();
+        for(auto item : *nodes){
+            auto start = item->box->getStart();
+            std::cout << item->id << " " << start.x << " " << start.y << " " << start.z << std::endl;
+        }
     }
 
     int filecount = 0;

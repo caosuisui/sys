@@ -17,7 +17,7 @@
 
 #include "PointItem.h"
 
-#define SUBWAYMAP_WIDTH 1700
+#define SUBWAYMAP_WIDTH 1200
 #define SUBWAYMAP_HEIGHT 400
 
 class SubwayMapWidget: public QWidget{
@@ -28,8 +28,7 @@ public:
         LastPoint,
         NextPoint,
         Delete,
-        Add,
-        Connect
+        Add
     };
 
 public:
@@ -42,15 +41,14 @@ public:
     void Update();
 
 public slots:
-    void SelectVertexSlot(int pathid, int vertexid);
-    void SelectLastVertexSlot(int pathid, int vertexid);
-    void SelectNextVertexSlot(int pathid, int vertexid);
+    void SelectVertexSlot(int id);
+    void SelectLastVertexSlot(int id);
+    void SelectNextVertexSlot(int id);
     void ChangeSelectionState(SelectionState state);
 signals:
-
-    void SelectVertexSignal(int pathid, int vertexid);
-    void SelectLastVertexSignal(int pathid, int vertexid);
-    void SelectNextVertexSignal(int pathid, int vertexid);
+    void SelectVertexSignal(int id);
+    void SelectLastVertexSignal(int id);
+    void SelectNextVertexSignal(int id);
 
 private:
     enum ZoomDirection{
@@ -61,9 +59,9 @@ private:
 
 protected:
     //void wheelEvent(QWheelEvent* e)Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent* e)Q_DECL_OVERRIDE;
+//    void mousePressEvent(QMouseEvent* e)Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent* e)Q_DECL_OVERRIDE;
-
+    bool eventFilter(QObject *watched, QEvent *event)Q_DECL_OVERRIDE;
 private slots:
     void zoomIn();
     void zoomOut();
@@ -78,15 +76,13 @@ private://内部方法
     /// \param lastPos 如果是父路径则空，如果是子路径，则代表已经被绘制的第一个点
     void GenMap(Path* path, double x, double y, double halfRange, QPointF lastPos,bool isFirstLevel = false);
     void clearScene();
-    QGraphicsPolygonItem* GetPolyGon(QPointF pos1 ,double r1, QPointF pos2, double r2, bool isHorizontal = true);
+    static QGraphicsPolygonItem* GetPolyGon(QPointF pos1 ,double r1, QPointF pos2, double r2, bool isHorizontal = true);
 
 private://字段
     std::vector<Path> paths;
 
     int currentPath;
 
-    //double maxPathDis;//路径间的距离
-    double minPathDis;
     double oriPathDis;
 
     QGraphicsScene* scene;
@@ -96,6 +92,7 @@ private://字段
     PointItem* lastPoint;
     PointItem* preLastPoint;
     PointItem* preNextPoint;
+    PointItem* lastHoveredPoint;
 
     double pathRatio;
     double radiusRatio;
