@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 include(cmake/lidanBase.cmake)
 include(cmake/LidanBuild.cmake)
 
-SET(BLOCKSIZE 256)
+SET(BLOCKSIZE 64)
 SET(RADIUS 1)
 SET(ROOT_DIR ${CMAKE_SOURCE_DIR})
 set(CONDIF_DIR "${CMAKE_SOURCE_DIR}/")
@@ -54,13 +54,10 @@ target_include_directories(SWC2VOLLIB
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-
-        "${CMAKE_CURRENT_BINARY_DIR}/config/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
-
-
         "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
+        "${CMAKE_CURRENT_BINARY_DIR}/config/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
         )
 
 target_link_libraries(SWC2VOLLIB
@@ -75,13 +72,10 @@ target_include_directories(SWC2OBJ
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-
-        "${CMAKE_CURRENT_BINARY_DIR}/config/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
-
-
         "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
+        "${CMAKE_CURRENT_BINARY_DIR}/config/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
         )
 
 

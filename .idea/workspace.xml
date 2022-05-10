@@ -42,7 +42,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" afterDir="false" />
     </list>
     <list id="0e44ab82-8813-4ab5-8b2a-585c31c797eb" name="Revert &quot;--&quot;" comment="Revert &quot;--&quot;&#10;&#10;This reverts commit 5755bcef" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +53,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -97,18 +97,11 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="cf.first.check.clang-format" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cmake-build-debug/GUI/swc2obj" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\csh\Desktop\bishe\sys" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\src\GUI" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\src\GUI" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
@@ -116,14 +109,26 @@
       <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
     </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\GUI\swc2obj" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\bin" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\GUI\swc2obj" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
+    </key>
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="ifRenderVolume-&gt;setChecked(true);" />
     </option>
   </component>
-  <component name="RunManager" selected="CMake Application.SYSGUI">
-    <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/ -b 256" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
+  <component name="RunManager" selected="CMake Application.SWC2OBJ">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/ -b 64" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -149,11 +154,6 @@
       </method>
     </configuration>
     <configuration name="SYSGUI_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SYSGUI_autogen" CONFIG_NAME="Debug">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -427,10 +427,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="-" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652086284019">
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652165992349">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652086284019" />
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165992349" />
     <state x="674" y="382" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1649679621788">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -447,42 +447,46 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="184" y="98" width="1536" height="956" key="DiffContextDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651912969483" />
-    <state x="739" y="335" key="FileChooserDialogImpl" timestamp="1651733494976">
+    <state x="739" y="335" key="FileChooserDialogImpl" timestamp="1652165471939">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651733494976" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652100510576">
+    <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652165983033">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652100510576">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165983033" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652165983033">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652100510576">
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165983033" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652165983033">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652100510576">
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165983033" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652165983033">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652100510576" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1651928055001">
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165983033" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652165929169">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651928055001" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1651928055001">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165929169" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652165929169">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651928055001" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1651928055001">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165929169" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652165929169">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651928055001" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1651928055001">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165929169" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652165929169">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651928055001" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165929169" />
+    <state x="751" y="282" key="RollbackChangesDialog" timestamp="1652165450495">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="751" y="282" key="RollbackChangesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165450495" />
     <state x="609" y="381" key="SettingsEditor" timestamp="1651732747400">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
