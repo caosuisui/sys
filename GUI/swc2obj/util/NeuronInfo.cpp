@@ -162,7 +162,7 @@ double NeuronInfo::GetR(int id) {
     return point_vector[vertex_hash[id]].radius;
 }
 
-void NeuronInfo::PartialReconstruction() {
+std::string NeuronInfo::PartialReconstruction() {
     //定位体素块
     double xmin,ymin,zmin,xmax,ymax,zmax;
     xmin = ymin = zmin = 999999;
@@ -234,22 +234,28 @@ void NeuronInfo::PartialReconstruction() {
     int step = blocksize - 2;
     Vec3D<double> start_point{},end_point{};
 
-    start_point.x = std::floor((xmin - x_start - 2) / step) * step + x_start + 2;
-    start_point.y = std::floor((ymin - y_start - 2) / step) * step + y_start + 2;
-    start_point.z = std::floor((zmin - z_start - 2) / step) * step + z_start + 2;
-    end_point.x = std::floor((xmax - x_start - 2) / step) * step + step + x_start + 2;
-    end_point.y = std::floor((ymax - y_start - 2) / step) * step + step + y_start + 2;
-    end_point.z = std::floor((zmax - z_start - 2) / step) * step + step + z_start + 2;
+    start_point.x = std::floor((xmin - x_start) / step) * step + x_start;
+    start_point.y = std::floor((ymin - y_start) / step) * step + y_start;
+    start_point.z = std::floor((zmin - z_start) / step) * step + z_start;
+    end_point.x = std::floor((xmax - x_start) / step) * step + step + x_start;
+    end_point.y = std::floor((ymax - y_start) / step) * step + step + y_start;
+    end_point.z = std::floor((zmax - z_start) / step) * step + step + z_start;
 
+    start_point.x = (start_point.x - step < x_start) ? start_point.x : start_point.x - step;
+    start_point.y = (start_point.y - step < y_start) ? start_point.y : start_point.y - step;
+    start_point.z = (start_point.z - step < z_start) ? start_point.z : start_point.z - step;
 
+//    end_point.x = (end_point.x + step > x_start + x_dimension) ? end_point.x : end_point.x + step;
+//    end_point.y = (end_point.y + step > y_start + y_dimension) ? end_point.y : end_point.y + step;
+//    end_point.z = (end_point.z + step > z_start + z_dimension) ? end_point.z : end_point.z + step;
 
     std::cout << "start_point: " << start_point.x << " " << start_point.y << " " << start_point.z << std::endl;
     std::cout << "dimension: " << end_point.x - start_point.x << " " << end_point.y - start_point.y << " " << end_point.z - start_point.z << std::endl;
 
     std::string j = swcname.substr(swcname.size() - 8,4) ;
     auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
-    auto objdir = outputdir + "obj";
-    auto volumedir = outputdir + "vol";
+    auto objdir = outputdir + "obj/";
+    auto volumedir = outputdir + "vol/";
 
     //重构体素场并写入体数据文件
     auto newPointVector = GetNewSWC();
@@ -258,17 +264,21 @@ void NeuronInfo::PartialReconstruction() {
     auto newSWC2VOL = new SWC2VOL;
     auto newPaths = newSWC2VOL->searchPath(newPointVector,newVertexHash);
     newSWC2VOL->GetVolume(start_point,end_point,newPaths,blocksize,volumedir);
-//
-//    //重新生成网格
-//    if(dirExists(objdir))
-//        RemoveDirectory(objdir.c_str()) ;
-//    if(!dirExists(objdir)){
-//        std::cout << "create dir for obj" << std::endl;
-//        CreateDirectory(objdir.c_str(),NULL) ;
-//    }
-//
-//    VOL2OBJ* mVOL2OBJ = new VOL2OBJ();
-//    mVOL2OBJ->vol2obj(volumedir,objdir);
+
+    //重新生成网格
+    if(dirExists(objdir)){
+        std::cerr << objdir << std::endl;
+        RemoveDirectory(objdir.c_str()) ;
+    }
+
+    if(!dirExists(objdir)){
+        std::cout << "create dir for obj" << std::endl;
+        CreateDirectory(objdir.c_str(),NULL) ;
+    }
+
+    VOL2OBJ* mVOL2OBJ = new VOL2OBJ();
+    mVOL2OBJ->vol2obj(volumedir,objdir);
+    return objdir + "simplifiedObj.obj";
 }
 
 void NeuronInfo::GetVertexPathInfo(int currentid, int &pathid, int &vertexid) {

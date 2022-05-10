@@ -270,7 +270,7 @@ public:
     void
     writeMHD(std::string file_name, int NDims, glm::dvec3 DimSize, glm::dvec3 ElementSize, glm::dvec3 ElementSpacing,
              glm::dvec3 Position, bool ElementByteOrderMSB, std::string ElementDataFile) {
-        std::ofstream writer(file_name.c_str());
+        std::ofstream writer(file_name.c_str(), ios::trunc);
         writer << "NDims = " << NDims << std::endl;
         writer << "DimSize = " << DimSize.x << " " << DimSize.y << " " << DimSize.z << std::endl;
         writer << "ElementSize = " << ElementSize.x << " " << ElementSize.y << " " << ElementSize.z << std::endl;
@@ -288,7 +288,7 @@ public:
 
     void write(std::vector<float> &mask_vector, std::string rawname, std::string mhdname, glm::dvec3 dimension,
                glm::dvec3 start_point) {
-        std::ofstream outFile(rawname, std::ios::out | std::ios::binary);
+        std::ofstream outFile(rawname, std::ios::out | std::ios::binary | ios::trunc);
 
         double t = 0.0;
         for (int i = 0; i < mask_vector.size(); i++) {
@@ -309,12 +309,16 @@ public:
 //每个box都输出一个文件
     void writeAll(BVHNode *root, std::string &path) {
         if (root->id >= 0 && root->isUsingNode()) {
-            std::string name = path + std::to_string(filecount++) + "_" +//输出编号
+            std::string name = path +
+//                                std::to_string(filecount++) + "_" +//输出编号
                                std::to_string(int(root->box->getStart()[0])) + "_" +
                                std::to_string(int(root->box->getStart()[1])) + "_" +
                                std::to_string(int(root->box->getStart()[2])) + ".";//经过的空间的起点
             std::string rawname = name + "raw";
             std::string mhdname = name + "mhd";
+
+
+
             write(*root->getData(), rawname, mhdname, root->getDimension(), root->box->getStart());
         } else {
             if (root->children[0] != nullptr) writeAll(root->children[0], path);
@@ -517,7 +521,7 @@ public:
         std::cout << "Start Points : " << start_point << std::endl;
         std::cout << "Dimension: " << dimension << std::endl;
 
-        double step = 0.0001;
+        double step = 0.0002;
         int window_offset = 0;
 
 #pragma omp parallel for num_threads(24)
@@ -699,7 +703,7 @@ public:
                            in_end_point.to_i32vec3(),
                               glm::dvec3(blocksize, blocksize, blocksize));
 
-        double step = 0.0001;
+        double step = 0.0002;
         int window_offset = 0;
 
 #pragma omp parallel for num_threads(24)
@@ -724,18 +728,18 @@ public:
                 //在每两个点中间插值加入一系列点，位置和半径都是线性插值
                 Vec3D<double> startP = (start_point);
                 auto s = getSphere(startP, path.path[i - 1].radius);
-//                if(isInteracted(s,dstart_point,dend_point))
+                if(isInteracted(s,dstart_point,dend_point))
                     spheres.push_back(s);
                 for (int t = 1; t < vec_length / step; t++) {
                     auto cur_point = direction * (t * step) + start_point;
                     Vec3D<double> startP = (cur_point);
                     s = getSphere(startP, r * (t * step) / vec_length + path.path[i - 1].radius);
-//                    if(isInteracted(s,dstart_point,dend_point))
+                    if(isInteracted(s,dstart_point,dend_point))
                         spheres.push_back(s);
                 }
                 startP = end_point;
                 s = getSphere(startP, path.path[i].radius);
-//                if(isInteracted(s,dstart_point,dend_point))
+                if(isInteracted(s,dstart_point,dend_point))
                     spheres.push_back(s);
 
                 std::vector<BVHNode *> nodes;
@@ -769,6 +773,8 @@ public:
             auto start = item->box->getStart();
             std::cout << item->id << " " << start.x << " " << start.y << " " << start.z << std::endl;
         }
+
+        writeAll(bvh->getRoot(), voldir);
     }
 
     int filecount = 0;

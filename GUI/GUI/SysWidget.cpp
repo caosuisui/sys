@@ -101,7 +101,7 @@ void SysWidget::OpenSWC(std::string fileName){
     if(fileName.empty()) return;
     std::string inputswc = fileName;
     std::string j = inputswc.substr(inputswc.size() - 8,inputswc.size() - 4) ;
-    int blocksize = 256;
+    int blocksize = 64;
     neuronInfo = new NeuronInfo();
     mSWC2VOL->GetNeuronInfo(inputswc, blocksize, neuronInfo);
 

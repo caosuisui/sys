@@ -245,7 +245,8 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
 }
 
 void InputWidget::ReconstructionSlot(bool) {
-    neuronInfo->PartialReconstruction();
+    auto name = neuronInfo->PartialReconstruction();
+    emit ReloadObj(name);
 }
 
 void InputWidget::EditRadius() {

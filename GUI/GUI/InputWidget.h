@@ -40,6 +40,7 @@ private:
 signals:
     void ChangeSelectionStateSignal(SubwayMapWidget::SelectionState state);
     void ChangeRenderOptionSignal(bool vol, bool obj, bool line);
+    void ReloadObj(std::string);
 
 public slots:
     void ChangeCurrentPoint(int id);

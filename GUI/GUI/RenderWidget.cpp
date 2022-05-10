@@ -216,8 +216,8 @@ void RenderWidget::paintGL() {
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    if(ifRenderVolume) {
-//    if(false){
+//    if(ifRenderVolume) {
+    if(false){
         //混合渲染
         auto volumearea = GetVolumeAreaData();
         //compute intersect blocks
@@ -726,13 +726,15 @@ void RenderWidget::loadObj(){
     //return;
     std::cout << points.size() << "   " << indexes.size() << std::endl;
 
-    camera = std::make_unique<control::TrackBallCamera>(
-            (box[5] - box[2]) / 2.f,
-            this->width(),this->height(),
-            glm::vec3{(box[0] + box[3]) / 2.f,
-                      (box[1] + box[4]) / 2.f,
-                      (box[2] + box[5]) / 2.f}
-    );
+    if(!neuronInfo){
+        camera = std::make_unique<control::TrackBallCamera>(
+                (box[5] - box[2]) / 2.f,
+                this->width(),this->height(),
+                glm::vec3{(box[0] + box[3]) / 2.f,
+                          (box[1] + box[4]) / 2.f,
+                          (box[2] + box[5]) / 2.f}
+        );
+    }
 
     makeCurrent();
 //    objVBO = QOpenGLBuffer(QOpenGLBuffer::Type::VertexBuffer);
@@ -1065,6 +1067,8 @@ void RenderWidget::SetOtherWidget(SubwayMapWidget *swidget ,InputWidget* iwidget
 //        resetTransferFunc1D();
 //        repaint();
     });
+
+    connect(inputWidget,&InputWidget::ReloadObj,this,&RenderWidget::ReloadObjSlot);
 }
 
 void RenderWidget::resetTransferFunc1D() {

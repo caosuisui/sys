@@ -167,6 +167,7 @@ public:
     }
 
     void WriteObj(vtkPolyData* poly, std::string objName) {
+
         vtkSmartPointer<vtkOBJWriter> writer = vtkSmartPointer<vtkOBJWriter>::New();
         writer->SetInputData(poly);
         writer->SetFileName(objName.c_str());

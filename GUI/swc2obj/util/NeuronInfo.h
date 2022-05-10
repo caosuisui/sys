@@ -18,7 +18,7 @@ public:
     void GetVertexPathInfo(int currentid,int& pathid, int& vertexid);
 
     /// 传入影响的空间范围，重构相交的体素块
-    void PartialReconstruction();
+    std::string PartialReconstruction();
 
     void Interpolate(int start, int end);
 

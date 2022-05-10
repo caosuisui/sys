@@ -61,6 +61,11 @@ public slots:
         repaint();
     }
 
+    void ReloadObjSlot(std::string name){
+        objFilePath = name;
+        SetObjFilePath(objFilePath);
+    };
+
 protected:
     void initializeGL() override;
     void paintGL() override;

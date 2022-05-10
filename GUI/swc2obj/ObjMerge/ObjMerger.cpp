@@ -64,7 +64,7 @@ ObjMerger::ObjMerger(std::string filename)
 
 void ObjMerger::writeOld(std::string filename)
 {
-    std::ofstream out(filename.c_str(),std::ios::out) ;
+    std::ofstream out(filename.c_str(),std::ios::out | std::ios::trunc) ;
 
     out.precision(6);
     out.setf(std::ios::fixed);
@@ -99,7 +99,7 @@ void ObjMerger::writeOld(std::string filename)
 
 void ObjMerger::writeNew1(std::string filename)
 {
-    std::ofstream out(filename.c_str(),std::ios::out) ;
+    std::ofstream out(filename.c_str(),std::ios::out | std::ios::trunc) ;
     int* newid = new int[points.size()] ; ;
     int count = 1 ;
 
@@ -159,7 +159,7 @@ void ObjMerger::writeNew1(std::string filename)
 
 void ObjMerger::writeNew(std::string filename)
 {
-    std::ofstream out(filename.c_str(),std::ios::out) ;
+    std::ofstream out(filename.c_str(),std::ios::out | std::ios::trunc) ;
     int* newid = new int[points.size()] ; ;
     int count = 1 ;
 

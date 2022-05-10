@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD 14)
 include(cmake/lidanBase.cmake)
 include(cmake/LidanBuild.cmake)
 
-SET(BLOCKSIZE 64)
+SET(BLOCKSIZE 256)
 SET(RADIUS 1)
 SET(ROOT_DIR ${CMAKE_SOURCE_DIR})
 set(CONDIF_DIR "${CMAKE_SOURCE_DIR}/")

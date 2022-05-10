@@ -20,11 +20,11 @@
   </component>
   <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
     <generated>
-      <config projectName="sys" targetName="voxel_uncompress_autogen" />
       <config projectName="sys" targetName="SYSGUI_autogen" />
+      <config projectName="sys" targetName="voxel_uncompress_autogen" />
       <config projectName="sys" targetName="SYSGUI" />
-      <config projectName="sys" targetName="spdlog_autogen" />
       <config projectName="sys" targetName="voxel_compress" />
+      <config projectName="sys" targetName="spdlog_autogen" />
       <config projectName="sys" targetName="voxel_uncompress" />
       <config projectName="sys" targetName="SWC2OBJ" />
       <config projectName="sys" targetName="voxel_compress_autogen" />
@@ -43,11 +43,17 @@
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/ObjMerge/ObjMerger.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/ObjMerge/ObjMerger.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/vol2obj/vol2obj.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/vol2obj/vol2obj.h" afterDir="false" />
     </list>
-    <list id="0e44ab82-8813-4ab5-8b2a-585c31c797eb" name="Revert &quot;--&quot;" comment="Revert &quot;--&quot;&#10;&#10;This reverts commit 5755bcef" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,7 +62,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -105,19 +111,19 @@
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\GUI\swc2obj" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\bin" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\GUI\swc2obj" />
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI\src" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src\GUI" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys\src" />
+      <recent name="C:\Users\csh\Desktop\bishe\sys" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -131,7 +137,7 @@
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N001.swc -o $PROJECT_DIR$/output/ -b 64" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
+    <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N003.swc -o $PROJECT_DIR$/output/ -b 64" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -437,10 +443,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="-" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652165992349">
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652186581742">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165992349" />
+    <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652186581742" />
     <state x="674" y="382" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1649679621788">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -461,38 +467,38 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652169880021">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652186573559">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169880021" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652169880021">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652186573559" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652186573559">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169880021" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652169880021">
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652186573559" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652186573559">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169880021" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652169880021">
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652186573559" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652186573559">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169880021" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652169726534">
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652186573559" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652180977275">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169726534" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652169726534">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652180977275" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652180977275">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169726534" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652169726534">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652180977275" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652180977275">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169726534" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652169726534">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652180977275" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652180977275">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169726534" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652180977275" />
     <state x="751" y="282" key="RollbackChangesDialog" timestamp="1652165450495">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -529,10 +535,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652169198720">
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652182898270">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652169198720" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652182898270" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1651749658388">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
