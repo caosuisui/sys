@@ -15,16 +15,16 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
     {
         std::array<uint32_t,3> dim = {366,463,161};
         std::array<float,3> space = {0.01,0.01,0.03};
-        raw_volume = RawVolume::Load("F:/MouseNeuronData/mouselod6_366_463_161_uint8.raw",VoxelType::UInt8,dim,space);
         tf_editor_widget = new TF1DEditor();
 
-        if(raw_volume){
-            trival_volume=std::make_unique<TrivalVolume>(raw_volume->GetData(),raw_volume->GetVolumeDimX(),
-                                                         raw_volume->GetVolumeDimY(),raw_volume->GetVolumeDimZ());
-            tf_editor_widget->setVolumeInformation(trival_volume.get());
-            tf_editor_widget->setFixedHeight(400);
-            tf.resize(256*4,0.f);
-        }
+//        raw_volume = RawVolume::Load("F:/MouseNeuronData/mouselod6_366_463_161_uint8.raw",VoxelType::UInt8,dim,space);
+//        if(raw_volume){
+//            trival_volume=std::make_unique<TrivalVolume>(raw_volume->GetData(),raw_volume->GetVolumeDimX(),
+//                                                         raw_volume->GetVolumeDimY(),raw_volume->GetVolumeDimZ());
+//            tf_editor_widget->setVolumeInformation(trival_volume.get());
+//            tf_editor_widget->setFixedHeight(400);
+//            tf.resize(256*4,0.f);
+//        }
 
         widgetLayout->addWidget(tf_editor_widget);
     }

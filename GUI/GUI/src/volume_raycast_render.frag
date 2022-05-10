@@ -79,12 +79,12 @@ void main(){
 
         float scalar = texture(VolumeData,sample_pos).r;
         max_scalar = max(max_scalar,scalar);
-        if(scalar > 0.0){
+        if(scalar > 0.25){
 
-            vec4 sample_color = texture(TransferFunc,scalar);
+//            vec4 sample_color = texture(TransferFunc,scalar);
             vec4 sample_color = vec4(scalar);
 
-            sample_color.rgb = PhongShading(ray_pos,sample_color.rgb,ray_direction);
+//            sample_color.rgb = PhongShading(ray_pos,sample_color.rgb,ray_direction);
             color = color + sample_color * vec4(sample_color.aaa,1.0)*(1.0 - color.a);
             if(color.a > 0.99)
                 break;

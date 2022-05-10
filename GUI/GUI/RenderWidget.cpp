@@ -57,8 +57,8 @@ void RenderWidget::initializeGL() {
     glClearColor(0,0,0,0);
 
     program = new QOpenGLShaderProgram;
-    program->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/obj_shader_v.glsl");
-    program->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/obj_shader_f.glsl");
+    program->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/obj_shader_v.glsl");
+    program->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/obj_shader_f.glsl");
     if(!program->link()){
         std:: cout << "program link error" << std::endl;
     }
@@ -66,31 +66,31 @@ void RenderWidget::initializeGL() {
     program->release();
 
     pathProgram = new QOpenGLShaderProgram;
-    pathProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/line_shader_v.glsl");
-    pathProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/line_shader_f.glsl");
+    pathProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/line_shader_v.glsl");
+    pathProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/line_shader_f.glsl");
     if(!pathProgram->link()){
         std:: cout << "program link error" << std::endl;
     }
 
     vertexProgram = new QOpenGLShaderProgram;
-    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/swcpoint_shader_v.glsl");
-    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/swcpoint_shader_f.glsl");
+    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/swcpoint_shader_v.glsl");
+    vertexProgram->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/swcpoint_shader_f.glsl");
     if(!vertexProgram->link()){
         std:: cout << "program link error" << std::endl;
     }
 //----------------------------------------------------------------------------
 
-    tf = new QOpenGLTexture(QOpenGLTexture::Target1D);
-    tf->create();
-    tf->bind();
-    tfdata.reserve(256 * 4);
-    for(int i = 0;i < 256;i++){
-        tfdata[i] = tfdata[i+1] = tfdata[i+2] = tfdata[i+3] = i;
-    }
-    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
-    tf->setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
-    tf->setBorderColor(0,0,0,0);
-    tf->setWrapMode(QOpenGLTexture::ClampToBorder);
+//    tf = new QOpenGLTexture(QOpenGLTexture::Target1D);
+//    tf->create();
+//    tf->bind();
+//    tfdata.reserve(256 * 4);
+//    for(int i = 0;i < 256;i++){
+//        tfdata[i] = tfdata[i+1] = tfdata[i+2] = tfdata[i+3] = i;
+//    }
+//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
+//    tf->setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
+//    tf->setBorderColor(0,0,0,0);
+//    tf->setWrapMode(QOpenGLTexture::ClampToBorder);
 
     volume_tex = new QOpenGLTexture(QOpenGLTexture::Target3D);
     volume_tex->create();
@@ -126,15 +126,15 @@ void RenderWidget::initializeGL() {
     screen_quad_vao.release();
 
     ray_pos_shader = new QOpenGLShaderProgram;
-    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/volume_raycast_pos.vert");
-    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/volume_raycast_pos.frag");
+    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/volume_raycast_pos.vert");
+    ray_pos_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/volume_raycast_pos.frag");
     if(!ray_pos_shader->link()){
         std::cerr<<"ray pos shader link error"<<std::endl;
     }
 
     raycast_shader = new QOpenGLShaderProgram;
-    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"../../../src/GUI/src/volume_raycast_render.vert");
-    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"../../../src/GUI/src/volume_raycast_render.frag");
+    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Vertex,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/volume_raycast_render.vert");
+    raycast_shader->addShaderFromSourceFile(QOpenGLShader::Fragment,"C:/Users/csh/Desktop/bishe/sys/GUI/GUI/src/volume_raycast_render.frag");
     if(!raycast_shader->link()){
         std::cerr<<"raycast shader link error"<<std::endl;
     }
@@ -217,6 +217,7 @@ void RenderWidget::paintGL() {
     glEnable(GL_DEPTH_TEST);
 
     if(ifRenderVolume) {
+//    if(false){
         //混合渲染
         auto volumearea = GetVolumeAreaData();
         //compute intersect blocks
@@ -296,14 +297,13 @@ void RenderWidget::paintGL() {
             glBindTexture(GL_TEXTURE_RECTANGLE, ray_exit->textureId());
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_3D, volume_tex->textureId());
-            glActiveTexture(GL_TEXTURE3);
-            glBindTexture(GL_TEXTURE_1D, tf->textureId());
-//            glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
+//            glActiveTexture(GL_TEXTURE3);
+//            glBindTexture(GL_TEXTURE_1D, tf->textureId());
 
             raycast_shader->setUniformValue("RayStartPos", 0);
             raycast_shader->setUniformValue("RayEndPos", 1);
             raycast_shader->setUniformValue("VolumeData", 2);
-            raycast_shader->setUniformValue("TransferFunc", 3);
+//            raycast_shader->setUniformValue("TransferFunc", 3);
             raycast_shader->setUniformValue("voxel", 1.f);
             raycast_shader->setUniformValue("step", 0.6f);
             raycast_shader->setUniformValue("volume_start_pos", voxel_start_pos_x, voxel_start_pos_y,
@@ -358,12 +358,10 @@ void RenderWidget::paintGL() {
         }
         glGetError();
 
-        //绘制线框
 
     }
 
 //    std::cerr<<glGetError()<<std::endl;
-
 
     //obj
     if(objVAO.isCreated() && ifRenderObj){
@@ -1061,17 +1059,19 @@ void RenderWidget::SetOtherWidget(SubwayMapWidget *swidget ,InputWidget* iwidget
     connect(inputWidget,&InputWidget::ChangeRenderOptionSignal,this,&RenderWidget::ChangeRenderOption);
 
     connect(inputWidget->tf_editor_widget,&TF1DEditor::TF1DChanged,[this](){
-        inputWidget->tf_editor_widget->getTransferFunction(tfdata.data(),256,1.0);
-        resetTransferFunc1D();
-        repaint();
+//        tfdata.reserve(256 * 4);
+//        tfdata.clear();
+//        inputWidget->tf_editor_widget->getTransferFunction(tfdata.data(),256,1.0);
+//        resetTransferFunc1D();
+//        repaint();
     });
 }
 
 void RenderWidget::resetTransferFunc1D() {
-    makeCurrent();
-    tf->bind();
-    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
-    tf->release();
-    doneCurrent();
+//    makeCurrent();
+//    tf->bind();
+//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
+//    tf->release();
+//    doneCurrent();
 }
 
