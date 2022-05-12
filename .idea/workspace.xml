@@ -42,9 +42,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -365,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652335107042</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="-add vertes">
+      <created>1652344148754</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1652344148754</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -449,7 +456,8 @@
     <MESSAGE value="-" />
     <MESSAGE value="-局部重构" />
     <MESSAGE value="delete vertex" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete vertex" />
+    <MESSAGE value="-add vertes" />
+    <option name="LAST_COMMIT_MESSAGE" value="-add vertes" />
   </component>
   <component name="WindowStateProjectService">
     <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652343179165">
@@ -476,22 +484,22 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652343998813">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652356373992">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652343998813" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652343998813">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652356373992">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652343998813" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652343998813">
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652356373992">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652343998813" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652343998813">
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652356373992">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652343998813" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
     <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652338746134">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

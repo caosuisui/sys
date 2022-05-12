@@ -12,6 +12,16 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
     auto widgetLayout = new QVBoxLayout;
     widgetLayout->setAlignment(Qt::AlignTop);
 
+    progressDialog = new QDialog;
+    progressDialog->setWindowTitle("progress");
+    auto dialogLayout = new QVBoxLayout;
+    progressDialog->setLayout(dialogLayout);
+    progress = new QLabel("processing");
+    dialogLayout->addWidget(progress);
+    progressBar = new QProgressBar;
+    progressBar->setRange(0,100);
+    dialogLayout->addWidget(progressBar);
+
     {
         std::array<uint32_t,3> dim = {366,463,161};
         std::array<float,3> space = {0.01,0.01,0.03};
@@ -243,7 +253,9 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
 }
 
 void InputWidget::ReconstructionSlot(bool) {
+    progressDialog->show();
     auto name = neuronInfo->PartialReconstruction();
+    progressDialog->close();
     SWCLoaded(neuronInfo);
     emit ReloadObj(name);
 }

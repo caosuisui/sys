@@ -167,7 +167,6 @@ double NeuronInfo::GetR(int id) {
 std::string NeuronInfo::PartialReconstruction() {
     auto time = std::time(0);
 
-
     std::string j = swcname.substr(swcname.size() - 8,4) ;
     auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
     auto objdir = outputdir + "obj/";
@@ -462,7 +461,7 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
 }
 
 void NeuronInfo::ExportSWC(std::string filename){
-    filename = "C:/Users/csh/Desktop/bishe/" + swcname.substr(swcname.size() - 8);
+    //filename = "C:/Users/csh/Desktop/bishe/" + swcname.substr(swcname.size() - 8);
     std::ofstream swcfile(filename,std::ios::out | std::ios::trunc);
     if(!swcfile.is_open()){
         std::cerr << "save failed" << std::endl;

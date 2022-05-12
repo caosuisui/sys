@@ -217,8 +217,8 @@ private:
     QOpenGLFramebufferObject* fbo;
     QOpenGLTexture* ray_entry;
     QOpenGLTexture* ray_exit;
-//    QOpenGLTexture* tf;
-//    std::vector<float> tfdata;
+    QOpenGLTexture* tf;
+    std::vector<float> tfdata;
 
     QOpenGLBuffer ssbo;
     float* mapping_ptr = nullptr;
