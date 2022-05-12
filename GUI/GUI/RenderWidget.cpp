@@ -220,11 +220,11 @@ void RenderWidget::paintGL() {
     if(ifRenderVolume) {
 //    if(false){
         //混合渲染
-        std::vector<float> volumearea = GetVolumeAreaData();
+        auto volumearea = GetVolumeAreaData();
         //compute intersect blocks
         static std::vector<uint8_t> volume_data(volume_block_size);
-        static glm::ivec3 last_start_block_index = {-1, -1, -1};
-        if (volumearea.size() == 6) {
+        static glm::ivec3 last_start_block_index = {-1,-1,-1};
+        if(volumearea.size() == 6){
             float voxel_start_pos_x = volumearea[0] / volume_space_x;
             float voxel_x_len = virtual_block_length * volume_space_x;
 
@@ -241,123 +241,110 @@ void RenderWidget::paintGL() {
             voxel_start_pos_y = start_block_index.y * virtual_block_length * volume_space_y;
             voxel_start_pos_z = start_block_index.z * virtual_block_length * volume_space_z;
 
-            if (start_block_index != last_start_block_index) {
-                volume->readBlock({start_block_index.x, start_block_index.y, start_block_index.z}, volume_data.data(),
-                                  volume_data.size());
-                volume_tex->setData(0, 0, 0, VolumeTexSizeX, VolumeTexSizeY, VolumeTexSizeZ,
-                                    QOpenGLTexture::PixelFormat::Red, QOpenGLTexture::PixelType::UInt8,
-                                    volume_data.data());
+            if(start_block_index != last_start_block_index){
+                volume->readBlock({start_block_index.x,start_block_index.y,start_block_index.z},volume_data.data(),volume_data.size());
+                volume_tex->setData(0,0,0,VolumeTexSizeX,VolumeTexSizeY,VolumeTexSizeZ,QOpenGLTexture::PixelFormat::Red,QOpenGLTexture::PixelType::UInt8,volume_data.data());
                 last_start_block_index = start_block_index;
             }
-            proxy_cube_vertices[0] = {voxel_start_pos_x, voxel_start_pos_y, voxel_start_pos_z};
-            proxy_cube_vertices[1] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y, voxel_start_pos_z};
-            proxy_cube_vertices[2] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y + voxel_y_len,
-                                      voxel_start_pos_z};
-            proxy_cube_vertices[3] = {voxel_start_pos_x, voxel_start_pos_y + voxel_y_len, voxel_start_pos_z};
-            proxy_cube_vertices[4] = {voxel_start_pos_x, voxel_start_pos_y, voxel_start_pos_z + voxel_z_len};
-            proxy_cube_vertices[5] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y,
-                                      voxel_start_pos_z + voxel_z_len};
-            proxy_cube_vertices[6] = {voxel_start_pos_x + voxel_x_len, voxel_start_pos_y + voxel_y_len,
-                                      voxel_start_pos_z + voxel_z_len};
-            proxy_cube_vertices[7] = {voxel_start_pos_x, voxel_start_pos_y + voxel_y_len,
-                                      voxel_start_pos_z + voxel_z_len};
+            proxy_cube_vertices[0] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z};
+            proxy_cube_vertices[1] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z};
+            proxy_cube_vertices[2] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
+            proxy_cube_vertices[3] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z};
+            proxy_cube_vertices[4] = {voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
+            proxy_cube_vertices[5] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y,voxel_start_pos_z+voxel_z_len};
+            proxy_cube_vertices[6] = {voxel_start_pos_x+voxel_x_len,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
+            proxy_cube_vertices[7] = {voxel_start_pos_x,voxel_start_pos_y+voxel_y_len,voxel_start_pos_z+voxel_z_len};
             proxy_cube_vbo.bind();
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(proxy_cube_vertices), proxy_cube_vertices.data());
+            glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(proxy_cube_vertices),proxy_cube_vertices.data());
             proxy_cube_vbo.release();
 
             ray_pos_shader->bind();
-            ray_pos_shader->setUniformValue("MVPMatrix", mvp);
+            ray_pos_shader->setUniformValue("MVPMatrix",mvp);
 
             QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
-            bool b = fbo->bind();
+            bool b= fbo->bind();
             assert(b);
 
             glDrawBuffer(GL_COLOR_ATTACHMENT0);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+            glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
 
             glEnable(GL_CULL_FACE);
             glFrontFace(GL_CCW);
             glDrawBuffer(GL_COLOR_ATTACHMENT1);
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+            glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
             glDisable(GL_CULL_FACE);
 
             fbo->release();
-            glGetError();
-//        std::cerr<<glGetError()<<std::endl;
+
+//            std::cerr<<glGetError()<<std::endl;
 
             ray_pos_shader->release();
 
             raycast_shader->bind();
 
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_RECTANGLE, ray_entry->textureId());
+            glBindTexture(GL_TEXTURE_RECTANGLE,ray_entry->textureId());
             glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_RECTANGLE, ray_exit->textureId());
+            glBindTexture(GL_TEXTURE_RECTANGLE,ray_exit->textureId());
             glActiveTexture(GL_TEXTURE2);
-            glBindTexture(GL_TEXTURE_3D, volume_tex->textureId());
-//            glActiveTexture(GL_TEXTURE3);
-//            glBindTexture(GL_TEXTURE_1D, tf->textureId());
+            glBindTexture(GL_TEXTURE_3D,volume_tex->textureId());
 
-            raycast_shader->setUniformValue("RayStartPos", 0);
-            raycast_shader->setUniformValue("RayEndPos", 1);
-            raycast_shader->setUniformValue("VolumeData", 2);
-//            raycast_shader->setUniformValue("TransferFunc", 3);
-            raycast_shader->setUniformValue("voxel", 1.f);
-            raycast_shader->setUniformValue("step", 0.6f);
-            raycast_shader->setUniformValue("volume_start_pos", voxel_start_pos_x, voxel_start_pos_y,
-                                            voxel_start_pos_z);
-            raycast_shader->setUniformValue("volume_extend", block_length * volume_space_x,
-                                            block_length * volume_space_y, block_length * volume_space_z);
-            raycast_shader->setUniformValue("padding", padding * volume_space_x, padding * volume_space_y,
-                                            padding * volume_space_z);
-            raycast_shader->setUniformValue("bg_color", QVector4D(0.0, 0.0, 0.0, 1.0));
-            raycast_shader->setUniformValue("MVPMatrix", mvp);
+            raycast_shader->setUniformValue("RayStartPos",0);
+            raycast_shader->setUniformValue("RayEndPos",1);
+            raycast_shader->setUniformValue("VolumeData",2);
+            raycast_shader->setUniformValue("voxel",1.f);
+            raycast_shader->setUniformValue("step",0.6f);
+            raycast_shader->setUniformValue("volume_start_pos",voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z);
+            raycast_shader->setUniformValue("volume_extend",block_length*volume_space_x,block_length*volume_space_y,block_length*volume_space_z);
+            raycast_shader->setUniformValue("padding",padding*volume_space_x,padding*volume_space_y,padding*volume_space_z);
+            raycast_shader->setUniformValue("bg_color",QVector4D(0.0,0.0,0.0,1.0));
+            raycast_shader->setUniformValue("MVPMatrix",mvp);
             bool inside = false;
-            if (pos.x() >= voxel_start_pos_x && pos.x() < voxel_start_pos_x + voxel_x_len
-                && pos.y() >= voxel_start_pos_y && pos.y() < voxel_start_pos_y + voxel_y_len
-                && pos.z() >= voxel_start_pos_z && pos.z() < voxel_start_pos_z + voxel_z_len) {
+            if(pos.x() >= voxel_start_pos_x && pos.x() < voxel_start_pos_x + voxel_x_len
+               && pos.y() >= voxel_start_pos_y && pos.y() < voxel_start_pos_y + voxel_y_len
+               && pos.z() >= voxel_start_pos_z && pos.z() < voxel_start_pos_z + voxel_z_len){
                 inside = true;
             }
-//        if(inside){
-//            std::cerr<<"inside"<<std::endl;
-//        }
-            raycast_shader->setUniformValue("camera_pos", QVector4D(pos, inside ? 1.0 : 0.0));
-//        std::cerr<<"mouse press pos: "<<mousePressPos.x()<<" "<<mousePressPos.y()<<std::endl;
-            raycast_shader->setUniformValue("click_coord", mousePressPos.x(), height() - mousePressPos.y());
+//            if(inside){
+//                std::cerr<<"inside"<<std::endl;
+//            }
+            raycast_shader->setUniformValue("camera_pos",QVector4D(pos,inside?1.0:0.0));
+//            std::cerr<<"mouse press pos: "<<mousePressPos.x()<<" "<<mousePressPos.y()<<std::endl;
+            raycast_shader->setUniformValue("click_coord",mousePressPos.x(),height() - mousePressPos.y());
 
             //memset mapping_ptr before draw
-            memset(mapping_ptr, 0, sizeof(float) * 8);
+            memset(mapping_ptr,0,sizeof(float)*8);
 
             QOpenGLVertexArrayObject::Binder binder3(&screen_quad_vao);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glDrawArrays(GL_TRIANGLES,0,6);
             glFinish();
 
             raycast_shader->release();
 
-//        std::cerr<<"click point info: ";
-//        for(int i = 0;i<8;i++){
-//            std::cerr<<mapping_ptr[i]<<" ";
-//        }
-//        std::cerr<<std::endl;
+//            std::cerr<<"click point info: ";
+//            for(int i = 0;i<8;i++){
+//                std::cerr<<mapping_ptr[i]<<" ";
+//            }
+//            std::cerr<<std::endl;
         }
 
         //debug for volume proxy cube wireframe
-        if (true) {
+        if(true){
             pathProgram->bind();
-            pathProgram->setUniformValue("model", model);
-            pathProgram->setUniformValue("view", view);
-            pathProgram->setUniformValue("proj", proj);
+            pathProgram->setUniformValue("model",model);
+            pathProgram->setUniformValue("view",view);
+            pathProgram->setUniformValue("proj",proj);
 
-            pathProgram->setUniformValue("color", QVector4D(0.5, 0.5, 0.5, 1));
+            pathProgram->setUniformValue("color",QVector4D(0.5,0.5,0.5,1));
             QOpenGLVertexArrayObject::Binder binder1(&proxy_cube_vao);
-            ::glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-            ::glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+            ::glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+            glDrawElements(GL_TRIANGLES,36,GL_UNSIGNED_INT,nullptr);
+            ::glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
         }
-        glGetError();
+//        std::cerr<<glGetError()<<std::endl;
 
 
     }

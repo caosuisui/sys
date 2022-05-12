@@ -289,13 +289,9 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
 
     //绘制分支
     int subPathNum = path->sub_paths_index.size();
-    int a = subPathNum / 2;
-    a = a == 0? 1 : a;
+    int a = subPathNum / 2 + 1;
+//    a = a == 0? 1 : a;
     double nextHalfRange = halfRange / (a * 2);
-
-    if(nextHalfRange > oriPathDis * 4){
-        std::cerr << " subwaymap error " << nextHalfRange << std::endl;
-    }
 
     if(nextHalfRange >= 10)
         for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根

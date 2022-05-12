@@ -134,10 +134,12 @@ void NeuronInfo::Connect(int start,int end){
 int NeuronInfo::Add(float* mapping_ptr){
     Vertex newVertex;
     newVertex.current_id = ++vertexCount;
+    newVertex.point_type = 0;
     newVertex.radius = mapping_ptr[7];
     newVertex.x = (mapping_ptr[0] + mapping_ptr[4]) / 2;
     newVertex.y = (mapping_ptr[1] + mapping_ptr[5]) / 2;
     newVertex.z = (mapping_ptr[2] + mapping_ptr[6]) / 2;
+    newVertex.previous_id = 0;
     addList.push_back(newVertex);
 
     std::cout << "new point :" << vertexCount << " " << newVertex.x << " " << newVertex.y << " " << newVertex.z << " "
@@ -163,6 +165,9 @@ double NeuronInfo::GetR(int id) {
 }
 
 std::string NeuronInfo::PartialReconstruction() {
+    auto time = std::time(0);
+
+
     std::string j = swcname.substr(swcname.size() - 8,4) ;
     auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
     auto objdir = outputdir + "obj/";
@@ -299,6 +304,7 @@ std::string NeuronInfo::PartialReconstruction() {
         vertexCount = point_vector.size();
     }
 
+    std::cout << "[total time]: " << std::time(0) - time << std::endl;
     ExportSWC("aaa");
     return objname;
 }
@@ -378,14 +384,14 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
         for(int i = 0;i < connectionList.size() -1 ;i += 2){
             auto& item = connectionList[i];
             auto& nextItem = connectionList[i+1];
-            if(item.current_id < point_vector.size() + 1){
+            if(item.current_id <= point_vector.size()){
                 pointVectorCopy[vertex_hash[item.current_id]].previous_id = nextItem.current_id;
             }
             else{
                 for(int j = 0;j < addList.size();j++){
 //                    auto newItem = addList[i];
-                    if(item.current_id == addList[i].current_id){
-                        addListCopy[j].previous_id = addList[i].current_id;
+                    if(item.current_id == addList[j].current_id){
+                        addListCopy[j].previous_id = nextItem.current_id;
                     }
                 }
             }
@@ -397,7 +403,7 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
     for(int j = 0;j < point_vector.size();j++){
         const auto& item = point_vector[j];
         if(std::find(deleteList.begin(),deleteList.end(),item.current_id) == deleteList.end()){
-            int newCurrentId = ++count;//从1开始？
+            int newCurrentId = ++count;
             pointVectorCopy[j].current_id = newCurrentId;
 
             for(int i = 0;i < point_vector.size();i++){
@@ -420,20 +426,21 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
         int newCurrentId = ++count;
         addListCopy[j].current_id = newCurrentId;
 
-        for(int i = 0;i < point_vector.size();i++){
-            const auto& item1 = point_vector[i];
+        for(int i = 0;i < pointVectorCopy.size();i++){
+            const auto& item1 = pointVectorCopy[i];
             if(item1.previous_id == item.current_id){
                 pointVectorCopy[i].previous_id = newCurrentId;
             }
         }
-        for(int i= 0;i < addList.size();i++){
-            const auto& item1 = addList[i];
+        for(int i= 0;i < addListCopy.size();i++){
+            const auto& item1 = addListCopy[i];
             if(item1.previous_id == item.current_id){
                 addListCopy[i].previous_id = newCurrentId;
             }
         }
     }
 
+    //
     newPointVector.reserve(pointVectorCopy.size() - deleteList.size() + addListCopy.size());
 
     for(int i = 0;i < point_vector.size();i++){
