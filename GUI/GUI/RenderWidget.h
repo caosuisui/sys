@@ -63,7 +63,11 @@ public slots:
 
     void ReloadObjSlot(std::string name){
         objFilePath = name;
+        isFirstRender = false;
         SetObjFilePath(objFilePath);
+        SWCLoaded(neuronInfo);
+        repaint();
+        subwayMapWidget->SetPath(neuronInfo);
     };
 
 protected:
@@ -180,6 +184,7 @@ private:
 
     int connectStart;
     int lastSelectedPath;
+    bool isFirstRender;
     //-------------------------------------------
     static constexpr float volume_space_x = 0.32f;
     static constexpr float volume_space_y = 0.32f;

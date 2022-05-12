@@ -17,7 +17,7 @@ SubwayMapWidget::SubwayMapWidget(QWidget *parent) :QWidget(parent){
     radiusRatio = 5;
     zoomDirection = ZoomDirection::Both;
     selectionState = SelectionState::Normal;
-
+    isFirst = true;
     mainindex = 0;
 
     currentPath = 0;
@@ -36,26 +36,48 @@ SubwayMapWidget::SubwayMapWidget(QWidget *parent) :QWidget(parent){
 }
 
 bool SubwayMapWidget::eventFilter(QObject *watched, QEvent *event) {
-    if(event->type() == QEvent::MouseButtonPress){
+    if(event->type() == QEvent::MouseMove){
         auto item = view->itemAt(((QMouseEvent*)event)->pos());
         auto p = dynamic_cast<PointItem*>(item);
         if(p!= nullptr){
-            if(p == lastHoveredPoint){
+            if(lastHoveredPoint)
+                lastHoveredPoint->SetSelected(0,PointItem::PointType::Unselected);
+
+            if(p == lastPoint || p == preNextPoint || p == preLastPoint){
                 lastHoveredPoint = nullptr;
             }
-
-            if(selectionState == SelectionState::Normal){
-                if(lastPoint != nullptr){
-                    lastPoint->SetSelected(false,PointItem::PointType::Unselected);
-                }
-
-                p->SetSelected(true, PointItem::PointType::Current);
-                lastPoint = p;
-                auto id = p->GetVertex()->current_id;
-
-                emit SelectVertexSignal(id);
+            else{
+                lastHoveredPoint = p;
+                p->SetSelected(2,PointItem::PointType::Hovered);
             }
-            else if(selectionState == SelectionState::LastPoint){
+
+        }
+    }
+
+    return QObject::eventFilter(watched, event);
+}
+
+void SubwayMapWidget::mousePressEvent(QMouseEvent *event) {
+    auto item = view->itemAt(event->pos());
+    auto p = dynamic_cast<PointItem*>(item);
+    if(p!= nullptr){
+        if(p == lastHoveredPoint){
+            lastHoveredPoint = nullptr;
+        }
+
+        if(selectionState == SelectionState::Normal){
+            if(lastPoint != nullptr){
+                lastPoint->SetSelected(false,PointItem::PointType::Unselected);
+            }
+
+            p->SetSelected(true, PointItem::PointType::Current);
+            lastPoint = p;
+            auto id = p->GetVertex()->current_id;
+
+//            std::cerr << "select " << id << std::endl;
+            emit SelectVertexSignal(id);
+        }
+        else if(selectionState == SelectionState::LastPoint){
 //            int pathid1;
 //            int vertexid1;
 //            p->GetInfo(pathid1,vertexid1);
@@ -85,16 +107,16 @@ bool SubwayMapWidget::eventFilter(QObject *watched, QEvent *event) {
 //            valid = true;
 
 //            if(valid){
-                if(preLastPoint != nullptr){
-                    preLastPoint->SetSelected(false,PointItem::PointType::Unselected);
-                }
-
-                p->SetSelected(true,PointItem::PointType::Last);
-                preLastPoint = p;
-                emit SelectLastVertexSignal(p->GetVertex()->current_id);
-//            }
+            if(preLastPoint != nullptr){
+                preLastPoint->SetSelected(false,PointItem::PointType::Unselected);
             }
-            else if(selectionState == SelectionState::NextPoint){
+
+            p->SetSelected(true,PointItem::PointType::Last);
+            preLastPoint = p;
+            emit SelectLastVertexSignal(p->GetVertex()->current_id);
+//            }
+        }
+        else if(selectionState == SelectionState::NextPoint){
 //            int pathid1;
 //            int vertexid1;
 //            p->GetInfo(pathid1,vertexid1);
@@ -122,38 +144,17 @@ bool SubwayMapWidget::eventFilter(QObject *watched, QEvent *event) {
 //            valid = true;
 //
 //            if(valid){
-                if(preNextPoint != nullptr){
-                    preNextPoint->SetSelected(false,PointItem::PointType::Unselected);
-                }
+            if(preNextPoint != nullptr){
+                preNextPoint->SetSelected(false,PointItem::PointType::Unselected);
+            }
 
-                p->SetSelected(true,PointItem::PointType::Next);
-                preNextPoint = p;
-                emit SelectNextVertexSignal(p->GetVertex()->current_id);
+            p->SetSelected(true,PointItem::PointType::Next);
+            preNextPoint = p;
+            emit SelectNextVertexSignal(p->GetVertex()->current_id);
 //            }
-            }
         }
     }
-    else if(event->type() == QEvent::MouseMove){
-        auto item = view->itemAt(((QMouseEvent*)event)->pos());
-        auto p = dynamic_cast<PointItem*>(item);
-        if(p!= nullptr){
-            if(lastHoveredPoint)
-                lastHoveredPoint->SetSelected(0,PointItem::PointType::Unselected);
-
-            if(p == lastPoint || p == preNextPoint || p == preLastPoint){
-                lastHoveredPoint = nullptr;
-            }
-            else{
-                lastHoveredPoint = p;
-                p->SetSelected(2,PointItem::PointType::Hovered);
-            }
-
-        }
-    }
-
-    return QObject::eventFilter(watched, event);
 }
-
 
 void SubwayMapWidget::zoomIn() {
     if(zoomDirection == ZoomDirection::Vertical){
@@ -289,7 +290,12 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
     //绘制分支
     int subPathNum = path->sub_paths_index.size();
     int a = subPathNum / 2;
+    a = a == 0? 1 : a;
     double nextHalfRange = halfRange / (a * 2);
+
+    if(nextHalfRange > oriPathDis * 4){
+        std::cerr << " subwaymap error " << nextHalfRange << std::endl;
+    }
 
     if(nextHalfRange >= 10)
         for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根
@@ -397,12 +403,17 @@ void SubwayMapWidget::SelectPath(int index){
     view->show();
 }
 
-void SubwayMapWidget::SetPath(std::vector<Path> paths,int size, std::vector<int> mainPaths, NeuronInfo* info) {
-    this->paths = std::move(paths);
-    points.clear();
-    this->mainPaths = std::move(mainPaths);
+void SubwayMapWidget::SetPath(NeuronInfo* info) {
     neuronInfo = info;
-    SelectPath(0);
+    this->paths = info->paths;
+
+    clearScene();
+
+    if(!isFirst){
+        SelectPath(currentPath);
+    }
+    else
+        SelectPath(0);
 }
 
 void SubwayMapWidget::clearScene() {
@@ -413,7 +424,6 @@ void SubwayMapWidget::clearScene() {
     preLastPoint = nullptr;
     preNextPoint = nullptr;
     lastHoveredPoint = nullptr;
-
 }
 
 void SubwayMapWidget::ChangeSelectionState(SelectionState state) {

@@ -16,6 +16,7 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     lastPointId = -1;
     nextPointId = -1;
     lastSelectedPath = -1;
+    isFirstRender = true;
 
     currentPathId = currentInPathId = -1;
     lastPathId = lastInPathId = -1;
@@ -549,13 +550,10 @@ void RenderWidget::loadLines(){
             if(vertex.previous_id == -1)
                 break;
 
-            std:: cout << id << std::endl;
-
             auto preVertex = neuronInfo->point_vector[neuronInfo->vertex_hash[vertex.previous_id]];
 
             if(std::find(deletedPoints.begin(),deletedPoints.end(),vertex.current_id) == deletedPoints.end() &&
                std::find(deletedPoints.begin(),deletedPoints.end(),preVertex.current_id) == deletedPoints.end()){
-                std::cout << "1" << std::endl;
                 selectedLine.push_back(vertex.x);
                 selectedLine.push_back(vertex.y);
                 selectedLine.push_back(vertex.z);
@@ -600,7 +598,6 @@ void RenderWidget::loadSWCPoint() {
         lastPoint.push_back(vertex.x);
         lastPoint.push_back(vertex.y);
         lastPoint.push_back(vertex.z);
-        std::cout << lastPoint.data() << std::endl;
     }
 
     nextPoint.clear();
@@ -644,7 +641,7 @@ void RenderWidget::loadSWCPoint() {
     }
 
     upmostVertex.clear();
-    if(lastSelectedPath != -1){
+    if(lastSelectedPath != -1 && lastSelectedPath < neuronInfo->paths.size()){
         auto path = neuronInfo->paths[lastSelectedPath];
         int id = path.path[0].current_id;
         while(true){
@@ -703,18 +700,21 @@ void RenderWidget::GenObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &vao,f
 
 void RenderWidget::SWCLoaded(NeuronInfo* neuronInfo) {
     this->neuronInfo = neuronInfo;
-    currentPointId = -1;
-    lastPointId = -1;
-    nextPointId = -1;
-    isWholeView = true;
 
-    camera = std::make_unique<control::TrackBallCamera>(
-            neuronInfo->z_dimension / 4.f,
-            this->width(),this->height(),
-            glm::vec3{neuronInfo->point_vector[0].x,
-                      neuronInfo->point_vector[0].y,
-                      neuronInfo->point_vector[0].z}
-    );
+    if(isFirstRender){
+        init();
+//        currentPointId = -1;
+//        lastPointId = -1;
+//        nextPointId = -1;
+        isWholeView = true;
+        camera = std::make_unique<control::TrackBallCamera>(
+                neuronInfo->z_dimension / 4.f,
+                this->width(),this->height(),
+                glm::vec3{neuronInfo->point_vector[0].x,
+                          neuronInfo->point_vector[0].y,
+                          neuronInfo->point_vector[0].z}
+        );
+    }
 
     loadLines();
     loadSWCPoint();
@@ -724,9 +724,9 @@ void RenderWidget::loadObj(){
 
     objLoader->loadObjModel(QString::fromStdString(objFilePath),points,indexes,box);
     //return;
-    std::cout << points.size() << "   " << indexes.size() << std::endl;
+//    std::cout << points.size() << "   " << indexes.size() << std::endl;
 
-    if(!neuronInfo){
+    if(!neuronInfo && isFirstRender){
         camera = std::make_unique<control::TrackBallCamera>(
                 (box[5] - box[2]) / 2.f,
                 this->width(),this->height(),
@@ -819,7 +819,7 @@ void RenderWidget::pickPoint(QPointF mousePos){
         return;
     }
     mousePos.setY(RENDER_HEIGHT - mousePos.y());
-    float limit = 25;
+    float limit = 15;
     float mindis = limit + 1;
     int id = -1;
     if(!neuronInfo) return;
@@ -994,18 +994,18 @@ void RenderWidget::init(){
     currentPathId = currentInPathId = -1;
     lastPathId = lastInPathId = -1;
     nextPathId = nextInPathId = -1;
-    if(inputWidget){
-        inputWidget->ChangeNextPoint(-1);
-        inputWidget->ChangeCurrentPoint(-1);
-        inputWidget->ChangeLastPoint(-1);
-    }
+//    if(inputWidget){
+//        inputWidget->ChangeNextPoint(-1);
+//        inputWidget->ChangeCurrentPoint(-1);
+//        inputWidget->ChangeLastPoint(-1);
+//    }
 }
 
 void RenderWidget::SelectPointSlot(int id) {
     int pathid,vertexid;
     neuronInfo->GetVertexPathInfo(id,pathid,vertexid);
-    if(pathid != currentPathId)
-        init();
+//    if(pathid != currentPathId)
+//        init();
 
     lastSelectedPath = pathid;
     isWholeView = false;

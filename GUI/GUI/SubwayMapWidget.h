@@ -36,7 +36,7 @@ public:
 
     void SelectPath(int index);
 
-    void SetPath(std::vector<Path> paths,int size, std::vector<int> mainPaths, NeuronInfo* info) ;
+    void SetPath(NeuronInfo* info) ;
 
     void Update();
 
@@ -59,7 +59,7 @@ private:
 
 protected:
     //void wheelEvent(QWheelEvent* e)Q_DECL_OVERRIDE;
-//    void mousePressEvent(QMouseEvent* e)Q_DECL_OVERRIDE;
+    void mousePressEvent(QMouseEvent* e)Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent* e)Q_DECL_OVERRIDE;
     bool eventFilter(QObject *watched, QEvent *event)Q_DECL_OVERRIDE;
 private slots:
@@ -97,7 +97,7 @@ private://字段
     double pathRatio;
     double radiusRatio;
 
-    std::vector<int> mainPaths;
+//    std::vector<int> mainPaths;
 
     int mainindex;
 
@@ -107,6 +107,7 @@ private://字段
 
     SelectionState selectionState;
 
+    bool isFirst;
 };
 
 #endif //SYS_SUBWAYMAPWIDGET_H

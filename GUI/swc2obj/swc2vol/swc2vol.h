@@ -26,6 +26,7 @@
 class SWC2VOL {
 public:
     std::vector<Path> searchPath(std::vector<Vertex> &point_vector, std::map<int, int> &vertex_hash) {
+        mainPathsIndex.clear();
         std::vector<int> leaf_nodes;
 //	std::map<int, int> vertex_hash;
         for (auto i = 0; i < point_vector.size(); i++) {
@@ -624,6 +625,9 @@ public:
         neuronInfo->z_start = start_point.z;
         neuronInfo->swcname = swc_file;
         neuronInfo->vertexCount = point_vector.size();
+        neuronInfo->deleteList.clear();
+        neuronInfo->addList.clear();
+        neuronInfo->connectionList.clear();
     }
 
     static bool isInteracted(Sphere* ss,glm::dvec3 start_point,glm::dvec3 end_point){

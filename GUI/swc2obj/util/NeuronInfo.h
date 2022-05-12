@@ -38,6 +38,8 @@ public:
 
     Vertex* GetVertex(int id);
 
+    void ExportSWC(std::string);
+
 public:
     int x_dimension;
     int y_dimension;

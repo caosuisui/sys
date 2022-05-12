@@ -29,8 +29,6 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
         widgetLayout->addWidget(tf_editor_widget);
     }
 
-
-
     //路径导航
     treeWidget = new QTreeWidget(this);
     treeWidget->setFixedSize(INPUT_WIDTH - 10, 200);
@@ -246,6 +244,7 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
 
 void InputWidget::ReconstructionSlot(bool) {
     auto name = neuronInfo->PartialReconstruction();
+    SWCLoaded(neuronInfo);
     emit ReloadObj(name);
 }
 
@@ -316,7 +315,9 @@ void InputWidget::GetButtonState(bool state) {
 
 void InputWidget::ChangeCurrentPoint(int id) {
     currentPoint = neuronInfo->GetVertex(id);
+//    std::cerr << "input widget select " << currentPoint << std::endl;
     if(currentPoint){
+
         currentPointLabel->setText("Current Point " + QString::number(currentPoint->current_id));
         QString currentPos = "    pos : ( " + QString::number(currentPoint->x) +
                              ", " + QString::number(currentPoint->y) +
@@ -325,21 +326,6 @@ void InputWidget::ChangeCurrentPoint(int id) {
 
         currentPointRadiusLine->setText(QString::number(neuronInfo->GetR(currentPoint->current_id)));
     }
-//    int pathid, vertexid;
-//    neuronInfo->GetVertexPathInfo(id,pathid,vertexid);
-//    if(pathid != -1){
-//        currentPoint = &neuronInfo->paths[pathid].path[vertexid];
-//
-//        //修改文本显示
-//        //当前点
-//        currentPointLabel->setText("Current Point " + QString::number(currentPoint->current_id));
-//        QString currentPos = "    pos : ( " + QString::number(currentPoint->x) +
-//                             ", " + QString::number(currentPoint->y) +
-//                             ", " + QString::number(currentPoint->z) + ")";
-//        currentPointPosLine->setText(currentPos);
-//
-//        currentPointRadiusLine->setText(QString::number(neuronInfo->GetR(currentPoint->current_id)));
-//    }
     else{
         currentPointLabel->setText("Current Point");
         currentPointPosLine->setText("    position : none");
@@ -403,15 +389,15 @@ void InputWidget::ChangePath(QTreeWidgetItem *current, QTreeWidgetItem *previous
 }
 
 void InputWidget::SWCLoaded(NeuronInfo *in_neuronInfo) {
+    treeWidget->clear();
     neuronInfo = in_neuronInfo;
-
 
     for(int i = 0;i < neuronInfo->mainPaths.size();i++){
         int mainIndex = neuronInfo->mainPaths[i];
         auto mainPath = &neuronInfo->paths[mainIndex];
 
         QStringList list;
-        list.push_back("Neurite " + QString::number(i));
+        list.push_back("Neurite");
         list.push_back(QString::number(mainPath->path_type));
         //list.push_back(QString::number(mainPath->sub_paths_index.size()));
         auto treeItem = new QTreeWidgetItem(treeWidget,list);

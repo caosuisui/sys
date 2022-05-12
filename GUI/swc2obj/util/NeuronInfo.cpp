@@ -163,48 +163,58 @@ double NeuronInfo::GetR(int id) {
 }
 
 std::string NeuronInfo::PartialReconstruction() {
+    std::string j = swcname.substr(swcname.size() - 8,4) ;
+    auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
+    auto objdir = outputdir + "obj/";
+    auto volumedir = outputdir + "vol/";
+    auto objname = objdir + "simplifiedObj.obj";
+
+    if(addList.empty() && deleteList.empty() && connectionList.empty() && radiusChangeList.empty()) return objname;
+
     //定位体素块
-    double xmin,ymin,zmin,xmax,ymax,zmax;
+    double xmin, ymin, zmin, xmax, ymax, zmax;
     xmin = ymin = zmin = 999999;
     xmax = ymax = zmax = -999999;
 
-    auto getBox = [&xmin,&ymin,&zmin,&xmax,&ymax,&zmax](Vertex item){
-        xmin = std::min(xmin,item.x - item.radius);
-        ymin = std::min(ymin,item.y - item.radius);
-        zmin = std::min(zmin,item.z - item.radius);
-        xmax = std::max(xmax,item.x + item.radius);
-        ymax = std::max(ymax,item.y + item.radius);
-        zmax = std::max(zmax,item.z + item.radius);
+    auto getBox = [&xmin, &ymin, &zmin, &xmax, &ymax, &zmax](Vertex item) {
+        xmin = std::min(xmin, item.x - item.radius);
+        ymin = std::min(ymin, item.y - item.radius);
+        zmin = std::min(zmin, item.z - item.radius);
+        xmax = std::max(xmax, item.x + item.radius);
+        ymax = std::max(ymax, item.y + item.radius);
+        zmax = std::max(zmax, item.z + item.radius);
 
-        std::cout << "space " << xmin << " " << ymin << " " << zmin << " " << xmax << " " << ymax << " "<< zmax << std::endl;
+//        std::cout << "space " << xmin << " " << ymin << " " << zmin << " " << xmax << " " << ymax << " "<< zmax << std::endl;
     };
 
-    for(auto itemid: deleteList){
+    for (auto itemid: deleteList) {
         auto item = point_vector[vertex_hash[itemid]];
         getBox(item);
 
-        for(auto const& item1 : point_vector){
-            if(item1.previous_id != item.current_id) continue;
-            getBox(item1);
-        }
-
-        if(item.previous_id == -1) continue;
-        auto preitem = point_vector[vertex_hash[item.previous_id]];
-        getBox(preitem);
-    }
-
-    for(auto item: radiusChangeList){
-        auto id = item.current_id;
-        auto ver = point_vector[vertex_hash[id]];
-        getBox(ver);
-
-        for(auto const& item1 : point_vector){
-            if(item1.previous_id == item.current_id){
+        for (auto const &item1 : point_vector) {
+            if (item1.previous_id == item.current_id) {
                 getBox(item1);
             }
         }
 
-        if(item.previous_id != -1) {
+        if (item.previous_id != -1) {
+            auto preitem = point_vector[vertex_hash[item.previous_id]];
+            getBox(preitem);
+        }
+    }
+
+    for (auto item: radiusChangeList) {
+        auto id = item.current_id;
+        auto ver = point_vector[vertex_hash[id]];
+        getBox(ver);
+
+        for (auto const &item1 : point_vector) {
+            if (item1.previous_id == item.current_id) {
+                getBox(item1);
+            }
+        }
+
+        if (item.previous_id != -1) {
             auto preitem = point_vector[vertex_hash[item.previous_id]];
             getBox(preitem);
         }
@@ -213,14 +223,14 @@ std::string NeuronInfo::PartialReconstruction() {
     //不单独处理新建的节点，因为如果没有创建连接，则不应属于当前神经元
 
     //连接
-    if(!connectionList.empty()){
-        for(int i = 0;i < connectionList.size() - 1;i += 2){
+    if (!connectionList.empty()) {
+        for (int i = 0; i < connectionList.size() - 1; i += 2) {
             auto start = connectionList[i];
             getBox(point_vector[vertex_hash[start.previous_id]]);
 
-            auto end = connectionList[i+1];
-            for(auto item:point_vector){
-                if(item.previous_id == end.current_id){
+            auto end = connectionList[i + 1];
+            for (auto item:point_vector) {
+                if (item.previous_id == end.current_id) {
                     getBox(item);
                 }
             }
@@ -232,7 +242,7 @@ std::string NeuronInfo::PartialReconstruction() {
 
     int halfpadding = 1;
     int step = blocksize - 2;
-    Vec3D<double> start_point{},end_point{};
+    Vec3D<double> start_point{}, end_point{};
 
     start_point.x = std::floor((xmin - x_start) / step) * step + x_start;
     start_point.y = std::floor((ymin - y_start) / step) * step + y_start;
@@ -241,21 +251,18 @@ std::string NeuronInfo::PartialReconstruction() {
     end_point.y = std::floor((ymax - y_start) / step) * step + step + y_start;
     end_point.z = std::floor((zmax - z_start) / step) * step + step + z_start;
 
-    start_point.x = (start_point.x - step < x_start) ? start_point.x : start_point.x - step;
-    start_point.y = (start_point.y - step < y_start) ? start_point.y : start_point.y - step;
-    start_point.z = (start_point.z - step < z_start) ? start_point.z : start_point.z - step;
+    start_point.x = (start_point.x - step <= x_start) ? start_point.x : start_point.x - step;
+    start_point.y = (start_point.y - step <= y_start) ? start_point.y : start_point.y - step;
+    start_point.z = (start_point.z - step <= z_start) ? start_point.z : start_point.z - step;
 
-//    end_point.x = (end_point.x + step > x_start + x_dimension) ? end_point.x : end_point.x + step;
-//    end_point.y = (end_point.y + step > y_start + y_dimension) ? end_point.y : end_point.y + step;
-//    end_point.z = (end_point.z + step > z_start + z_dimension) ? end_point.z : end_point.z + step;
+//    end_point.x = (end_point.x + step >= x_start + x_dimension) ? end_point.x : end_point.x + step;
+//    end_point.y = (end_point.y + step >= y_start + y_dimension) ? end_point.y : end_point.y + step;
+//    end_point.z = (end_point.z + step >= z_start + z_dimension) ? end_point.z : end_point.z + step;
 
     std::cout << "start_point: " << start_point.x << " " << start_point.y << " " << start_point.z << std::endl;
-    std::cout << "dimension: " << end_point.x - start_point.x << " " << end_point.y - start_point.y << " " << end_point.z - start_point.z << std::endl;
+    std::cout << "dimension: " << end_point.x - start_point.x << " " << end_point.y - start_point.y << " "
+              << end_point.z - start_point.z << std::endl;
 
-    std::string j = swcname.substr(swcname.size() - 8,4) ;
-    auto outputdir = "C:/Users/csh/Desktop/bishe/sys/output/" + j + '/';
-    auto objdir = outputdir + "obj/";
-    auto volumedir = outputdir + "vol/";
 
     //重构体素场并写入体数据文件
     auto newPointVector = GetNewSWC();
@@ -267,7 +274,6 @@ std::string NeuronInfo::PartialReconstruction() {
 
     //重新生成网格
     if(dirExists(objdir)){
-        std::cerr << objdir << std::endl;
         RemoveDirectory(objdir.c_str()) ;
     }
 
@@ -278,7 +284,23 @@ std::string NeuronInfo::PartialReconstruction() {
 
     VOL2OBJ* mVOL2OBJ = new VOL2OBJ();
     mVOL2OBJ->vol2obj(volumedir,objdir);
-    return objdir + "simplifiedObj.obj";
+
+    //
+    {
+        std::cout << "vertex number: "<< point_vector.size() << " to " << newPointVector.size() <<std::endl;
+        point_vector = newPointVector;
+        vertex_hash = newVertexHash;
+        paths = newPaths;
+        mainPaths = newSWC2VOL->mainPathsIndex;
+        radiusChangeList.clear();
+        connectionList.clear();
+        deleteList.clear();
+        addList.clear();
+        vertexCount = point_vector.size();
+    }
+
+    ExportSWC("aaa");
+    return objname;
 }
 
 void NeuronInfo::GetVertexPathInfo(int currentid, int &pathid, int &vertexid) {
@@ -415,11 +437,13 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
     newPointVector.reserve(pointVectorCopy.size() - deleteList.size() + addListCopy.size());
 
     for(int i = 0;i < point_vector.size();i++){
+        pointVectorCopy[i].is_visited = false;
+        pointVectorCopy[i].degree = 0;
+        pointVectorCopy[i].distance = 0;
+
         if(std::find(deleteList.begin(),deleteList.end(),point_vector[i].current_id) == deleteList.end()){
-            pointVectorCopy[i].is_visited = false;
             newPointVector.push_back(pointVectorCopy[i]);
         }
-
     }
 
     for(auto item:addListCopy){
@@ -427,7 +451,26 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
         newPointVector.push_back(item);
     }
 
-
-
     return std::move(newPointVector);
+}
+
+void NeuronInfo::ExportSWC(std::string filename){
+    filename = "C:/Users/csh/Desktop/bishe/" + swcname.substr(swcname.size() - 8);
+    std::ofstream swcfile(filename,std::ios::out | std::ios::trunc);
+    if(!swcfile.is_open()){
+        std::cerr << "save failed" << std::endl;
+        return;
+    }
+
+    for(auto item:point_vector){
+        swcfile << item.current_id << " "<<
+        item.point_type << " "<< setiosflags(ios::fixed) << setprecision(4) <<
+        item.x << " " << setiosflags(ios::fixed) << setprecision(4) <<
+        item.y << " " << setiosflags(ios::fixed) << setprecision(4) <<
+        item.z << " " << setiosflags(ios::fixed) << setprecision(4) <<
+        item.radius << " " <<
+        item.previous_id << std::endl;
+    }
+
+    swcfile.close();
 }

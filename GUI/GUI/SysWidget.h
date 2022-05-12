@@ -32,6 +32,7 @@ private:
 
     QAction* openSWCFileAction;
     QAction* openOBJFileAction;
+    QAction* exportSWCFileAction;
 
     NeuronInfo* neuronInfo;
 

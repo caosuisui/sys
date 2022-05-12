@@ -35,7 +35,7 @@ void SysWidget::CreateAction()
     connect(openSWCFileAction,&QAction::triggered,[this](){
         this->OpenSWC(
                 QFileDialog::getOpenFileName(this,
-                                             QStringLiteral("OpenFile"),
+                                             QStringLiteral("Open SWC File"),
                                              QStringLiteral("."),
                                              QStringLiteral("swc files(*.swc)")
                 ).toStdString()
@@ -46,13 +46,20 @@ void SysWidget::CreateAction()
     connect(openOBJFileAction,&QAction::triggered,[this](){
         this->OpenOBJ(
                 QFileDialog::getOpenFileName(this,
-                                             QStringLiteral("OpenFile"),
+                                             QStringLiteral("Open OBJ File"),
                                              QStringLiteral("."),
                                              QStringLiteral("obj files(*.obj)")
                 ).toStdString()
         );
     });
 
+    exportSWCFileAction = new QAction(QStringLiteral("save swc"));
+    connect(exportSWCFileAction,&QAction::triggered,[this](){
+        auto location = QFileDialog::getSaveFileName(this,QStringLiteral("Save SWC File"),
+                                                     QStringLiteral("."),
+                                                     QStringLiteral("swc files(*.swc)")).toStdString();
+        neuronInfo->ExportSWC(location);
+    });
 }
 
 void SysWidget::CreateWidgets() {
@@ -92,6 +99,7 @@ void SysWidget::CreateMenu(){
     fileMenu = menuBar()->addMenu("File");
     fileMenu->addAction(openSWCFileAction);
     fileMenu->addAction(openOBJFileAction);
+    fileMenu->addAction(exportSWCFileAction);
 //    fileMenu->addAction(tr("Close"),this,[this](){
 //    });
     viewMenu = menuBar()->addMenu("View");
@@ -105,7 +113,7 @@ void SysWidget::OpenSWC(std::string fileName){
     neuronInfo = new NeuronInfo();
     mSWC2VOL->GetNeuronInfo(inputswc, blocksize, neuronInfo);
 
-    subwayMapWidget->SetPath(neuronInfo->paths,neuronInfo->point_vector.size(),neuronInfo->mainPaths,neuronInfo);
+    subwayMapWidget->SetPath(neuronInfo);
     subwayMapWidget->SelectPath(0);
 
     renderWidget->SWCLoaded(neuronInfo);
