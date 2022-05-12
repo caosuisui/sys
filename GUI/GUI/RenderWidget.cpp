@@ -217,10 +217,10 @@ void RenderWidget::paintGL() {
     glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-//    if(ifRenderVolume) {
-    if(false){
+    if(ifRenderVolume) {
+//    if(false){
         //混合渲染
-        auto volumearea = GetVolumeAreaData();
+        std::vector<float> volumearea = GetVolumeAreaData();
         //compute intersect blocks
         static std::vector<uint8_t> volume_data(volume_block_size);
         static glm::ivec3 last_start_block_index = {-1, -1, -1};
@@ -474,13 +474,13 @@ std::vector<float> RenderWidget::GetVolumeAreaData()
     y = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].y;
     z = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].z;
 
-    int padding = 4;
-    int a = (x - (neuronInfo->x_start - padding / 2)) / (neuronInfo->blocksize - 2);
-    startx = a * (neuronInfo->blocksize - 2) + (neuronInfo->x_start - padding / 2);
-    a = (y - (neuronInfo->y_start - padding / 2)) / (neuronInfo->blocksize - 2);
-    starty = a * (neuronInfo->blocksize - 2) + (neuronInfo->y_start - padding / 2);
-    a = (z - (neuronInfo->z_start - padding / 2)) / (neuronInfo->blocksize - 2);
-    startz = a * (neuronInfo->blocksize - 2) + (neuronInfo->z_start - padding / 2);
+//    int padding = 4;
+//    int a = (x - (neuronInfo->x_start - padding / 2)) / (neuronInfo->blocksize - 2);
+//    startx = a * (neuronInfo->blocksize - 2) + (neuronInfo->x_start - padding / 2);
+//    a = (y - (neuronInfo->y_start - padding / 2)) / (neuronInfo->blocksize - 2);
+//    starty = a * (neuronInfo->blocksize - 2) + (neuronInfo->y_start - padding / 2);
+//    a = (z - (neuronInfo->z_start - padding / 2)) / (neuronInfo->blocksize - 2);
+//    startz = a * (neuronInfo->blocksize - 2) + (neuronInfo->z_start - padding / 2);
 
     dimension = neuronInfo->blocksize + 4;
 //    data.push_back(startx);

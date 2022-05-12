@@ -42,16 +42,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SysWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SysWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/swc2vol/swc2vol.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +52,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -364,7 +355,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652187045463</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="delete vertex">
+      <created>1652335107042</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1652335107042</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -447,7 +445,8 @@
     </ignored-roots>
     <MESSAGE value="-" />
     <MESSAGE value="-局部重构" />
-    <option name="LAST_COMMIT_MESSAGE" value="-局部重构" />
+    <MESSAGE value="delete vertex" />
+    <option name="LAST_COMMIT_MESSAGE" value="delete vertex" />
   </component>
   <component name="WindowStateProjectService">
     <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652186581742">
@@ -474,38 +473,38 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652273755483">
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom" timestamp="1652336116105">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652273755483" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652273755483">
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336116105" />
+    <state width="1877" height="322" key="GridCell.Tab.0.center" timestamp="1652336116105">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652273755483" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652273755483">
+    <state width="1877" height="322" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336116105" />
+    <state width="1877" height="322" key="GridCell.Tab.0.left" timestamp="1652336116105">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652273755483" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652273755483">
+    <state width="1877" height="322" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336116105" />
+    <state width="1877" height="322" key="GridCell.Tab.0.right" timestamp="1652336116105">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652273755483" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652271938898">
+    <state width="1877" height="322" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336116105" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652336131440">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652271938898" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652271938898">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336131440" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652336131440">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652271938898" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652271938898">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336131440" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652336131440">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652271938898" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652271938898">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336131440" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652336131440">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652271938898" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652336131440" />
     <state x="751" y="282" key="RollbackChangesDialog" timestamp="1652165450495">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -585,8 +584,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp</url>
-          <line>848</line>
-          <option name="timeStamp" value="33" />
+          <line>227</line>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
