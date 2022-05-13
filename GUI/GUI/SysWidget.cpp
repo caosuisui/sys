@@ -116,8 +116,8 @@ void SysWidget::OpenSWC(std::string fileName){
     subwayMapWidget->SetPath(neuronInfo);
     subwayMapWidget->SelectPath(0);
 
-    renderWidget->SWCLoaded(neuronInfo);
     inputWidget->SWCLoaded(neuronInfo);
+    renderWidget->SWCLoaded(neuronInfo);
 
     this->setWindowTitle(QString::fromStdString(fileName));
 }

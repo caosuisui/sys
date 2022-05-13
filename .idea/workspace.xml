@@ -23,14 +23,23 @@
       <config projectName="sys" targetName="SYSGUI_autogen" />
       <config projectName="sys" targetName="voxel_uncompress_autogen" />
       <config projectName="sys" targetName="SYSGUI" />
+      <config projectName="sys" targetName="RawVolumeReaderPlugin" />
       <config projectName="sys" targetName="voxel_compress" />
       <config projectName="sys" targetName="spdlog_autogen" />
+      <config projectName="sys" targetName="H264VolumeCDFGenerator" />
       <config projectName="sys" targetName="voxel_uncompress" />
+      <config projectName="sys" targetName="tinyobjloader" />
+      <config projectName="sys" targetName="H264VolumeReaderPlugin" />
       <config projectName="sys" targetName="SWC2OBJ" />
       <config projectName="sys" targetName="voxel_compress_autogen" />
+      <config projectName="sys" targetName="glfw" />
+      <config projectName="sys" targetName="BlockVolumeProviderPlugin" />
       <config projectName="sys" targetName="SWC2VOLLIB" />
       <config projectName="sys" targetName="uninstall" />
+      <config projectName="sys" targetName="stdgpu" />
+      <config projectName="sys" targetName="ObjMeshLoaderPlugin" />
       <config projectName="sys" targetName="spdlog" />
+      <config projectName="sys" targetName="VS_CORE" />
     </generated>
   </component>
   <component name="CMakeSettings" AUTO_RELOAD="true">
@@ -42,10 +51,15 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/util/NeuronInfo.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +69,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -99,7 +113,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="cf.advertisement.text.has.clang-format" value="true" />
     <property name="cf.first.check.clang-format" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/cmake-build-debug/GUI/swc2obj" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="CPPToolchains" />
   </component>
@@ -112,10 +126,10 @@
       <recent name="C:\Users\csh\Desktop\bishe\sys" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\csh\Desktop\bishe\sys" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-debug\GUI\swc2obj" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\bin" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\cmake-build-release\GUI\swc2obj" />
-      <recent name="C:\Users\csh\Desktop\bishe\sys" />
       <recent name="C:\Users\csh\Desktop\bishe\sys\deps" />
     </key>
   </component>
@@ -128,6 +142,31 @@
     <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true">
       <method v="2">
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BlockVolumeProviderPlugin" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="BlockVolumeProviderPlugin" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="H264VolumeCDFGenerator" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="H264VolumeCDFGenerator" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="H264VolumeCDFGenerator">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="H264VolumeReaderPlugin" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="H264VolumeReaderPlugin" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ObjMeshLoaderPlugin" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="ObjMeshLoaderPlugin" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RawVolumeReaderPlugin" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="RawVolumeReaderPlugin" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
     <configuration name="SWC2OBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s $PROJECT_DIR$/14193_30neurons/N003.swc -o $PROJECT_DIR$/output/ -b 64" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="SWC2OBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="SWC2OBJ">
@@ -160,6 +199,16 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VS_CORE" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="VS_CORE" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="glfw" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="glfw" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="mergeOBJ" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-i $PROJECT_DIR$/output/obj/objRes.obj -o $PROJECT_DIR$/output/obj/mergeObjRes.obj" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="mergeOBJ" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="sys" RUN_TARGET_NAME="mergeOBJ">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -171,6 +220,16 @@
       </method>
     </configuration>
     <configuration name="spdlog_autogen" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="spdlog_autogen" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="stdgpu" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="stdgpu" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="tinyobjloader" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="sys" TARGET_NAME="tinyobjloader" CONFIG_NAME="Debug">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -272,8 +331,11 @@
       <item itemvalue="CMake Application.SWC2VOL" />
       <item itemvalue="CMake Application.SWC2Obj" />
       <item itemvalue="CMake Application.mergeOBJ" />
+      <item itemvalue="CMake Application.glfw" />
       <item itemvalue="CMake Application.spdlog" />
       <item itemvalue="CMake Application.spdlog_autogen" />
+      <item itemvalue="CMake Application.stdgpu" />
+      <item itemvalue="CMake Application.tinyobjloader" />
       <item itemvalue="CMake Application.voxel_compress" />
       <item itemvalue="CMake Application.voxel_compress_autogen" />
       <item itemvalue="CMake Application.voxel_uncompress" />
@@ -282,6 +344,12 @@
       <item itemvalue="CMake Application.SYSGUI_autogen" />
       <item itemvalue="CMake Application.SWC2OBJ" />
       <item itemvalue="CMake Application.SWC2VOLLIB" />
+      <item itemvalue="CMake Application.BlockVolumeProviderPlugin" />
+      <item itemvalue="CMake Application.H264VolumeReaderPlugin" />
+      <item itemvalue="CMake Application.ObjMeshLoaderPlugin" />
+      <item itemvalue="CMake Application.RawVolumeReaderPlugin" />
+      <item itemvalue="CMake Application.VS_CORE" />
+      <item itemvalue="CMake Application.H264VolumeCDFGenerator" />
       <item itemvalue="CMake Application.uninstall" />
       <item itemvalue="Python.smoothOBJ" />
       <item itemvalue="Python.voldir2obj" />
@@ -372,7 +440,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652344148754</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="-dialog">
+      <created>1652356492540</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1652356492540</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,7 +532,8 @@
     <MESSAGE value="-局部重构" />
     <MESSAGE value="delete vertex" />
     <MESSAGE value="-add vertes" />
-    <option name="LAST_COMMIT_MESSAGE" value="-add vertes" />
+    <MESSAGE value="-dialog" />
+    <option name="LAST_COMMIT_MESSAGE" value="-dialog" />
   </component>
   <component name="WindowStateProjectService">
     <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652343179165">
@@ -484,38 +560,38 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652356373992">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652422220917">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652356373992">
+    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
+    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652422220917">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652356373992">
+    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
+    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652422220917">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652356373992">
+    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
+    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652422220917">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652356373992" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652338746134">
+    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652360502616">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652338746134" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652338746134">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652360502616">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652338746134" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652338746134">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652360502616">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652338746134" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652338746134">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652360502616">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652338746134" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
     <state x="751" y="282" key="RollbackChangesDialog" timestamp="1652165450495">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -556,10 +632,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652341250252">
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652422057149">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652341250252" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422057149" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1652187015022">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

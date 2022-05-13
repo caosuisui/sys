@@ -9,3 +9,9 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories(include)
 
 add_subdirectory(GUI)
+
+add_subdirectory(plugin)
+
+add_subdirectory(tools)
+
+add_subdirectory(src)

@@ -41,8 +41,10 @@ ADD_SUBSRC(utildir util)
 ADD_SUBSRC(vol2objdir vol2obj/)
 ADD_SUBSRC(mergeobjdir ObjMerge)
 
-add_subdirectory(external/glm)
+#add_subdirectory(external/glm)
 add_subdirectory(external/cxxopts)
+
+include(${PROJECT_SOURCE_DIR}/third_party/glm.cmake)
 
 add_executable(SWC2OBJ ${datadir} ${swc2voldir} ${utildir} ${vol2objdir} ${mergeobjdir} main.cpp)
 
@@ -54,7 +56,7 @@ target_include_directories(SWC2VOLLIB
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
+#        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
         "${CMAKE_CURRENT_BINARY_DIR}/config/"
         "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
@@ -63,6 +65,7 @@ target_include_directories(SWC2VOLLIB
 target_link_libraries(SWC2VOLLIB
         PUBLIC
         ${VTK_LIBRARIES}
+        glm
         )
 
 
@@ -72,7 +75,7 @@ target_include_directories(SWC2OBJ
         "${CMAKE_CURRENT_SOURCE_DIR}/swc2vol/"
         "${CMAKE_CURRENT_SOURCE_DIR}/vol2obj/"
         "${CMAKE_CURRENT_SOURCE_DIR}/util/"
-        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
+#        "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/"
         "${CMAKE_CURRENT_SOURCE_DIR}/external/cxxopts/include"
         "${CMAKE_CURRENT_BINARY_DIR}/config/"
         "${CMAKE_CURRENT_SOURCE_DIR}/ObjMerge/"
@@ -83,6 +86,7 @@ target_include_directories(SWC2OBJ
 target_link_libraries(SWC2OBJ
         PUBLIC
         ${VTK_LIBRARIES}
+        glm
         )
 
 

@@ -81,17 +81,17 @@ void RenderWidget::initializeGL() {
     }
 //----------------------------------------------------------------------------
 
-//    tf = new QOpenGLTexture(QOpenGLTexture::Target1D);
-//    tf->create();
-//    tf->bind();
-//    tfdata.reserve(256 * 4);
+    tf = new QOpenGLTexture(QOpenGLTexture::Target1D);
+    tf->create();
+    assert(tf->isCreated());
+    tf->bind();
+    tf->setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
+    tf->setBorderColor(0,0,0,0);
+    tf->setWrapMode(QOpenGLTexture::ClampToBorder);
 //    for(int i = 0;i < 256;i++){
-//        tfdata[i] = tfdata[i+1] = tfdata[i+2] = tfdata[i+3] = i;
+//        tfdata[i] = tfdata[i+1] = tfdata[i+2] = tfdata[i+3] = i / 255.0;
 //    }
-//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
-//    tf->setMinMagFilters(QOpenGLTexture::Nearest,QOpenGLTexture::Linear);
-//    tf->setBorderColor(0,0,0,0);
-//    tf->setWrapMode(QOpenGLTexture::ClampToBorder);
+//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata);
 
     volume_tex = new QOpenGLTexture(QOpenGLTexture::Target3D);
     volume_tex->create();
@@ -291,10 +291,13 @@ void RenderWidget::paintGL() {
             glBindTexture(GL_TEXTURE_RECTANGLE,ray_exit->textureId());
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_3D,volume_tex->textureId());
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_1D,tf->textureId());
 
             raycast_shader->setUniformValue("RayStartPos",0);
             raycast_shader->setUniformValue("RayEndPos",1);
             raycast_shader->setUniformValue("VolumeData",2);
+            raycast_shader->setUniformValue("TransferFunc",3);
             raycast_shader->setUniformValue("voxel",1.f);
             raycast_shader->setUniformValue("step",0.6f);
             raycast_shader->setUniformValue("volume_start_pos",voxel_start_pos_x,voxel_start_pos_y,voxel_start_pos_z);
@@ -688,6 +691,8 @@ void RenderWidget::GenObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &vao,f
 void RenderWidget::SWCLoaded(NeuronInfo* neuronInfo) {
     this->neuronInfo = neuronInfo;
 
+    resetTransferFunc1D();
+
     if(isFirstRender){
         init();
 //        currentPointId = -1;
@@ -1048,21 +1053,23 @@ void RenderWidget::SetOtherWidget(SubwayMapWidget *swidget ,InputWidget* iwidget
     connect(inputWidget,&InputWidget::ChangeRenderOptionSignal,this,&RenderWidget::ChangeRenderOption);
 
     connect(inputWidget->tf_editor_widget,&TF1DEditor::TF1DChanged,[this](){
-//        tfdata.reserve(256 * 4);
-//        tfdata.clear();
-//        inputWidget->tf_editor_widget->getTransferFunction(tfdata.data(),256,1.0);
-//        resetTransferFunc1D();
-//        repaint();
+
+        resetTransferFunc1D();
+        repaint();
     });
 
     connect(inputWidget,&InputWidget::ReloadObj,this,&RenderWidget::ReloadObjSlot);
 }
 
 void RenderWidget::resetTransferFunc1D() {
-//    makeCurrent();
-//    tf->bind();
-//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata.data());
-//    tf->release();
-//    doneCurrent();
+    inputWidget->tf_editor_widget->getTransferFunction(tfdata,256,1.0);
+
+    makeCurrent();
+    tf->bind();
+    glTexImage1D(GL_TEXTURE_1D, 0, GL_RGBA32F, 256,0 ,GL_RGBA, GL_FLOAT, tfdata);
+
+//    glTextureSubImage1D(tf->textureId(), 0, 0, 256, GL_RGBA, GL_FLOAT, tfdata);
+    tf->release();
+    doneCurrent();
 }
 

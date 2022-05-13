@@ -20,7 +20,7 @@
 #include <VolumeSlicer/slice.hpp>
 
 #define INPUT_WIDTH 500
-#define INPUT_HEIGHT 1000
+#define INPUT_HEIGHT 1040
 
 using namespace vs;
 
@@ -36,7 +36,7 @@ public:
     TF1DEditor* tf_editor_widget;
 private:
     void GenTreeWidget(QTreeWidgetItem* parent, Path* path);
-
+    void GetRawVolume();
 signals:
     void ChangeSelectionStateSignal(SubwayMapWidget::SelectionState state);
     void ChangeRenderOptionSignal(bool vol, bool obj, bool line);

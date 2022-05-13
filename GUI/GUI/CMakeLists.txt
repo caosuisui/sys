@@ -32,7 +32,7 @@ target_link_libraries(
         Qt6::Widgets
         Qt6::OpenGL
         Qt6::OpenGLWidgets
-        #VS_CORE
+        VS_CORE
         voxel_uncompress
         spdlog
 )
