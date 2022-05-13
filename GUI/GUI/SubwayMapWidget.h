@@ -34,7 +34,7 @@ public:
 public:
     explicit SubwayMapWidget(QWidget* parent = nullptr);
 
-    void SelectPath(int index);
+    void SelectPath(int index,bool ifShowBranch = true);
 
     void SetPath(NeuronInfo* info) ;
 
@@ -74,7 +74,7 @@ private://内部方法
     /// \param direction
     /// \param halfRange 路径及其子路径可生长的y范围
     /// \param lastPos 如果是父路径则空，如果是子路径，则代表已经被绘制的第一个点
-    void GenMap(Path* path, double x, double y, double halfRange, QPointF lastPos,bool isFirstLevel = false);
+    void GenMap(Path* path, double x, double y, double halfRange, QPointF lastPos,bool isFirstLevel = false, bool ifShowBranch = true);
     void clearScene();
     static QGraphicsPolygonItem* GetPolyGon(QPointF pos1 ,double r1, QPointF pos2, double r2, bool isHorizontal = true);
 

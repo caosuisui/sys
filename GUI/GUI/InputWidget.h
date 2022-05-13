@@ -96,7 +96,7 @@ private:
     std::unique_ptr<TrivalVolume> trival_volume;
     std::vector<float> tf;
 
-    QDialog* progressDialog;
+    QProgressDialog* progressDialog;
     QLabel* progress;
     QProgressBar* progressBar;
 };

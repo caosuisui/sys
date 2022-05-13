@@ -211,7 +211,7 @@ void SubwayMapWidget::keyPressEvent(QKeyEvent *e) {
 
 }
 
-void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, QPointF lastPos,bool isFirstLevel) {
+void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, QPointF lastPos,bool isFirstLevel,bool ifShowBranch) {
     std::vector<PointItem*> thisPath;
     thisPath.reserve(path->path.size());
 
@@ -293,7 +293,7 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
 //    a = a == 0? 1 : a;
     double nextHalfRange = halfRange / (a * 2);
 
-    if(nextHalfRange >= 10)
+    if(nextHalfRange >= 10 && ifShowBranch)
         for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根
             double nextx,nexty;
 
@@ -375,7 +375,7 @@ QGraphicsPolygonItem* SubwayMapWidget::GetPolyGon(QPointF pos1 ,double r1, QPoin
     return polygonItem;
 }
 
-void SubwayMapWidget::SelectPath(int index){
+void SubwayMapWidget::SelectPath(int index,bool ifShowBranch){
     std::cout << "select path " << index << std::endl;
     if(index >= 0 && index < paths.size())
         currentPath = index;
@@ -388,14 +388,8 @@ void SubwayMapWidget::SelectPath(int index){
 
     clearScene();
 
-    int halfYDimension = oriPathDis * ((paths[currentPath].sub_paths_index.size() / 2) + 1) * 2;
+    GenMap(&paths[currentPath],0,0,oriPathDis, QPointF(0,0),true,ifShowBranch);
 
-//    scene = new QGraphicsScene(0,-halfYDimension,10000,halfYDimension * 2);
-//    view->setScene(scene);
-
-    GenMap(&paths[currentPath],0,0,oriPathDis, QPointF(0,0),true);
-
-    //view->translate(0,halfYDimension);
     view->show();
 }
 

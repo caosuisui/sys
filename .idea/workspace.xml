@@ -51,15 +51,10 @@
   <component name="ChangeListManager">
     <list default="true" id="2480fbb5-bd83-4d37-9f98-b5e37c7c6624" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/InputWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/RenderWidget.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SysWidget.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/src/volume_raycast_render.frag" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/swc2obj/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.h" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI/SubwayMapWidget.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +64,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Release" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -447,7 +442,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652356492540</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="-tf">
+      <created>1652422253019</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1652422253019</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -533,7 +535,8 @@
     <MESSAGE value="delete vertex" />
     <MESSAGE value="-add vertes" />
     <MESSAGE value="-dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="-dialog" />
+    <MESSAGE value="-tf" />
+    <option name="LAST_COMMIT_MESSAGE" value="-tf" />
   </component>
   <component name="WindowStateProjectService">
     <state x="475" y="268" width="1092" height="714" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1652343179165">
@@ -560,38 +563,38 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="739" y="335" key="FileChooserDialogImpl/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652165471939" />
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom" timestamp="1652422220917">
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom" timestamp="1652427200423">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
-    <state width="1877" height="321" key="GridCell.Tab.0.center" timestamp="1652422220917">
+    <state width="1877" height="322" key="GridCell.Tab.0.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200423" />
+    <state width="1877" height="322" key="GridCell.Tab.0.center" timestamp="1652427200423">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
-    <state width="1877" height="321" key="GridCell.Tab.0.left" timestamp="1652422220917">
+    <state width="1877" height="322" key="GridCell.Tab.0.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200423" />
+    <state width="1877" height="322" key="GridCell.Tab.0.left" timestamp="1652427200423">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
-    <state width="1877" height="321" key="GridCell.Tab.0.right" timestamp="1652422220917">
+    <state width="1877" height="322" key="GridCell.Tab.0.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200423" />
+    <state width="1877" height="322" key="GridCell.Tab.0.right" timestamp="1652427200423">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="321" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422220917" />
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652360502616">
+    <state width="1877" height="322" key="GridCell.Tab.0.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200423" />
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom" timestamp="1652427200369">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
-    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652360502616">
+    <state width="1877" height="322" key="GridCell.Tab.1.bottom/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200369" />
+    <state width="1877" height="322" key="GridCell.Tab.1.center" timestamp="1652427200369">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
-    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652360502616">
+    <state width="1877" height="322" key="GridCell.Tab.1.center/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200369" />
+    <state width="1877" height="322" key="GridCell.Tab.1.left" timestamp="1652427200369">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
-    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652360502616">
+    <state width="1877" height="322" key="GridCell.Tab.1.left/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200369" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right" timestamp="1652427200369">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652360502616" />
+    <state width="1877" height="322" key="GridCell.Tab.1.right/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652427200369" />
     <state x="751" y="282" key="RollbackChangesDialog" timestamp="1652165450495">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
@@ -632,10 +635,10 @@
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
     <state x="820" y="749" key="git4idea.remote.GitConfigureRemotesDialog/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1651131322828" />
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652422057149">
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup" timestamp="1652425811967">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>
-    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652422057149" />
+    <state x="793" y="290" width="672" height="677" key="run.anything.popup/1920.-135.1080.1880/0.0.1920.1160@0.0.1920.1160" timestamp="1652425811967" />
     <state x="623" y="255" width="672" height="678" key="search.everywhere.popup" timestamp="1652187015022">
       <screen x="0" y="0" width="1920" height="1160" />
     </state>

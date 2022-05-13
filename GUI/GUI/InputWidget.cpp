@@ -12,16 +12,25 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
     auto widgetLayout = new QVBoxLayout;
     widgetLayout->setAlignment(Qt::AlignTop);
 
-    progressDialog = new QDialog;
-    progressDialog->setWindowTitle("progress");
-    auto dialogLayout = new QVBoxLayout;
-    progressDialog->setLayout(dialogLayout);
-    progress = new QLabel("processing");
-    dialogLayout->addWidget(progress);
-    progressBar = new QProgressBar;
-    progressBar->setRange(0,100);
-    dialogLayout->addWidget(progressBar);
+    progressDialog = new QProgressDialog;
+    progressDialog->setWindowTitle("processing");
+    progressDialog->setRange(0,100);
+    progressDialog->setCancelButtonText(nullptr);
+    progressDialog->setWindowFlags(Qt::CustomizeWindowHint | Qt::WindowMinimizeButtonHint);
+    progressDialog->setModal(true);
+    progressDialog->close();
 
+
+    progressDialog->setValue(50);
+
+//    auto dialogLayout = new QVBoxLayout;
+//
+//    progressBar = new QProgressBar;
+//    progressBar->setRange(0,100);
+//    progressBar->setValue(50);
+//    dialogLayout->addWidget(progressBar);
+
+//    progressDialog->setLayout(dialogLayout);
 
 
     //路径导航
@@ -243,9 +252,9 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
 }
 
 void InputWidget::ReconstructionSlot(bool) {
-    progressDialog->show();
+//    progressDialog->show();
     auto name = neuronInfo->PartialReconstruction();
-    progressDialog->close();
+//    progressDialog->close();
     SWCLoaded(neuronInfo);
     emit ReloadObj(name);
 }
@@ -382,7 +391,10 @@ void InputWidget::ChangeNextPoint(int id) {
 void InputWidget::ChangePath(QTreeWidgetItem *current, QTreeWidgetItem *previous) {
     auto s = current->text(1);
     int pathIndex = s.toInt();
-    subwayMapWidget->SelectPath(pathIndex);
+    if(current->childCount() != 0)
+        subwayMapWidget->SelectPath(pathIndex);
+    else
+        subwayMapWidget->SelectPath(pathIndex,false);
     ChangeCurrentPoint(-1);
     ChangeLastPoint(-1);
     ChangeNextPoint(-1);
@@ -426,9 +438,17 @@ void InputWidget::SWCLoaded(NeuronInfo *in_neuronInfo) {
 }
 
 void InputWidget::GenTreeWidget(QTreeWidgetItem *parent, Path *path) {
+    if(path->sub_paths_index.size()!=0){
+        QStringList list;
+        list.push_back("branch 0");
+        list.push_back(QString::number(path->path_type));
+        auto item = new QTreeWidgetItem(parent,list);
+        item->setText(0,list[0]);
+    }
+
     for(int i = 0;i < path->sub_paths_index.size();i++){
         QStringList list;
-        list.push_back("branch " + QString::number(i));
+        list.push_back("branch " + QString::number(i + 1));
         list.push_back(QString::number(path->sub_paths_index[i]));
         //list.push_back(QString::number(path->sub_paths_index.size()));
         auto item = new QTreeWidgetItem(parent,list);
