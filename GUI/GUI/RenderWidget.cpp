@@ -7,6 +7,8 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     objEBO(QOpenGLBuffer::Type::IndexBuffer),
     objVBO(QOpenGLBuffer::Type::VertexBuffer)
 {
+    setFocusPolicy(Qt::ClickFocus);
+    setMouseTracking(true);
     objLoader = new ObjMode();
     blocksize = 256;
     isWholeView = false;
@@ -17,6 +19,7 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     nextPointId = -1;
     lastSelectedPath = -1;
     isFirstRender = true;
+    pressed = false;
 
     currentPathId = currentInPathId = -1;
     lastPathId = lastInPathId = -1;
@@ -335,7 +338,7 @@ void RenderWidget::paintGL() {
         }
 
         //debug for volume proxy cube wireframe
-        if(true){
+        if(currentPointId != -1){
             pathProgram->bind();
             pathProgram->setUniformValue("model",model);
             pathProgram->setUniformValue("view",view);
@@ -382,10 +385,10 @@ void RenderWidget::paintGL() {
         glDrawArrays(GL_LINES,0,lines.size()/3);
 
 //        if(!isWholeView){
-            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
-            glPointSize(8);
-            QOpenGLVertexArrayObject::Binder binder3(&vertexVAO);
-            glDrawArrays(GL_POINTS,0,swcPoints.size()/3);
+//            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+//            glPointSize(8);
+//            QOpenGLVertexArrayObject::Binder binder3(&vertexVAO);
+//            glDrawArrays(GL_POINTS,0,swcPoints.size()/3);
 //        }
 
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -422,6 +425,13 @@ void RenderWidget::paintGL() {
            glDrawArrays(GL_POINTS,0,nextPoint.size()/3);
        }
 
+       if(hoveredPointId != -1){
+           pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+           glPointSize(8);
+           QOpenGLVertexArrayObject::Binder binder6(&hoveredPointVAO);
+           glDrawArrays(GL_POINTS,0,hoveredPoint.size()/3);
+       }
+
        if(!deletePoints.empty()){
            pathProgram->setUniformValue("color",QVector4D(0,1,0,1));
            glPointSize(8);
@@ -436,13 +446,13 @@ void RenderWidget::paintGL() {
             glDrawArrays(GL_POINTS,0,newPoints.size()/3);
         }
 
-        if(!upmostVertex.empty()){
-            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
-            glPointSize(8);
-            QOpenGLVertexArrayObject::Binder binder3(&upmostVertexVAO);
-            glDrawArrays(GL_POINTS,0,upmostVertex.size()/3);
+        if(lastSelectedPath != -1){
+//            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+//            glPointSize(8);
+//            QOpenGLVertexArrayObject::Binder binder3(&upmostVertexVAO);
+//            glDrawArrays(GL_POINTS,0,upmostVertex.size()/3);
 
-            pathProgram->setUniformValue("color",QVector4D(1,0,0,1));
+            pathProgram->setUniformValue("color",QVector4D(1,1,0,1));
             QOpenGLVertexArrayObject::Binder binder20(&selectedLineVAO);
             glDrawArrays(GL_LINES,0,selectedLine.size()/3);
         }
@@ -531,19 +541,18 @@ void RenderWidget::loadLines(){
         newLines.push_back(item.z);
     }
 
-    selectedLine.clear();
-    if(lastSelectedPath != -1){
-        auto path = neuronInfo->paths[lastSelectedPath].path;
+    auto addLineFunction = [&](int pathId){
+        auto path = neuronInfo->paths[pathId].path;
         int id = path[0].current_id;
-        while(true){
+        while(true) {
             auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
-            if(vertex.previous_id == -1)
+            if (vertex.previous_id == -1)
                 break;
 
             auto preVertex = neuronInfo->point_vector[neuronInfo->vertex_hash[vertex.previous_id]];
 
-            if(std::find(deletedPoints.begin(),deletedPoints.end(),vertex.current_id) == deletedPoints.end() &&
-               std::find(deletedPoints.begin(),deletedPoints.end(),preVertex.current_id) == deletedPoints.end()){
+            if (std::find(deletedPoints.begin(), deletedPoints.end(), vertex.current_id) == deletedPoints.end() &&
+                std::find(deletedPoints.begin(), deletedPoints.end(), preVertex.current_id) == deletedPoints.end()) {
                 selectedLine.push_back(vertex.x);
                 selectedLine.push_back(vertex.y);
                 selectedLine.push_back(vertex.z);
@@ -554,6 +563,15 @@ void RenderWidget::loadLines(){
 
             id = vertex.previous_id;
         }
+    };
+
+    selectedLine.clear();
+    if(lastSelectedPath != -1){
+        addLineFunction(lastSelectedPath);
+//        if(!neuronInfo->paths[lastSelectedPath].sub_paths_index.empty())
+//            for(auto pathId: neuronInfo->paths[lastSelectedPath].sub_paths_index){
+//                addLineFunction(pathId);
+//            }
     }
 
     makeCurrent();
@@ -614,56 +632,65 @@ void RenderWidget::loadSWCPoint() {
         newPoints.push_back(point.z);
     }
 
-    swcPoints.clear();
-    swcPoints.reserve(neuronInfo->point_vector.size());
-    for(auto vertex : neuronInfo->point_vector){
-        if(vertex.previous_id == -1)
-            continue;
-        int cid = vertex.current_id;
-        if(cid == currentPointId || cid == lastPointId || cid == nextPointId){
-            continue;
-        };
-        if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),cid) != neuronInfo->deleteList.end())
-            continue;
-        swcPoints.push_back(vertex.x);
-        swcPoints.push_back(vertex.y);
-        swcPoints.push_back(vertex.z);
+    hoveredPoint.clear();
+    if(hoveredPointId != -1){
+        auto point = neuronInfo->point_vector[neuronInfo->vertex_hash[hoveredPointId]];
+        hoveredPoint.push_back(point.x);
+        hoveredPoint.push_back(point.y);
+        hoveredPoint.push_back(point.z);
     }
 
-    upmostVertex.clear();
-    if(lastSelectedPath != -1 && lastSelectedPath < neuronInfo->paths.size()){
-        auto path = neuronInfo->paths[lastSelectedPath];
-        int id = path.path[0].current_id;
-        while(true){
-            auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
-            int cid = vertex.current_id;
-            bool flag = true;
-            if(cid == currentPointId || cid == lastPointId || cid == nextPointId){
-                flag = false;
-            }
-            if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),cid) != neuronInfo->deleteList.end()){
-                flag = false;
-            }
-            if(flag){
-                upmostVertex.push_back(vertex.x);
-                upmostVertex.push_back(vertex.y);
-                upmostVertex.push_back(vertex.z);
-            }
+//    swcPoints.clear();
+//    swcPoints.reserve(neuronInfo->point_vector.size());
+//    for(auto vertex : neuronInfo->point_vector){
+//        if(vertex.previous_id == -1)
+//            continue;
+//        int cid = vertex.current_id;
+//        if(cid == currentPointId || cid == lastPointId || cid == nextPointId){
+//            continue;
+//        };
+//        if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),cid) != neuronInfo->deleteList.end())
+//            continue;
+//        swcPoints.push_back(vertex.x);
+//        swcPoints.push_back(vertex.y);
+//        swcPoints.push_back(vertex.z);
+//    }
+//
+//    upmostVertex.clear();
+//    if(lastSelectedPath != -1 && lastSelectedPath < neuronInfo->paths.size()){
+//        auto path = neuronInfo->paths[lastSelectedPath];
+//        int id = path.path[0].current_id;
+//        while(true){
+//            auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
+//            int cid = vertex.current_id;
+//            bool flag = true;
+//            if(cid == currentPointId || cid == lastPointId || cid == nextPointId){
+//                flag = false;
+//            }
+//            if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),cid) != neuronInfo->deleteList.end()){
+//                flag = false;
+//            }
+//            if(flag){
+//                upmostVertex.push_back(vertex.x);
+//                upmostVertex.push_back(vertex.y);
+//                upmostVertex.push_back(vertex.z);
+//            }
+//
+//
+//            id = vertex.previous_id;
+//            if(id == -1)
+//                break;
+//        }
+//    }
 
-
-            id = vertex.previous_id;
-            if(id == -1)
-                break;
-        }
-    }
-
-    GenObject(vertexVBO,vertexVAO,swcPoints.data(),swcPoints.size() * sizeof(float));
+//    GenObject(vertexVBO,vertexVAO,swcPoints.data(),swcPoints.size() * sizeof(float));
     GenObject(currentVertexVBO,currentVertexVAO,currentPoint.data(),currentPoint.size() * sizeof(float));
     GenObject(lastVertexVBO,lastVertexVAO,lastPoint.data(),lastPoint.size() * sizeof(float));
     GenObject(nextVertexVBO,nextVertexVAO,nextPoint.data(),nextPoint.size() * sizeof(float));
     GenObject(deleteVertexVBO,deleteVertexVAO,deletePoints.data(),deletePoints.size() * sizeof(float));
     GenObject(newPointsVBO,newPointsVAO,newPoints.data(),newPoints.size()*sizeof(float));
-    GenObject(upmostVertexVBO,upmostVertexVAO,upmostVertex.data(),upmostVertex.size()*sizeof(float));
+//    GenObject(upmostVertexVBO,upmostVertexVAO,upmostVertex.data(),upmostVertex.size()*sizeof(float));
+    GenObject(hoveredPointVBO,hoveredPointVAO,hoveredPoint.data(),hoveredPoint.size()*sizeof(float));
 
     doneCurrent();
 
@@ -770,6 +797,7 @@ void RenderWidget::loadObj(){
 
 void RenderWidget::mousePressEvent(QMouseEvent *event)
 {
+    pressed = true;
     mousePressPos = event->pos();
     if(!camera) return;
     camera->processMouseButton(control::CameraDefinedMouseButton::Left,
@@ -782,14 +810,18 @@ void RenderWidget::mousePressEvent(QMouseEvent *event)
 
 void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 {
-    camera->processMouseMove(event->pos().x(),event->pos().y());
 
+    if(pressed)
+        camera->processMouseMove(event->pos().x(),event->pos().y());
+    if(neuronInfo)
+        pickPoint(event->position(),true);
     event->accept();
     repaint();
 }
 
 void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    pressed = false;
     if((mousePressPos - event->pos()).manhattanLength() < 20){
         pickPoint(event->position());
     }
@@ -806,7 +838,7 @@ void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
     repaint();
 }
 
-void RenderWidget::pickPoint(QPointF mousePos){
+void RenderWidget::pickPoint(QPointF mousePos, bool hover){
     if(!ifRenderLine){
         return;
     }
@@ -836,6 +868,19 @@ void RenderWidget::pickPoint(QPointF mousePos){
             }
         }
     };
+
+
+    if(hover){
+        pick(neuronInfo->point_vector);
+        pick(neuronInfo->addList);
+        hoveredPointId = id;
+        loadSWCPoint();
+        loadLines();
+        return;
+    }
+    else{
+        hoveredPointId = -1;
+    }
 
     pick(neuronInfo->point_vector);
 
@@ -879,89 +924,26 @@ void RenderWidget::pickPoint(QPointF mousePos){
             }
         }
 
-//        if(id == -1){
-//            if(!neuronInfo) return;
-//            if(mapping_ptr) {
-//                neuronInfo->Add(mapping_ptr);
-//                loadSWCPoint();
-//
-//                if(connectStart == -1)
-//                    connectStart = id;
-//                else{
-//
-//                }
-//            }
-//        }
-//        else{
-//
-//
-//        }
-//            for(auto item:neuronInfo->addList){
-//                if(id == item.current_id){
-//                    neuronInfo->DeleteVertex(id);
-//                    loadSWCPoint();
-//                    loadLines();
-//                }
-//            }
-
     }
 
     if(id == -1) return;
 
-//    int id1,id2;
-//    neuronInfo->GetVertexPathInfo(id,id1,id2);
+
     if(selectionState == SubwayMapWidget::SelectionState::Normal) {
         currentPointId = id;
-//        currentPathId = id1;
-//        currentInPathId = id2;
-
         loadSWCPoint();
-
         emit SelectPointSignal(id);
         return;
     }
     else if(selectionState == SubwayMapWidget::SelectionState::LastPoint){
-//        bool valid = false;
-//
-//        if(currentPointId != -1){
-//            if(id1 == currentPathId && id2 > currentInPathId)
-//                valid =true;
-//        }
-//        else if(nextPointId != -1){
-//            if(id1 == nextPathId && id2 > nextInPathId)
-//                valid =true;
-//        }
-//        else
-//            valid = true;
-//
-//        if(valid){
-            lastPointId = id;
-//            lastPathId = id1;
-//            lastInPathId = id2;
-            loadSWCPoint();
-            emit SelectLastPointSignal(id);
-//        }
+        lastPointId = id;
+        loadSWCPoint();
+        emit SelectLastPointSignal(id);
     }
     else if(selectionState == SubwayMapWidget::SelectionState::NextPoint){
-//        bool valid = false;
-//        if(currentPointId != -1){
-//            if(id1 == currentPathId && id2 < currentInPathId)
-//                valid =true;
-//        }
-//        else if(lastPointId != -1){
-//            if(id1 == nextPathId && id2 < lastInPathId)
-//                valid =true;
-//        }
-//        else
-//            valid = true;
-//
-//        if(valid){
-            nextPointId = id;
-//            nextPathId = id1;
-//            nextInPathId = id2;
-            loadSWCPoint();
-            emit SelectNextPointSignal(id);
-//        }
+        nextPointId = id;
+        loadSWCPoint();
+        emit SelectNextPointSignal(id);
     }
     else if(selectionState == SubwayMapWidget::SelectionState::Delete){
         neuronInfo->DeleteVertex(id);
@@ -1073,3 +1055,27 @@ void RenderWidget::resetTransferFunc1D() {
     doneCurrent();
 }
 
+void RenderWidget::keyPressEvent(QKeyEvent* e) {
+    return;
+    e->accept();
+    switch (e->key()) {
+        case 'A':{
+            camera->processKeyEvent(control::CameraDefinedKey::Left,5);
+            break;
+        }
+        case 'W':{
+            camera->processKeyEvent(control::CameraDefinedKey::Up,5);
+            break;
+        }
+        case 'S':{
+            camera->processKeyEvent(control::CameraDefinedKey::Bottom,5);
+            break;
+        }
+        case 'D':{
+            camera->processKeyEvent(control::CameraDefinedKey::Right,5);
+            break;
+        }
+    }
+
+    repaint();
+}

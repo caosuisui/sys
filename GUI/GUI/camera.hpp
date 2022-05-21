@@ -146,7 +146,7 @@ namespace control{
         void processMouseScroll(float yoffset) override;
         void processMouseMove(double x_pos,double y_pos) override;
         void processMouseButton(CameraDefinedMouseButton button,bool press,double x_pos,double y_pos) override;
-        void processKeyEvent(CameraDefinedKey key,float t) override{};
+        void processKeyEvent(CameraDefinedKey key,float t) override;
         glm::mat4 getViewMatrix() override;
         float getZoom() const override;
         glm::vec3 getCameraPos() const override;
@@ -187,6 +187,32 @@ namespace control{
         auto delta=glm::qua<float>(v1,v2);
         cur_quat=delta*pre_quat;
 
+    }
+
+    inline void TrackBallCamera::processKeyEvent(CameraDefinedKey key, float t) {
+        int speed = 1;
+        int delta = speed * t;
+        glm::vec3 movement{0,0,0};
+        switch(key){
+            case CameraDefinedKey::Left:{
+                movement = {-delta,0,0};
+                break;
+            }
+            case CameraDefinedKey::Right:{
+                movement = {delta,0,0};
+                break;
+            }
+            case CameraDefinedKey::Up:{
+                movement = {0,delta,0};
+                break;
+            }
+            case CameraDefinedKey::Bottom:{
+                movement = {0,-delta,0};
+                break;
+            }
+        }
+        eye_pos += movement;
+        ball_center_pos += movement;
     }
 
     inline float TrackBallCamera::getZoom() const {

@@ -78,6 +78,7 @@ protected:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
     void wheelEvent(QWheelEvent* event)override;
+    void keyPressEvent(QKeyEvent* e)override;
 
 private:
     void loadObj();
@@ -86,7 +87,7 @@ private:
 
     void loadSWCPoint();
 
-    void pickPoint(QPointF mousePos);
+    void pickPoint(QPointF mousePos, bool hover = false);
 
     void init();
 
@@ -182,9 +183,15 @@ private:
         QOpenGLVertexArrayObject newPointsVAO;
         std::vector<float> newPoints;
 
+        QOpenGLBuffer hoveredPointVBO;
+        QOpenGLVertexArrayObject hoveredPointVAO;
+        std::vector<float> hoveredPoint;
+        int hoveredPointId;
+
     int connectStart;
     int lastSelectedPath;
     bool isFirstRender;
+    bool pressed;
     //-------------------------------------------
     static constexpr float volume_space_x = 0.32f;
     static constexpr float volume_space_y = 0.32f;

@@ -12,9 +12,9 @@ SubwayMapWidget::SubwayMapWidget(QWidget *parent) :QWidget(parent){
     preLastPoint = nullptr;
     preNextPoint = nullptr;
     lastHoveredPoint = nullptr;
-    oriPathDis = 200;
+    oriPathDis = 400;
     pathRatio = 6;
-    radiusRatio = 5;
+    radiusRatio = 3;
     zoomDirection = ZoomDirection::Both;
     selectionState = SelectionState::Normal;
     isFirst = true;
@@ -199,15 +199,15 @@ void SubwayMapWidget::keyPressEvent(QKeyEvent *e) {
 //        currentPath = mainPaths[mainindex];
 //        SelectPath(currentPath);
 //    }
-    else if(e->key() == Qt::Key_F1){
-        zoomDirection = ZoomDirection::Both;
-    }
-    else if(e->key() == Qt::Key_F2){
-        zoomDirection = ZoomDirection::Horizontal;
-    }
-    else if(e->key() == Qt::Key_F3){
-        zoomDirection = ZoomDirection::Vertical;
-    }
+//    else if(e->key() == Qt::Key_F1){
+//        zoomDirection = ZoomDirection::Both;
+//    }
+//    else if(e->key() == Qt::Key_F2){
+//        zoomDirection = ZoomDirection::Horizontal;
+//    }
+//    else if(e->key() == Qt::Key_F3){
+//        zoomDirection = ZoomDirection::Vertical;
+//    }
 
 }
 
@@ -293,7 +293,7 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
 //    a = a == 0? 1 : a;
     double nextHalfRange = halfRange / (a * 2);
 
-    if(nextHalfRange >= 10 && ifShowBranch)
+    if(nextHalfRange >= 20 && ifShowBranch)
         for(int i = 0; i < path->sub_paths_index.size();i++){//叶到根
             double nextx,nexty;
 
@@ -307,16 +307,26 @@ void SubwayMapWidget::GenMap(Path* path, double x, double y, double halfRange, Q
                 nexty = y - nextHalfRange * ((i / 2 ) * 2 + 1);
             }
 
-            if(isFirstLevel){
-                nextx += 100;
-            }
-            else{
-                nextx += 50;
-            }
+            nextx += 20 * (path->sub_paths_index.size() - i);
+
+//            if(isFirstLevel){
+//                nextx += 50;
+//            }
+//            else{
+//                nextx += 50;
+//            }
 
             GenMap(&paths[path->sub_paths_index[i]],nextx,nexty, nextHalfRange, QPointF(path->path[branchIndex].sx,path->path[branchIndex].sy));
         }
 }
+
+//void SubwayMapWidget::wheelEvent(QWheelEvent *e) {
+//    if(!neuronInfo) return;
+//    if(e->angleDelta().y() > 0)
+//        zoomIn();
+//    else
+//        zoomOut();
+//}
 
 void SubwayMapWidget::Update(){
     int id1,id2,id3;

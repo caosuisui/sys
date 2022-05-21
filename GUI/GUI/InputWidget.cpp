@@ -44,6 +44,10 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
     {
         auto allButtonLayout = new QHBoxLayout;
 
+        auto volumeLabel = new QLabel("volume");
+        auto objLabel = new QLabel("obj");
+        auto lineLabel = new QLabel("line");
+
         auto renderButtonGroup = new QGroupBox("Render Options");
         auto renderButtonLayout = new QHBoxLayout;
         renderButtonGroup->setLayout(renderButtonLayout);
@@ -51,8 +55,11 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
         ifRenderVolume = new QCheckBox();
         ifRenderObj = new QCheckBox();
         ifRenderLine = new QCheckBox();
+        renderButtonLayout->addWidget(volumeLabel);
         renderButtonLayout->addWidget(ifRenderVolume);
+        renderButtonLayout->addWidget(objLabel);
         renderButtonLayout->addWidget(ifRenderObj);
+        renderButtonLayout->addWidget(lineLabel);
         renderButtonLayout->addWidget(ifRenderLine);
         ifRenderVolume->setChecked(true);
         ifRenderObj->setChecked(true);
@@ -78,6 +85,30 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
 //        buttonLayout->addWidget(connectButton);
 
         allButtonLayout->addWidget(buttonGroup);
+
+        auto scaleButtons = new QGroupBox("Subway Map Scale Options");
+        auto scaleButtonsLayout = new QHBoxLayout;
+        scaleButtonsLayout->setAlignment(Qt::AlignLeft);
+        scaleButtons->setLayout(scaleButtonsLayout);
+        commonScale = new QPushButton("C");
+        commonScale->setFixedSize(20, 20);
+        commonScale->setCheckable(true);
+        commonScale->setAutoExclusive(true);
+        commonScale->setChecked(true);
+        verticalScale = new QPushButton("V");
+        verticalScale->setFixedSize(20, 20);
+        verticalScale->setCheckable(true);
+        verticalScale->setAutoExclusive(true);
+        horizontalScale = new QPushButton("H");
+        horizontalScale->setFixedSize(20, 20);
+        horizontalScale->setCheckable(true);
+        horizontalScale->setAutoExclusive(true);
+        scaleButtonsLayout->addWidget(commonScale);
+        scaleButtonsLayout->addWidget(verticalScale);
+        scaleButtonsLayout->addWidget(horizontalScale);
+
+        allButtonLayout->addWidget(scaleButtons);
+
         widgetLayout->addLayout(allButtonLayout);
     }
 
@@ -248,7 +279,21 @@ InputWidget::InputWidget(QWidget *parent):QWidget(parent) {
     connect(ifRenderObj,&QCheckBox::stateChanged,this,&InputWidget::GetRenderButtonState);
     connect(ifRenderLine,&QCheckBox::stateChanged,this,&InputWidget::GetRenderButtonState);
 
+    connect(commonScale,&QPushButton::toggled,this,&InputWidget::GetScaleButtonState);
+    connect(verticalScale,&QPushButton::toggled,this,&InputWidget::GetScaleButtonState);
+    connect(horizontalScale,&QPushButton::toggled,this,&InputWidget::GetScaleButtonState);
+
     neuronInfo = nullptr;
+}
+
+void InputWidget::GetScaleButtonState(bool){
+    if(!subwayMapWidget) return;
+    if(commonScale->isChecked())
+        subwayMapWidget->SetScaleDirection(SubwayMapWidget::Both);
+    else if(horizontalScale->isChecked())
+        subwayMapWidget->SetScaleDirection(SubwayMapWidget::Horizontal);
+    else if(verticalScale->isChecked())
+        subwayMapWidget->SetScaleDirection(SubwayMapWidget::Vertical);
 }
 
 void InputWidget::ReconstructionSlot(bool) {

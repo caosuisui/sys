@@ -54,6 +54,7 @@ private slots:
     void InterpolateRadius();
     void EditRadius();
     void ReconstructionSlot(bool);
+    void GetScaleButtonState(bool);
 private:
     NeuronInfo* neuronInfo;
 
@@ -99,5 +100,9 @@ private:
     QProgressDialog* progressDialog;
     QLabel* progress;
     QProgressBar* progressBar;
+
+    QPushButton* commonScale;
+    QPushButton* verticalScale;
+    QPushButton* horizontalScale;
 };
 #endif //SYS_INPUTWIDGET_H

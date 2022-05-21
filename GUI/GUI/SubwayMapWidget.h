@@ -14,6 +14,7 @@
 #include <QVector>
 
 #include <util/NeuronInfo.h>
+#include <QtWidgets/QtWidgets>
 
 #include "PointItem.h"
 
@@ -31,6 +32,12 @@ public:
         Add
     };
 
+    enum ZoomDirection{
+        Horizontal,
+        Vertical,
+        Both,
+    };
+
 public:
     explicit SubwayMapWidget(QWidget* parent = nullptr);
 
@@ -39,6 +46,10 @@ public:
     void SetPath(NeuronInfo* info) ;
 
     void Update();
+
+    void SetScaleDirection(ZoomDirection direction){
+        zoomDirection = direction;
+    }
 
 public slots:
     void SelectVertexSlot(int id);
@@ -51,14 +62,10 @@ signals:
     void SelectNextVertexSignal(int id);
 
 private:
-    enum ZoomDirection{
-        Horizontal,
-        Vertical,
-        Both,
-    };
+
 
 protected:
-    //void wheelEvent(QWheelEvent* e)Q_DECL_OVERRIDE;
+//    void wheelEvent(QWheelEvent* e)Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent* e)Q_DECL_OVERRIDE;
     void keyPressEvent(QKeyEvent* e)Q_DECL_OVERRIDE;
     bool eventFilter(QObject *watched, QEvent *event)Q_DECL_OVERRIDE;
