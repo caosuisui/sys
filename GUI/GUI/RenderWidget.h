@@ -110,7 +110,7 @@ private:
 
     ObjMode* objLoader;
 
-    std::unique_ptr<control::TrackBallCamera> camera;
+    std::unique_ptr<control::FPSCamera> camera;
 
     NeuronInfo* neuronInfo;
 
@@ -220,6 +220,8 @@ private:
     QOpenGLVertexArrayObject screen_quad_vao;
     std::array<float,12> screen_quad_vertices;
     std::unique_ptr<VolumeProvider> volume;
+
+    std::array<uint32_t,24> proxy_cube_indices1;
 
     QOpenGLFramebufferObject* fbo;
     QOpenGLTexture* ray_entry;

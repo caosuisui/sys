@@ -17,6 +17,7 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     currentPointId = -1;
     lastPointId = -1;
     nextPointId = -1;
+    hoveredPointId = -1;
     lastSelectedPath = -1;
     isFirstRender = true;
     pressed = false;
@@ -26,19 +27,31 @@ RenderWidget::RenderWidget(QWidget *parent) :QOpenGLWidget(parent),
     nextPathId = nextInPathId = -1;
     connectStart = -1;
 
-    ifRenderVolume = ifRenderObj = ifRenderLine = true;
+    ifRenderVolume = true;
+    ifRenderObj = ifRenderLine = false;
 
     this->setFixedSize(RENDER_WIDTH,RENDER_HEIGHT);
-    camera = std::make_unique<control::TrackBallCamera>(
-            50,
-            this->width(),this->height(),
-            glm::vec3{100,100,100}
+//    camera = std::make_unique<control::TrackBallCamera>(
+//            50,
+//            this->width(),this->height(),
+//            glm::vec3{100,100,100}
+//    );
+    camera = std::make_unique<control::FPSCamera>(
+            glm::vec3{1886.7296, 2080.6738, 5502.7607}
     );
     volume = std::make_unique<VolumeProvider>("G:/csh/volume/ffmpegyuv420_9p2_max_lod0_28452_21866_4834.h264");
 
     proxy_cube_indices = {
             0, 1, 2, 0, 2, 3, 0, 4, 1, 4, 5, 1, 1, 5, 6, 6, 2, 1,
             6, 7, 2, 7, 3, 2, 7, 4, 3, 3, 4, 0, 4, 7, 6, 4, 6, 5
+    };
+    proxy_cube_indices1 = {
+            0,4,5,1,
+            4,7,6,5,
+            3,0,1,2,
+            7,3,2,6,
+            0,3,7,4,
+            5,6,2,1
     };
     screen_quad_vertices = {
         1.f,-1.f, 1.f,1.f, -1.f,-1.f,
@@ -178,7 +191,7 @@ void RenderWidget::initializeGL() {
 void RenderWidget::resizeGL(int width, int height) {
     makeCurrent();
     glViewport(0, 0, width, height);
-    camera->setScreenSize(width,height);
+//    camera->setScreenSize(width,height);
     viewportMatrix = QMatrix4x4(width / 2.f, 0,            0,     width / 2.f,
                                 0,           height / 2.f, 0,     height/2.f,
                                 0,           0,            1,     0,
@@ -187,6 +200,11 @@ void RenderWidget::resizeGL(int width, int height) {
 }
 
 void RenderWidget::paintGL() {
+//    if(camera){
+//        auto camerapos = camera->getCameraPos();
+//        std::cerr << camerapos.x << " " << camerapos.y << " " << camerapos.z << std::endl;
+//    }
+
     makeCurrent();
 
     QMatrix4x4 model;
@@ -227,7 +245,7 @@ void RenderWidget::paintGL() {
         //compute intersect blocks
         static std::vector<uint8_t> volume_data(volume_block_size);
         static glm::ivec3 last_start_block_index = {-1,-1,-1};
-        if(volumearea.size() == 6){
+        if(volumearea.size() == 3){
             float voxel_start_pos_x = volumearea[0] / volume_space_x;
             float voxel_x_len = virtual_block_length * volume_space_x;
 
@@ -338,7 +356,7 @@ void RenderWidget::paintGL() {
         }
 
         //debug for volume proxy cube wireframe
-        if(currentPointId != -1){
+        if(true){
             pathProgram->bind();
             pathProgram->setUniformValue("model",model);
             pathProgram->setUniformValue("view",view);
@@ -468,11 +486,16 @@ void RenderWidget::paintGL() {
 std::vector<float> RenderWidget::GetVolumeAreaData()
 {
     std::vector<float> data;
-    if(currentPointId == -1) return data;
+//    if(currentPointId == -1) return data;
     double x,y,z,startx,starty,startz,dimension;
-    x = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].x;
-    y = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].y;
-    z = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].z;
+//    x = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].x;
+//    y = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].y;
+//    z = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]].z;
+    if(!camera) return data;
+    auto pos = camera->getCameraPos();
+    x = pos.x;
+    y = pos.y;
+    z = pos.z;
 
 //    int padding = 4;
 //    int a = (x - (neuronInfo->x_start - padding / 2)) / (neuronInfo->blocksize - 2);
@@ -482,23 +505,25 @@ std::vector<float> RenderWidget::GetVolumeAreaData()
 //    a = (z - (neuronInfo->z_start - padding / 2)) / (neuronInfo->blocksize - 2);
 //    startz = a * (neuronInfo->blocksize - 2) + (neuronInfo->z_start - padding / 2);
 
-    dimension = neuronInfo->blocksize + 4;
+//    dimension = neuronInfo->blocksize + 4;
 //    data.push_back(startx);
 //    data.push_back(starty);
 //    data.push_back(startz);
     data.push_back(x);
     data.push_back(y);
     data.push_back(z);
-    data.push_back(dimension);
-    data.push_back(dimension);
-    data.push_back(dimension);
+//    data.push_back(dimension);
+//    data.push_back(dimension);
+//    data.push_back(dimension);
     return data;
 }
 
 void RenderWidget::SetObjFilePath(std::string path) {
+
     objFilePath = std::move(path);
     if(neuronInfo!= nullptr)
         loadObj();
+    ifRenderObj = true;
     repaint();
 }
 
@@ -592,8 +617,8 @@ void RenderWidget::loadSWCPoint() {
 
     currentPoint.clear();
     if(currentPointId != -1 && (std::find(deleteList.begin(),deleteList.end(),currentPointId) == deleteList.end())){
-        neuronInfo->GetVertexPathInfo(currentPointId, currentPathId,currentInPathId);
-        auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]];
+//        neuronInfo->GetVertexPathInfo(currentPointId, currentPathId,currentInPathId);
+        auto vertex = *(neuronInfo->GetVertex(currentPointId));
         currentPoint.push_back(vertex.x);
         currentPoint.push_back(vertex.y);
         currentPoint.push_back(vertex.z);
@@ -602,7 +627,8 @@ void RenderWidget::loadSWCPoint() {
     lastPoint.clear();
     if(lastPointId != -1 && (std::find(deleteList.begin(),deleteList.end(),lastPointId) == deleteList.end())){
         neuronInfo->GetVertexPathInfo(lastPointId, lastPathId,lastInPathId);
-        auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[lastPointId]];
+        auto vertex = *(neuronInfo->GetVertex(lastPointId));
+//        auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[lastPointId]];
         lastPoint.push_back(vertex.x);
         lastPoint.push_back(vertex.y);
         lastPoint.push_back(vertex.z);
@@ -611,7 +637,8 @@ void RenderWidget::loadSWCPoint() {
     nextPoint.clear();
     if(nextPointId != -1 && (std::find(deleteList.begin(),deleteList.end(),nextPointId) == deleteList.end())){
         neuronInfo->GetVertexPathInfo(nextPointId, nextPathId,nextInPathId);
-        auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[nextPointId]];
+        auto vertex = *(neuronInfo->GetVertex(nextPointId));
+//        auto vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[nextPointId]];
         nextPoint.push_back(vertex.x);
         nextPoint.push_back(vertex.y);
         nextPoint.push_back(vertex.z);
@@ -634,10 +661,21 @@ void RenderWidget::loadSWCPoint() {
 
     hoveredPoint.clear();
     if(hoveredPointId != -1){
-        auto point = neuronInfo->point_vector[neuronInfo->vertex_hash[hoveredPointId]];
-        hoveredPoint.push_back(point.x);
-        hoveredPoint.push_back(point.y);
-        hoveredPoint.push_back(point.z);
+        auto addr = neuronInfo->GetVertex(hoveredPointId);
+        auto vertex = *addr;
+        hoveredPoint.push_back(vertex.x);
+        hoveredPoint.push_back(vertex.y);
+        hoveredPoint.push_back(vertex.z);
+
+//        if(hoveredPointId <= neuronInfo->point_vector.size()){
+//            auto point = neuronInfo->point_vector[neuronInfo->vertex_hash[hoveredPointId]];
+//            hoveredPoint.push_back(point.x);
+//            hoveredPoint.push_back(point.y);
+//            hoveredPoint.push_back(point.z);
+//        }
+//        else{
+//            hoveredPointId = -1;
+//        }
     }
 
 //    swcPoints.clear();
@@ -717,6 +755,7 @@ void RenderWidget::GenObject(QOpenGLBuffer &vbo, QOpenGLVertexArrayObject &vao,f
 
 void RenderWidget::SWCLoaded(NeuronInfo* neuronInfo) {
     this->neuronInfo = neuronInfo;
+    ifRenderLine = true;
 
     resetTransferFunc1D();
 
@@ -726,13 +765,21 @@ void RenderWidget::SWCLoaded(NeuronInfo* neuronInfo) {
 //        lastPointId = -1;
 //        nextPointId = -1;
         isWholeView = true;
-        camera = std::make_unique<control::TrackBallCamera>(
-                neuronInfo->z_dimension / 4.f,
-                this->width(),this->height(),
-                glm::vec3{neuronInfo->point_vector[0].x,
-                          neuronInfo->point_vector[0].y,
-                          neuronInfo->point_vector[0].z}
-        );
+//        camera = std::make_unique<control::TrackBallCamera>(
+//                neuronInfo->z_dimension / 4.f,
+//                this->width(),this->height(),
+//                glm::vec3{neuronInfo->point_vector[0].x,
+//                          neuronInfo->point_vector[0].y,
+//                          neuronInfo->point_vector[0].z}
+//        );
+        if(neuronInfo->point_vector.size() > 0){
+            camera = std::make_unique<control::FPSCamera>(
+                    glm::vec3{neuronInfo->point_vector[0].x,
+                              neuronInfo->point_vector[0].y,
+                              neuronInfo->point_vector[0].z + neuronInfo->z_dimension * 2}
+            );
+        }
+
     }
 
     loadLines();
@@ -746,12 +793,17 @@ void RenderWidget::loadObj(){
 //    std::cout << points.size() << "   " << indexes.size() << std::endl;
 
     if(!neuronInfo && isFirstRender){
-        camera = std::make_unique<control::TrackBallCamera>(
-                (box[5] - box[2]) / 2.f,
-                this->width(),this->height(),
+//        camera = std::make_unique<control::TrackBallCamera>(
+//                (box[5] - box[2]) / 2.f,
+//                this->width(),this->height(),
+//                glm::vec3{(box[0] + box[3]) / 2.f,
+//                          (box[1] + box[4]) / 2.f,
+//                          (box[2] + box[5]) / 2.f}
+//        );
+        camera = std::make_unique<control::FPSCamera>(
                 glm::vec3{(box[0] + box[3]) / 2.f,
                           (box[1] + box[4]) / 2.f,
-                          (box[2] + box[5]) / 2.f}
+                          box[5] * 1.5}
         );
     }
 
@@ -810,7 +862,6 @@ void RenderWidget::mousePressEvent(QMouseEvent *event)
 
 void RenderWidget::mouseMoveEvent(QMouseEvent *event)
 {
-
     if(pressed)
         camera->processMouseMove(event->pos().x(),event->pos().y());
     if(neuronInfo)
@@ -839,7 +890,7 @@ void RenderWidget::mouseReleaseEvent(QMouseEvent *event)
 }
 
 void RenderWidget::pickPoint(QPointF mousePos, bool hover){
-    if(!ifRenderLine){
+    if(!ifRenderLine || !neuronInfo){
         return;
     }
     mousePos.setY(RENDER_HEIGHT - mousePos.y());
@@ -884,6 +935,8 @@ void RenderWidget::pickPoint(QPointF mousePos, bool hover){
 
     pick(neuronInfo->point_vector);
 
+
+
     if(id != -1){
         int id0,id1;
         neuronInfo->GetVertexPathInfo(id,id0,id1);
@@ -891,6 +944,8 @@ void RenderWidget::pickPoint(QPointF mousePos, bool hover){
     }
 
     pick(neuronInfo->addList);
+
+    std::cout << "pick " << id << std::endl;
 
     if(selectionState == SubwayMapWidget::SelectionState::Add){
         if(std::find(neuronInfo->deleteList.begin(),neuronInfo->deleteList.end(),id) != neuronInfo->deleteList.end()) return;
@@ -902,6 +957,9 @@ void RenderWidget::pickPoint(QPointF mousePos, bool hover){
                 if(!neuronInfo) return;
                 if(mapping_ptr) {
                     int newid = neuronInfo->Add(mapping_ptr);
+
+//                    inputWidget->ChangeCurrentPoint(newid);
+
                     loadSWCPoint();
 
                     connectStart = newid;
@@ -930,7 +988,8 @@ void RenderWidget::pickPoint(QPointF mousePos, bool hover){
 
 
     if(selectionState == SubwayMapWidget::SelectionState::Normal) {
-        currentPointId = id;
+        SelectPointSlot(id);
+//        currentPointId = id;
         loadSWCPoint();
         emit SelectPointSignal(id);
         return;
@@ -981,18 +1040,65 @@ void RenderWidget::SelectPointSlot(int id) {
 //    if(pathid != currentPathId)
 //        init();
 
+//    auto p1 = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]];
+//    auto pos1 = glm::vec3(p1.x,p1.y,p1.z);
+//    auto p2 = neuronInfo->point_vector[neuronInfo->vertex_hash[id]];
+//    auto pos2 = glm::vec3(p2.x,p2.y,p2.z);
+
     lastSelectedPath = pathid;
     isWholeView = false;
     currentPointId = id;
 
-    const auto& vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]];
-    camera = std::make_unique<control::TrackBallCamera>(
-            10,
-            this->width(),this->height(),
-            glm::vec3{vertex.x,
-                      vertex.y,
-                      vertex.z}
-    );
+//    const auto& vertex = neuronInfo->point_vector[neuronInfo->vertex_hash[currentPointId]];
+    auto vertexadd = neuronInfo->GetVertex(id);
+    auto vertex = *vertexadd;
+    auto vertexpos = glm::vec3{vertex.x,
+                          vertex.y,
+                          vertex.z};
+//    camera = std::make_unique<control::TrackBallCamera>(
+//            10,
+//            this->width(),this->height(),
+//            glm::vec3{vertex.x,
+//                      vertex.y,
+//                      vertex.z}
+//    );
+//    if(dist > 5){
+//        std::cerr << "aaaaaaaa" << std::endl;
+//        camera = std::make_unique<control::FPSCamera>(
+//                glm::vec3{vertex.x,
+//                          vertex.y,
+//                          vertex.z + 20}
+//        );
+//    }
+    QVector4D screen = mvp.map(QVector4D(vertex.x,vertex.y,vertex.z,1.0));
+
+    if(screen.w() !=0.0f){
+        screen.setX(screen.x() / screen.w());
+        screen.setY(screen.y() / screen.w());
+        screen.setZ(screen.z() / screen.w());
+        screen.setW(1);
+    }
+    if(!(screen.x() > -1 && screen.x() < 1 && screen.y() > -1 &&screen.y() < 1)){
+        camera = std::make_unique<control::FPSCamera>(
+                glm::vec3{vertex.x,
+                          vertex.y,
+                          vertex.z + 20}
+        );
+    }
+    else if(id != -1){
+        auto camerapos = camera->getCameraPos();
+        auto vec = camerapos - vertexpos;
+        auto dis = std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+//        std::cerr << camerapos.x << " " << camerapos.y << "" << camerapos.z << std::endl;
+        if(dis > 25){
+            camera = std::make_unique<control::FPSCamera>(
+                    glm::vec3{vertex.x,
+                              vertex.y,
+                              vertex.z + 20}
+            );
+        }
+    }
+
     loadSWCPoint();
     loadLines();
     repaint();
@@ -1056,23 +1162,40 @@ void RenderWidget::resetTransferFunc1D() {
 }
 
 void RenderWidget::keyPressEvent(QKeyEvent* e) {
-    return;
     e->accept();
     switch (e->key()) {
         case 'A':{
-            camera->processKeyEvent(control::CameraDefinedKey::Left,5);
+            camera->processKeyEvent(control::CameraDefinedKey::Left,0.01);
             break;
         }
-        case 'W':{
-            camera->processKeyEvent(control::CameraDefinedKey::Up,5);
+        case 'Q':{
+            camera->processKeyEvent(control::CameraDefinedKey::Up,0.01);
             break;
         }
-        case 'S':{
-            camera->processKeyEvent(control::CameraDefinedKey::Bottom,5);
+        case 'E':{
+            camera->processKeyEvent(control::CameraDefinedKey::Bottom,0.01);
             break;
         }
         case 'D':{
-            camera->processKeyEvent(control::CameraDefinedKey::Right,5);
+            camera->processKeyEvent(control::CameraDefinedKey::Right,0.01);
+            break;
+        }
+        case 'W':{
+            camera->processKeyEvent(control::CameraDefinedKey::Forward,0.01);
+            break;
+        }
+        case 'S':{
+            camera->processKeyEvent(control::CameraDefinedKey::Backward,0.01);
+            break;
+        }
+        case 'V':{
+            if(neuronInfo){
+                camera = std::make_unique<control::FPSCamera>(
+                        glm::vec3{neuronInfo->point_vector[0].x,
+                                  neuronInfo->point_vector[0].y,
+                                  neuronInfo->point_vector[0].z + neuronInfo->z_dimension * 2}
+                );
+            }
             break;
         }
     }

@@ -628,6 +628,8 @@ public:
         neuronInfo->deleteList.clear();
         neuronInfo->addList.clear();
         neuronInfo->connectionList.clear();
+
+
     }
 
     static bool isInteracted(Sphere* ss,glm::dvec3 start_point,glm::dvec3 end_point){

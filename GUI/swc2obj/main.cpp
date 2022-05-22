@@ -130,7 +130,7 @@ int main(int argc , char ** argv) {
 
     if(!dirExists(outputdir)){
         CreateDirectory(outputdir.c_str(),NULL) ;
-        std::cout << "create dir for vol" << std::endl;
+        std::cout << "create dir" << std::endl;
     }
 
     std::string volumedir = outputdir + std::string("vol/");

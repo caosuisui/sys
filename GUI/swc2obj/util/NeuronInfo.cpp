@@ -82,29 +82,29 @@ void NeuronInfo::DeleteVertex(int id) {
 void NeuronInfo::Connect(int start,int end){
     if(start == end) return;
     //如果之前有相同的连接，表示这是删除连接而不是创建连接
-    std::stack<int> toDelete;
-    for(int i = 0;i <connectionList.size();i+=2){
-        if((start == connectionList[i].current_id && end == connectionList[i+1].current_id) ||
-                (end == connectionList[i].current_id && start == connectionList[i+1].current_id)){
-            toDelete.push(i);
-            toDelete.push(i+1);
-        }
-    }
+//    std::stack<int> toDelete;
+//    for(int i = 0;i <connectionList.size();i+=2){
+//        if((start == connectionList[i].current_id && end == connectionList[i+1].current_id) ||
+//                (end == connectionList[i].current_id && start == connectionList[i+1].current_id)){
+//            toDelete.push(i);
+//            toDelete.push(i+1);
+//        }
+//    }
+//
+//    if(!toDelete.empty()){
+//        while(!toDelete.empty()){
+//            int offset = toDelete.top();
+//            toDelete.pop();
+//            connectionList.erase(connectionList.begin() + offset);
+//        }
+//        return;
+//    }
 
-    if(!toDelete.empty()){
-        while(!toDelete.empty()){
-            int offset = toDelete.top();
-            toDelete.pop();
-            connectionList.erase(connectionList.begin() + offset);
-        }
-        return;
-    }
-
-    if(point_vector[vertex_hash[start]].previous_id == end || point_vector[vertex_hash[end]].previous_id == start) return;
+//    if(point_vector[vertex_hash[start]].previous_id == end || point_vector[vertex_hash[end]].previous_id == start) return;
 
     //创建连接
     std::cout << "connect between " << start << " " << "and " << end << std::endl;
-    if(start < point_vector.size()){
+    if(start <= point_vector.size()){
         connectionList.push_back(point_vector[vertex_hash[start]]);
     }
     else{
@@ -117,7 +117,7 @@ void NeuronInfo::Connect(int start,int end){
         }
     }
 
-    if(end < point_vector.size()){
+    if(end <= point_vector.size()){
         connectionList.push_back(point_vector[vertex_hash[end]]);
     }
 
@@ -161,7 +161,8 @@ double NeuronInfo::GetR(int id) {
         if(item.current_id == id)
             return item.radius;
     }
-    return point_vector[vertex_hash[id]].radius;
+    auto vertex = *GetVertex(id);
+    return vertex.radius;
 }
 
 std::string NeuronInfo::PartialReconstruction() {
@@ -172,6 +173,21 @@ std::string NeuronInfo::PartialReconstruction() {
     auto objdir = outputdir + "obj/";
     auto volumedir = outputdir + "vol/";
     auto objname = objdir + "simplifiedObj.obj";
+
+    if(dirExists(outputdir) && point_vector.empty()){
+        std::cout << "newnewnew" << std::endl;
+        RemoveDirectory(objdir.c_str()) ;
+        RemoveDirectory(volumedir.c_str()) ;
+    }
+
+    if(!dirExists(outputdir)){
+        CreateDirectory(outputdir.c_str(),NULL) ;
+        CreateDirectory(objdir.c_str(),NULL) ;
+        CreateDirectory(volumedir.c_str(),NULL) ;
+        std::cout << "create dir" << std::endl;
+    }
+
+
 
     if(addList.empty() && deleteList.empty() && connectionList.empty() && radiusChangeList.empty()) return objname;
 
@@ -230,7 +246,8 @@ std::string NeuronInfo::PartialReconstruction() {
     if (!connectionList.empty()) {
         for (int i = 0; i < connectionList.size() - 1; i += 2) {
             auto start = connectionList[i];
-            getBox(point_vector[vertex_hash[start.previous_id]]);
+            if(start.previous_id > 0 && start.previous_id <= point_vector.size())
+                getBox(point_vector[vertex_hash[start.previous_id]]);
 
             auto end = connectionList[i + 1];
             for (auto item:point_vector) {
@@ -318,6 +335,8 @@ void NeuronInfo::GetVertexPathInfo(int currentid, int &pathid, int &vertexid) {
             }
         }
     }
+    pathid = -1;
+    vertexid = -1;
 }
 
 void NeuronInfo::Interpolate(int end, int start) {
@@ -349,7 +368,7 @@ void NeuronInfo::Interpolate(int end, int start) {
 }
 
 Vertex* NeuronInfo::GetVertex(int id){
-    if(id < point_vector.size()){
+    if(id <= point_vector.size()){
         return &point_vector[vertex_hash[id]];
     }
     else{
@@ -454,6 +473,10 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
 
     for(auto item:addListCopy){
         item.is_visited = false;
+        if(!(item.previous_id > 0 && item.previous_id <= pointVectorCopy.size() - deleteList.size() + addListCopy.size())){
+            item.previous_id = -1;
+        }
+
         newPointVector.push_back(item);
     }
 
@@ -461,7 +484,7 @@ std::vector<Vertex> NeuronInfo::GetNewSWC() {
 }
 
 void NeuronInfo::ExportSWC(std::string filename){
-    //filename = "C:/Users/csh/Desktop/bishe/" + swcname.substr(swcname.size() - 8);
+//    filename = "C:/Users/csh/Desktop/bishe/" + swcname.substr(swcname.size() - 8);
     std::ofstream swcfile(filename,std::ios::out | std::ios::trunc);
     if(!swcfile.is_open()){
         std::cerr << "save failed" << std::endl;
